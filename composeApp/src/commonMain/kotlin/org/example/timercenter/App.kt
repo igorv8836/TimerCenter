@@ -15,25 +15,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.timercenter.ui_common.AppTheme
+import org.example.timercenter.navigation.AppNavigation
 import org.jetbrains.compose.resources.painterResource
 import timercenter.composeapp.generated.resources.Res
 import timercenter.composeapp.generated.resources.compose_multiplatform
 
 @Composable
-@Preview
 fun App() {
     AppTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                val greeting = remember { Greeting().greet() }
-                Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                    Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
-                }
+        AppNavigation()
+    }
+}
+
+@Composable
+@Preview
+fun TestContent() {
+    var showContent by remember { mutableStateOf(false) }
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Button(onClick = { showContent = !showContent }) {
+            Text("Click me!")
+        }
+        AnimatedVisibility(showContent) {
+            val greeting = remember { Greeting().greet() }
+            Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(painterResource(Res.drawable.compose_multiplatform), null)
+                Text("Compose: $greeting")
             }
         }
     }

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
@@ -53,18 +54,20 @@ kotlin {
 
             implementation(libs.napier)
 
+            implementation(libs.orbit.core)
 
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
 
             implementation(project(":core:common"))
             implementation(project(":core:database"))
             implementation(project(":core:datastore"))
             implementation(project(":core:ui-common"))
-//            implementation(project(":orbit-mvi"))
+            implementation(project(":orbit_mvi"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
