@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.libs
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -60,6 +59,11 @@ kotlin {
 
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.kotlinx.coroutines.core)
+
+            implementation(project(":core:common"))
+            implementation(project(":core:database"))
+            implementation(project(":core:datastore"))
+            implementation(project(":core:ui-common"))
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
