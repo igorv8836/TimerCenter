@@ -1,7 +1,7 @@
 [versions]
 accompanistSwiperefresh = "0.23.0"
 agp = "8.5.2"
-kotlin = "2.0.21"
+kotlin = "2.1.0"
 compose-plugin = "1.7.0"
 
 android-compileSdk = "35"
@@ -10,7 +10,7 @@ android-targetSdk = "35"
 
 kotlinxDatetime = "0.6.1"
 kotlinxSerializationJson = "1.7.3"
-coroutines = "1.9.0"
+coroutines = "1.10.1"
 ksp = "2.0.21-1.0.25"
 
 navigationCompose = "2.8.0-alpha10"
@@ -23,14 +23,14 @@ koin = "4.0.0"
 
 napier = "2.7.1"
 
-room = "2.7.0-alpha11"
-sqlite = "2.5.0-alpha11"
+room = "2.7.0-rc01"
+sqlite = "2.5.0-rc01"
 
 ktor = "3.0.0"
 
-datastore = "1.1.1"
+datastore = "1.1.3"
 mockk = "1.12.0"
-junitJupiter = "5.11.2"
+junitJupiter = "5.11.3"
 cronetApi = "119.6045.31"
 atomicfu = "0.25.0"
 conventional-commits = "3.1.3"
@@ -105,6 +105,5 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"
 
 conventional-commits = { id = "it.nicolasfarabegoli.conventional-commits", version.ref = "conventional-commits" }
 
-# Plugins defined by this project
-myComposeMultiplatform = { id = "com.example.queueapp.composeMultiplatform", version = "unspecified" }
-myKotlinMultiplatform = { id = "com.example.queueapp.kotlinMultiplatform", version = "unspecified" }
+myComposeMultiplatform = { id = "com.example.timercenter.composeMultiplatform", version = "unspecified" }
+myKotlinMultiplatform = { id = "com.example.timercenter.kotlinMultiplatform", version = "unspecified" }
