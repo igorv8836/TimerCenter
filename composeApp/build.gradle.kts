@@ -39,6 +39,13 @@ kotlin {
             implementation(compose.preview)
 
             implementation(libs.koin.android)
+
+            // Kotlin + coroutines
+            implementation(libs.androidx.work.runtime.ktx)
+            // optional - GCMNetworkManager support
+            implementation(libs.androidx.work.gcm)
+            // optional - Multiprocess support
+            implementation(libs.androidx.work.multiprocess)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -62,6 +69,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
 
             implementation(project(":core:common"))
             implementation(project(":core:database"))

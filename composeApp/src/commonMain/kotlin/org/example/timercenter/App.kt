@@ -21,7 +21,7 @@ import timercenter.composeapp.generated.resources.Res
 import timercenter.composeapp.generated.resources.compose_multiplatform
 
 @Composable
-fun App() {
+fun MyApp() {
     AppTheme {
         AppNavigation()
     }
