@@ -29,9 +29,9 @@ fun AppTopBar(navController: NavController) {
         title = {
             Text(
                 text = when (currentRoute) {
-                    "home" -> "Главная"
-                    "create" -> "Создать"
-                    "history" -> "История"
+                    Screen.HOME.route -> Screen.HOME.title
+                    Screen.CREATE.route -> Screen.CREATE.title
+                    Screen.HISTORY.route -> Screen.HISTORY.title
                     else -> "Таймеры"
                 },
                 fontSize = 20.sp

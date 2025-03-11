@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 
 data class BottomNavigationItem(
+    val route: String,
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
@@ -32,17 +33,20 @@ data class BottomNavigationItem(
 
 val bottomNavigationItems = listOf(
     BottomNavigationItem(
-        title = "home",
+        route = Screen.HOME.route,
+        title = Screen.HOME.title,
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
     ),
     BottomNavigationItem(
-        title = "create",
+        route = Screen.CREATE.route,
+        title = Screen.CREATE.title,
         selectedIcon = Icons.Filled.Add,
         unselectedIcon = Icons.Outlined.Add,
     ),
     BottomNavigationItem(
-        title = "history",
+        route = Screen.HISTORY.route,
+        title = Screen.HISTORY.title,
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Outlined.History,
     ),
@@ -62,7 +66,7 @@ fun BottomNavigationBar(
                 selected = selectedItemIndex == index,
                 onClick = {
                     selectedItemIndex = index
-                    navController.navigate(item.title)
+                    navController.navigate(item.route)
                 },
                 label = {
                     Text(text = item.title)
