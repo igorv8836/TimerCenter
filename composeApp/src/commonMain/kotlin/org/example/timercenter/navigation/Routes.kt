@@ -4,23 +4,23 @@ import androidx.navigation.NavController
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object MainScreenRoute
-
-@Serializable
-data object StartScreenRoute
-
-@Serializable
 data object HomeScreenRoute
+
+@Serializable
+data object CreateScreenRoute
+
+@Serializable
+data object HistoryScreenRoute
+
 
 fun NavController.navigateToHome() {
     navigate(HomeScreenRoute)
 }
 
-
-fun NavController.navigateToMain() {
-    navigate(MainScreenRoute)
+fun NavController.navigateToCreate() {
+    navigate(CreateScreenRoute)
 }
 
-fun NavController.navigateToStart() {
-    navigate(StartScreenRoute)
+fun NavController.navigateToHistory() {
+    navigate(HistoryScreenRoute)
 }
