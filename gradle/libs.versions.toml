@@ -34,9 +34,13 @@ junitJupiter = "5.11.3"
 cronetApi = "119.6045.31"
 atomicfu = "0.25.0"
 conventional-commits = "3.1.3"
+uiAndroid = "1.7.8"
+material3Android = "1.3.1"
+uiUtil = "1.7.0"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3Android" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -82,6 +86,9 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 cronet-api = { group = "org.chromium.net", name = "cronet-api", version.ref = "cronetApi" }
 
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+ui-util = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "uiUtil" }
 
 [bundles]
 ktor = [

@@ -41,9 +41,14 @@ kotlin {
             implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(libs.androidx.material3)
+            implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
+            implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha04")
+            implementation(libs.ui.util)
+
+
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
@@ -104,6 +109,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.material3.android)
     debugImplementation(compose.uiTooling)
 }
 
