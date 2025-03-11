@@ -20,23 +20,3 @@ fun AppNavigation(navController: NavHostController) {
         composable("history") { HistoryScreen() }
     }
 }
-
-//@Composable
-//fun AppNavigation(navController: NavHostController) {
-//
-//    NavHost(navController = navController, startDestination = HomeScreenRoute) {
-//        composable<HomeScreenRoute> {
-//            HomeScreen(timers = createTimerList(50))
-//        }
-//
-//
-//        composable<CreateScreenRoute> {
-//            CreateScreen()
-//        }
-//
-//        composable<HistoryScreenRoute> {
-//            HistoryScreen()
-//        }
-//
-//    }
-//}
