@@ -9,6 +9,13 @@ data object MainScreenRoute
 @Serializable
 data object StartScreenRoute
 
+@Serializable
+data object HomeScreenRoute
+
+fun NavController.navigateToHome() {
+    navigate(HomeScreenRoute)
+}
+
 
 fun NavController.navigateToMain() {
     navigate(MainScreenRoute)
