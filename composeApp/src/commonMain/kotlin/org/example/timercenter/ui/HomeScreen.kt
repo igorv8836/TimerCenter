@@ -31,7 +31,6 @@ import kotlin.random.Random
 @Composable
 fun HomeScreen(timers: List<TimerUiModel>) {
     Column {
-        Text("All Timers")
         LazyColumn {
             items(timers.size) { index ->
                 Timer(timer = timers[index],
