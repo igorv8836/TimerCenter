@@ -17,7 +17,7 @@ fun TimerApp() {
     AppTheme {
         val navController = rememberNavController()
         Scaffold(
-            topBar = { AppTopBar(navController) }, // Верхняя панель
+            topBar = { AppTopBar(navController) {} }, // Верхняя панель
             bottomBar = {
                 BottomNavigationBar(
                     items = bottomNavigationItems,
