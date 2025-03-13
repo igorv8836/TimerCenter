@@ -2,43 +2,41 @@ package org.example.timercenter.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-import kotlin.random.Random
+
+data class TimerUiModel(
+    val timerName: String,
+    val totalTime: Long = 60_000L
+)
+
+fun createTimerList(count: Int): List<TimerUiModel> {
+    return List(count) { index ->
+        TimerUiModel(
+            timerName = "Timer ${index + 1}",
+//            totalTime = Random.nextLong(30_000L, 300_000L) // от 30 секунд до 5 минут
+            totalTime = 300_000L // от 30 секунд до 5 минут
+        )
+    }
+}
+
 
 @Composable
 fun Timer(
@@ -136,6 +134,27 @@ fun CircularButton(icon: ImageVector, onClick: () -> Unit, progress: Float = 1f)
         Icon(imageVector = icon, contentDescription = null, tint = Color.Black)
     }
 }
+
+@Composable
+fun TimerWithoutButtons(timer: TimerUiModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = formatTime(timer.totalTime),
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = timer.timerName,
+            fontSize = 14.sp,
+            color = Color.Gray
+        )
+    }
+}
+
 
 
 // Функция для форматирования времени в "мм:сс"
