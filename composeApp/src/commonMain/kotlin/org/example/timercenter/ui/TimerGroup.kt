@@ -53,12 +53,32 @@ fun TimerGroup(
     var isStarted by remember { mutableStateOf(false) }
     var isExpanded by remember { mutableStateOf(true) }
 
+    // Храним оставшееся время для каждого таймера
+    val remainingTimes = remember {
+        mutableStateListOf<Long>().apply { addAll(timerGroup.timers.map { it.totalTime }) }
+    }
+
+    // Таймер логика
+    LaunchedEffect(isRunning) {
+        while (isRunning && remainingTimes.any { it > 0 }) {
+            delay(1000L)
+            remainingTimes.forEachIndexed { index, time ->
+                if (time > 0) {
+                    remainingTimes[index] = time - 1000
+                }
+            }
+        }
+        if (remainingTimes.all { it == 0L }) {
+            isRunning = false
+            isStarted = false
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
     ) {
-        // Используем Row для текстового названия и кнопок
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
@@ -98,6 +118,9 @@ fun TimerGroup(
                 CircularButton(icon = Icons.Default.Stop, onClick = {
                     isRunning = false
                     isStarted = false
+                    remainingTimes.forEachIndexed { index, _ ->
+                        remainingTimes[index] = timerGroup.timers[index].totalTime
+                    }
                     onResetGroup()
                 })
             }
@@ -109,15 +132,18 @@ fun TimerGroup(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp)
-                    .height(300.dp)
+                    .height(300.dp) // Фиксированная высота списка
             ) {
                 items(timerGroup.timers.size) { index ->
-                    TimerWithoutButtons(timer = timerGroup.timers[index])
+                    TimerWithoutButtons(timer = timerGroup.timers[index], remainingTime = remainingTimes[index])
                 }
             }
         }
     }
 }
+
+
+
 //@Composable
 //fun TimerGroup(
 //    timerGroup: TimerGroupUiModel,
@@ -127,39 +153,36 @@ fun TimerGroup(
 //) {
 //    var isRunning by remember { mutableStateOf(false) }
 //    var isStarted by remember { mutableStateOf(false) }
-//    var isExpanded by remember { mutableStateOf(true) } // Отвечает за разворачивание группы
+//    var isExpanded by remember { mutableStateOf(true) }
 //
 //    Column(
 //        modifier = Modifier
 //            .fillMaxWidth()
 //            .padding(12.dp)
 //    ) {
+//        // Используем Row для текстового названия и кнопок
 //        Row(
 //            verticalAlignment = Alignment.CenterVertically,
-//            modifier = Modifier.fillMaxWidth()
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.spacedBy(8.dp)
 //        ) {
-//            // Название группы (занимает максимум места)
+//            // Название группы
 //            Text(
 //                text = timerGroup.groupName,
 //                fontSize = 20.sp,
 //                fontWeight = FontWeight.Bold,
-//                modifier = Modifier.weight(1f)
 //            )
 //
 //            // Кнопка сворачивания/разворачивания
 //            IconButton(onClick = { isExpanded = !isExpanded }) {
 //                Icon(
 //                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-//                    contentDescription = if (isExpanded) "Свернуть" else "Развернуть"
+//                    contentDescription = if (isExpanded) "Collapse" else "Expand",
 //                )
 //            }
-//        }
+//            Spacer(modifier = Modifier.weight(1f))
 //
-//        // Кнопки управления группой таймеров (аналогично Timer)
-//        Row(
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            modifier = Modifier.fillMaxWidth()
-//        ) {
+//            // Кнопки управления группой
 //            if (!isStarted) {
 //                CircularButton(icon = Icons.Default.PlayArrow, onClick = {
 //                    isRunning = true
@@ -182,13 +205,13 @@ fun TimerGroup(
 //            }
 //        }
 //
-//        // Показываем список таймеров только если группа развернута
+//        // Список таймеров, если группа развернута
 //        if (isExpanded) {
 //            LazyColumn(
 //                modifier = Modifier
 //                    .fillMaxWidth()
 //                    .padding(top = 8.dp)
-//                    .height(height = 300.dp)
+//                    .height(300.dp)
 //            ) {
 //                items(timerGroup.timers.size) { index ->
 //                    TimerWithoutButtons(timer = timerGroup.timers[index])
