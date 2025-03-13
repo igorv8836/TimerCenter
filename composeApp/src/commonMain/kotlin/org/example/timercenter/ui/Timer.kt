@@ -154,6 +154,25 @@ fun TimerWithoutButtons(timer: TimerUiModel) {
         )
     }
 }
+@Composable
+fun TimerWithoutButtons(timer: TimerUiModel, remainingTime: Long) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(
+            text = formatTime(remainingTime), // Отображаем оставшееся время
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = timer.timerName,
+            fontSize = 14.sp,
+            color = Color.Gray
+        )
+    }
+}
 
 
 
