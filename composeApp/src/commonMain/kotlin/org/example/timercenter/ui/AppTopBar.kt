@@ -34,6 +34,8 @@ fun AppTopBar(
                     Screen.HOME.route -> Screen.HOME.title
                     Screen.CREATE.route -> Screen.CREATE.title
                     Screen.HISTORY.route -> Screen.HISTORY.title
+                    Screen.CREATE_GROUP.route -> Screen.CREATE_GROUP.title
+                    Screen.ADD_TO_GROUP.route -> Screen.ADD_TO_GROUP.title
                     else -> "Таймеры"
                 },
                 fontSize = 20.sp,
