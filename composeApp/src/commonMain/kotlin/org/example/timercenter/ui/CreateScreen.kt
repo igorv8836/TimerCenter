@@ -17,9 +17,10 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 
 @Composable
-fun CreateScreen(onClose: () -> Unit) {
+fun CreateScreen(navController: NavController, onClose: () -> Unit) {
     var timerName by remember { mutableStateOf("") }
     var selectedHours by remember { mutableStateOf(0) }
     var selectedMinutes by remember { mutableStateOf(0) }
@@ -74,14 +75,18 @@ fun CreateScreen(onClose: () -> Unit) {
         // Раздел групп
         Text("Timer Groups", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
-        GroupOption("Add timers to existing group") {}
-        GroupOption("Create new group") {}
+        GroupOption("Add timers to existing group") {navController.navigate(Screen.ADD_TO_GROUP.route)}
+        GroupOption("Create new group") { navController.navigate(Screen.CREATE_GROUP.route)}
 
         Spacer(Modifier.weight(1f))
 
         // Кнопка сохранения
         Button(
-            onClick = { /* Логика сохранения */ },
+            onClick = {
+            /* Логика сохранения */
+                navController.navigate(Screen.HOME.route)
+
+            },
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
         ) {
             Text("Save Timer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
