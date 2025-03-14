@@ -34,6 +34,8 @@ fun HomeScreen(
 
     val isSelectionMode = selectedTimers.isNotEmpty()
 
+    var showPopup by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             HomeTopBar(
@@ -42,7 +44,9 @@ fun HomeScreen(
                 isSelectionMode = isSelectionMode,
                 selectCount = selectedTimers.size,
                 isEditEnabled = selectedTimers.size == 1,
-                onDeleteClick = { onDeleteTimers(selectedTimers.toList()) },
+                onDeleteClick = {
+                    showPopup = true
+                },
                 onEditClick = {
                     selectedTimers.firstOrNull()?.let { timer ->
                         navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
@@ -103,6 +107,17 @@ fun HomeScreen(
                     }
                 }
                 Spacer(modifier = Modifier.height(18.dp))
+            }
+
+            if (showPopup) {
+                PopupMessage(
+                    message = if (selectedTimers.size == 1) "Are you sure you want to delete this timer?" else "Are you sure you want to delete these timers?",
+                    buttonText = "Delete",
+                    onCancel = { showPopup = false },
+                    onConfirm = {
+                        showPopup = false
+                        onDeleteTimers(selectedTimers.toList())
+                    })
             }
 
             // Заголовок "Timer Groups"
