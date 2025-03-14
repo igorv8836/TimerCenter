@@ -1,15 +1,19 @@
 package org.example.timercenter.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,20 +42,19 @@ fun createTimerList(count: Int): List<TimerUiModel> {
 }
 
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Timer(
     timer: TimerUiModel,
-    onStart: () -> Unit,
-    onPause: () -> Unit,
-    onReset: () -> Unit
+    isSelected: Boolean,
+    onSelect: (isLongPress: Boolean) -> Unit
 ) {
     var remainingTime by remember { mutableStateOf(timer.totalTime) }
-    var isRunning by remember { mutableStateOf(false) } // Идет ли сейчас таймер?
-    var isStarted by remember { mutableStateOf(false) } // Был ли таймер запущен?
+    var isRunning by remember { mutableStateOf(false) }
+    var isStarted by remember { mutableStateOf(false) }
 
     val progress = remainingTime.toFloat() / timer.totalTime
 
-    // Таймер обновляется каждую секунду
     LaunchedEffect(isRunning) {
         while (isRunning && remainingTime > 0) {
             delay(1000L)
@@ -59,17 +62,23 @@ fun Timer(
         }
         if (remainingTime == 0L) {
             isRunning = false
-            isStarted = false // Когда время закончилось, сбрасываем
+            isStarted = false
         }
     }
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(12.dp)
+            .background(if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent, shape = RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .combinedClickable(
+                onClick = { onSelect(false) },
+                onLongClick = { onSelect(true) }
+            )
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Колонка с временем и названием таймера
         Column(
             modifier = Modifier.weight(1f)
         ) {
@@ -85,32 +94,27 @@ fun Timer(
             )
         }
 
-        // Кнопки управления таймером
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             if (!isStarted) {
                 CircularButton(icon = Icons.Default.PlayArrow, onClick = {
                     isRunning = true
                     isStarted = true
-                    onStart()
                 })
             } else {
                 CircularButton(icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow, onClick = {
                     isRunning = !isRunning
-                    if (isRunning) onStart else onPause
                 }, progress = progress)
 
                 CircularButton(icon = Icons.Default.Stop, onClick = {
                     isRunning = false
                     isStarted = false
                     remainingTime = timer.totalTime
-                    onReset()
                 })
             }
         }
     }
 }
+
 
 // Кнопка в виде круга (с анимацией обводки для кнопки "Пауза")
 @Composable

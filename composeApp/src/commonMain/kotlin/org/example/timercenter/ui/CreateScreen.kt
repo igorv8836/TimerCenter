@@ -19,13 +19,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 
+
 @Composable
 fun CreateScreen(navController: NavController, onClose: () -> Unit) {
-    var timerName by remember { mutableStateOf("") }
-    var selectedHours by remember { mutableStateOf(0) }
-    var selectedMinutes by remember { mutableStateOf(0) }
-    var selectedSeconds by remember { mutableStateOf(0) }
+
+    // Получаем параметры из навигации
+    val nameString = navController.currentBackStackEntry?.arguments?.getString("timerName")
+    val name = if (nameString == "{timerName}") null else nameString
+    val totalTimeString = navController.currentBackStackEntry?.arguments?.getString("totalTime")
+    val totalTime = if (totalTimeString == "{totalTime}") null else totalTimeString?.toLong()
+    var showPartTimerGroup =
+        navController.currentBackStackEntry?.arguments?.getString("show") == "{show}"
+
+    var timerName by remember { mutableStateOf(name ?: "") }
+    var selectedHours by remember { mutableStateOf(((totalTime ?: 0L) / 3_600_000).toInt()) }
+    var selectedMinutes by remember { mutableStateOf((((totalTime ?: 0L) % 3_600_000) / 60_000).toInt()) }
+    var selectedSeconds by remember { mutableStateOf((((totalTime ?: 0L) % 60_000) / 1_000).toInt()) }
     var startImmediately by remember { mutableStateOf(false) }
+//    var timerName by remember { mutableStateOf("") }
+//    var selectedHours by remember { mutableStateOf(0) }
+//    var selectedMinutes by remember { mutableStateOf(0) }
+//    var selectedSeconds by remember { mutableStateOf(0) }
+//    var startImmediately by remember { mutableStateOf(false) }
+//    if (timer != null) {
+//        timerName = timer.timerName
+//        selectedHours = (timer.totalTime / 3_600_000).toInt()
+//        selectedMinutes  = ((timer.totalTime % 3_600_000) / 60_000).toInt()
+//        selectedSeconds  = ((timer.totalTime % 60_000) / 1_000).toInt()
+//    }
 
     Column(
         modifier = Modifier
@@ -73,17 +94,14 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
         Spacer(Modifier.height(16.dp))
 
         // Раздел групп
-        Text("Timer Groups", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(7.dp))
-        GroupOption("Add timers to existing group") {navController.navigate(Screen.ADD_TO_GROUP.route)}
-        GroupOption("Create new group") { navController.navigate(Screen.CREATE_GROUP.route)}
-
-        Spacer(Modifier.weight(1f))
+        if (showPartTimerGroup) {
+            PartTimerGroups(navController = navController)
+        }
 
         // Кнопка сохранения
         Button(
             onClick = {
-            /* Логика сохранения */
+                /* Логика сохранения */
                 navController.navigate(Screen.HOME.route)
 
             },
@@ -91,6 +109,22 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
         ) {
             Text("Save Timer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
+    }
+}
+
+@Composable
+fun PartTimerGroups(navController: NavController) {
+    // Раздел групп
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        Text("Timer Groups", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
+        Spacer(Modifier.height(7.dp))
+        GroupOption("Add timers to existing group") { navController.navigate(Screen.ADD_TO_GROUP.route) }
+        GroupOption("Create new group") { navController.navigate(Screen.CREATE_GROUP.route) }
+
+        Spacer(Modifier.weight(1f))
     }
 }
 
