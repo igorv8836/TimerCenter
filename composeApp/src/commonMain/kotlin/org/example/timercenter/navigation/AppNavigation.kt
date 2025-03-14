@@ -2,6 +2,7 @@ package org.example.timercenter.navigation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -18,13 +19,20 @@ import org.example.timercenter.ui.createTimerList
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
+
+
     NavHost(navController = navController, startDestination = Screen.HOME.route) {
+
         composable(Screen.HOME.route) {
             HomeScreen(
+                navController = navController,
                 timers = createTimerList(10),
-                timerGroups = createTimerGroupList(10)
+                timerGroups = createTimerGroupList(10),
+                onDeleteTimers = {},
+                onEditTimer = {},
             )
         }
+
         composable(Screen.CREATE.route) { CreateScreen(navController = navController, onClose = {}) }
         composable(Screen.HISTORY.route) { HistoryScreen() }
         composable(Screen.CREATE_GROUP.route) { CreateTimerGroupScreen(createTimerList(10), navController = navController) }
