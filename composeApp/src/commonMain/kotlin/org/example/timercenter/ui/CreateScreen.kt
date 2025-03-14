@@ -36,17 +36,8 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
     var selectedMinutes by remember { mutableStateOf((((totalTime ?: 0L) % 3_600_000) / 60_000).toInt()) }
     var selectedSeconds by remember { mutableStateOf((((totalTime ?: 0L) % 60_000) / 1_000).toInt()) }
     var startImmediately by remember { mutableStateOf(false) }
-//    var timerName by remember { mutableStateOf("") }
-//    var selectedHours by remember { mutableStateOf(0) }
-//    var selectedMinutes by remember { mutableStateOf(0) }
-//    var selectedSeconds by remember { mutableStateOf(0) }
-//    var startImmediately by remember { mutableStateOf(false) }
-//    if (timer != null) {
-//        timerName = timer.timerName
-//        selectedHours = (timer.totalTime / 3_600_000).toInt()
-//        selectedMinutes  = ((timer.totalTime % 3_600_000) / 60_000).toInt()
-//        selectedSeconds  = ((timer.totalTime % 60_000) / 1_000).toInt()
-//    }
+
+    var showPopup by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -102,12 +93,27 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
         Button(
             onClick = {
                 /* Логика сохранения */
-                navController.navigate(Screen.HOME.route)
+                if (!showPartTimerGroup) {
+                    showPopup = true
+                }
+                else {
+                    navController.navigate(Screen.HOME.route)
+                }
 
             },
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
         ) {
             Text("Save Timer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
+        if (showPopup) {
+            PopupMessage(
+                message = "Are you sure you want to edit this timer?",
+                buttonText = "Edit",
+                onCancel = { showPopup = false },
+                onConfirm = {
+                    showPopup = false
+                    navController.navigate(Screen.HOME.route)
+                })
         }
     }
 }
