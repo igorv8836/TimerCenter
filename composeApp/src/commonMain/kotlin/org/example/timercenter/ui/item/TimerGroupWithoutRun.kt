@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import org.example.timercenter.ui.model.TimerGroupUiModel
 
 @Composable
-fun TimerGroupWithoutRun(timerGroup: TimerGroupUiModel, index: Int, selectGroup: (Int) -> Unit) {
+fun TimerGroupWithoutRun(timerGroup: TimerGroupUiModel, id: Int, selectGroup: (Int) -> Unit) {
     var isExpanded by remember { mutableStateOf(false) }
 
     Column(
@@ -38,7 +38,7 @@ fun TimerGroupWithoutRun(timerGroup: TimerGroupUiModel, index: Int, selectGroup:
     ) {
         Row(
             verticalAlignment = Alignment.Companion.CenterVertically,
-            modifier = Modifier.Companion.fillMaxWidth().clickable { selectGroup(index) },
+            modifier = Modifier.Companion.fillMaxWidth().clickable { selectGroup(id) },
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(

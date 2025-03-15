@@ -22,6 +22,7 @@ import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.Timer
 import org.example.timercenter.ui.item.TimerGroup
 import org.example.timercenter.ui.model.TimerGroupUiModel
+import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 
 
@@ -31,6 +32,7 @@ fun HomeScreen(
     timers: List<TimerUiModel>,
     timerGroups: List<TimerGroupUiModel>,
     onDeleteTimers: (List<TimerUiModel>) -> Unit,
+    onDeleteGroupTimers: (List<TimerGroupUiModel>) -> Unit,
     onEditTimer: (TimerUiModel) -> Unit,
 ) {
     var isTimersExpanded by remember { mutableStateOf(true) }
@@ -48,7 +50,8 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            val isEditEnabled = (selectedTimers.size == 1 && selectedTimerGroups.isEmpty()) || (selectedTimerGroups.size == 1 && selectedTimers.isEmpty())
+            val isEditEnabled =
+                (selectedTimers.size == 1 && selectedTimerGroups.isEmpty()) || (selectedTimerGroups.size == 1 && selectedTimers.isEmpty())
             HomeTopBar(
                 navController = navController,
                 onSettingsClick = {},
@@ -62,12 +65,12 @@ fun HomeScreen(
                 onEditClick = {
                     if (selectedTimers.isNotEmpty()) {
                         selectedTimers.firstOrNull()?.let { timer ->
-//                            navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
                             navController.navigate("create/${timer.id}")
                         }
                     } else if (selectedTimerGroups.isNotEmpty()) {
+                        println("selectedTimerGroups.size - ${selectedTimerGroups.size}")
                         selectedTimerGroups.firstOrNull()?.let { group ->
-//                            navController.navigate("create_group/${group.groupName}")
+                            println("group - $group")
                             navController.navigate("create_group/${group.id}")
                         }
                     }
@@ -129,12 +132,20 @@ fun HomeScreen(
             }
 
             if (showPopup) {
+                val text = if (selectedTimers.isEmpty()) {
+                    if (selectedTimerGroups.size == 1) "Are you sure want to delete this group?"
+                    else "Are you sure want to delete these groups?"
+                } else if (selectedTimerGroups.isEmpty()) {
+                    if (selectedTimers.size == 1) "Are you sure you want to delete this timer?"
+                    else "Are you sure you want to delete these timers?"
+                } else "Are you sure want to delete these timers and groups?"
                 PopupMessage(
-                    message = if (selectedTimers.size == 1) "Are you sure you want to delete this timer?" else "Are you sure you want to delete these timers?",
+                    message = text,
                     buttonText = "Delete",
                     onCancel = { showPopup = false },
                     onConfirm = {
                         showPopup = false
+                        onDeleteGroupTimers(selectedTimerGroups.toList())
                         onDeleteTimers(selectedTimers.toList())
                     })
             }
