@@ -25,8 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.model.formatTime
+import org.example.timercenter.ui.model.TimerUiModel
 
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -13,25 +13,30 @@ import androidx.navigation.NavController
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.TimerAddToGroup
+import org.example.timercenter.ui.model.GroupType
+import org.example.timercenter.ui.model.TimerGroupUiModel
+import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
-import org.example.timercenter.ui.model.exampleFindGroupTimer
+
 
 @Composable
 fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavController) {
 
-
     val idString = navController.currentBackStackEntry?.arguments?.getString("id")
-    val id = if (idString == "{id}") null else idString?.toInt()
-    var name : String? = null
-    if (id != null) {
-        name = exampleFindGroupTimer(id = id)?.groupName
+    val id = idString?.toIntOrNull()
+    val existingGroup = id?.let { TimerManager.findTimerGroup(it) }
+
+    var groupName by remember { mutableStateOf(existingGroup?.groupName ?: "") }
+    var option by remember { mutableStateOf(existingGroup?.groupType ?: GroupType.CONSISTENT) }
+    var showPopup by remember { mutableStateOf(false) }
+
+    // Если редактируем, берем выбранные таймеры из группы, иначе пустой список
+    var selectedTimers by remember {
+        mutableStateOf(existingGroup?.timers?.toSet() ?: emptySet())
     }
 
-    var option by remember { mutableIntStateOf(0) }
-    var groupName by remember { mutableStateOf(name ?: "") }
-    var selectedTimers by remember { mutableStateOf(setOf<TimerUiModel>()) } // Список выбранных таймеров
-
-    var showPopup by remember { mutableStateOf(false)}
+    // Разделяем таймеры: выбранные и остальные
+    val (addedTimers, otherTimers) = timers.partition { it in selectedTimers }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
@@ -45,9 +50,7 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
         )
 
         Text(text = "Group Type", modifier = Modifier.padding(vertical = 16.dp))
-        SingleChoiceSegmentedButton({ index ->
-            option = index
-        })
+        SingleChoiceSegmentedButton { selectedOption -> option = selectedOption }
 
         // Заголовок с количеством выбранных таймеров
         Text(
@@ -60,16 +63,25 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
-            items(timers.size) { index ->
+            // Сначала добавленные таймеры (с крестиком)
+            items(addedTimers.size) { index ->
                 TimerAddToGroup(
-                    timer = timers[index],
-                    isSelected = timers[index] in selectedTimers,
+                    timer = addedTimers[index],
+                    isSelected = true,  // Они уже выбраны
                     onToggle = { selected ->
-                        selectedTimers = if (selected) {
-                            selectedTimers + timers[index]
-                        } else {
-                            selectedTimers - timers[index]
-                        }
+                        selectedTimers =
+                            if (selected) selectedTimers + addedTimers[index] else selectedTimers - addedTimers[index]
+                    }
+                )
+            }
+            // Затем остальные таймеры (с плюсиком)
+            items(otherTimers.size) { index ->
+                TimerAddToGroup(
+                    timer = otherTimers[index],
+                    isSelected = false,  // Они еще не выбраны
+                    onToggle = { selected ->
+                        selectedTimers =
+                            if (selected) selectedTimers + otherTimers[index] else selectedTimers - otherTimers[index]
                     }
                 )
             }
@@ -81,9 +93,7 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
         ) {
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = {
-                    if (name != null) navController.navigate(Screen.HOME.route)
-                    else navController.navigate(Screen.CREATE.route) },
+                onClick = { navController.navigate(Screen.HOME.route) },
                 modifier = Modifier.height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -95,10 +105,20 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
             Spacer(Modifier.width(12.dp))
             Button(
                 onClick = {
-                    if (name != null) {
-                        showPopup = true
-                    }
+                    if (id != null) showPopup = true
                     else {
+                        // Если не редактируем, создаем новую группу
+                        val newGroup = TimerGroupUiModel(
+                            id = TimerManager.timers.size + 1,  // Уникальный id для новой группы
+                            groupName = groupName,
+                            groupType = option,
+                            timers = selectedTimers.toList()
+                        )
+                        TimerManager.addTimerGroup(
+                            groupName = groupName,
+                            groupType = option,
+                            timers = selectedTimers.toList()
+                        ) // Добавляем группу в список
                         navController.navigate(Screen.HOME.route)
                     }
                 },
@@ -107,38 +127,55 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
                 Text("Save", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
         }
+
         if (showPopup) {
             PopupMessage(
                 message = "Are you sure you want to edit this timer group?",
                 buttonText = "Edit",
                 onCancel = { showPopup = false },
                 onConfirm = {
+                    TimerManager.editTimerGroup(
+                        id = id!!,
+                        newName = groupName,
+                        newType = option,
+                        newTimers = selectedTimers.toList()
+                    )
                     showPopup = false
                     navController.navigate(Screen.HOME.route)
-                })
+                }
+            )
         }
     }
 }
 
 
 @Composable
-fun SingleChoiceSegmentedButton(onOptionChange: (Int) -> Unit) {
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    val options = listOf("Послед-ный", "Парал-ный", "С задержкой")
+fun SingleChoiceSegmentedButton(onOptionChange: (GroupType) -> Unit) {
+    var selectedOption by remember { mutableStateOf(GroupType.CONSISTENT) } // Используем GroupType вместо индекса
+    val options = listOf(GroupType.CONSISTENT, GroupType.PARALLEL, GroupType.DELAY) // Список типов GroupType
 
     SingleChoiceSegmentedButtonRow {
-        options.forEachIndexed { index, label ->
+        options.forEachIndexed { index, groupType ->
             SegmentedButton(
                 shape = SegmentedButtonDefaults.itemShape(
                     index = index,
                     count = options.size
                 ),
                 onClick = {
-                    selectedIndex = index
-                    onOptionChange(index)
+                    selectedOption = groupType // Обновляем выбранный тип
+                    onOptionChange(groupType) // Передаем GroupType в onOptionChange
                 },
-                selected = index == selectedIndex,
-                label = { Text(label, modifier = Modifier.padding(horizontal = 2.dp)) },
+                selected = groupType == selectedOption,
+                label = {
+                    Text(
+                        when (groupType) {
+                            GroupType.CONSISTENT -> "Послед-ный"
+                            GroupType.PARALLEL -> "Парал-ный"
+                            GroupType.DELAY -> "С задержкой"
+                        },
+                        modifier = Modifier.padding(horizontal = 2.dp)
+                    )
+                },
             )
         }
     }
