@@ -17,9 +17,17 @@ import androidx.navigation.NavController
 
 @Composable
 fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavController) {
+
+
+    // Получаем параметры из навигации
+    val nameString = navController.currentBackStackEntry?.arguments?.getString("groupName")
+    val name = if (nameString == "{groupName}") null else nameString
+
     var option by remember { mutableIntStateOf(0) }
-    var groupName by remember { mutableStateOf("") }
+    var groupName by remember { mutableStateOf(name ?: "") }
     var selectedTimers by remember { mutableStateOf(setOf<TimerUiModel>()) } // Список выбранных таймеров
+
+    var showPopup by remember { mutableStateOf(false)}
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
@@ -69,7 +77,9 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
         ) {
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = { navController.navigate(Screen.CREATE.route) },
+                onClick = {
+                    if (name != null) navController.navigate(Screen.HOME.route)
+                    else navController.navigate(Screen.CREATE.route) },
                 modifier = Modifier.height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -80,11 +90,28 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
             }
             Spacer(Modifier.width(12.dp))
             Button(
-                onClick = { navController.navigate(Screen.HOME.route) },
+                onClick = {
+                    if (name != null) {
+                        showPopup = true
+                    }
+                    else {
+                        navController.navigate(Screen.HOME.route)
+                    }
+                },
                 modifier = Modifier.height(48.dp),
             ) {
-                Text("Save and Start", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text("Save", fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
+        }
+        if (showPopup) {
+            PopupMessage(
+                message = "Are you sure you want to edit this timer group?",
+                buttonText = "Edit",
+                onCancel = { showPopup = false },
+                onConfirm = {
+                    showPopup = false
+                    navController.navigate(Screen.HOME.route)
+                })
         }
     }
 }
