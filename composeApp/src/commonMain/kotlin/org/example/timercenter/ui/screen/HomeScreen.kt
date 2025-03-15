@@ -1,4 +1,4 @@
-package org.example.timercenter.ui
+package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
@@ -17,6 +17,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.example.timercenter.ui.HomeTopBar
+import org.example.timercenter.ui.PopupMessage
+import org.example.timercenter.ui.item.Timer
+import org.example.timercenter.ui.item.TimerGroup
+import org.example.timercenter.ui.model.TimerGroupUiModel
+import org.example.timercenter.ui.model.TimerUiModel
 
 
 @Composable
@@ -56,12 +62,13 @@ fun HomeScreen(
                 onEditClick = {
                     if (selectedTimers.isNotEmpty()) {
                         selectedTimers.firstOrNull()?.let { timer ->
-                            navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
+//                            navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
+                            navController.navigate("create/${timer.id}")
                         }
-                    }
-                    else if (selectedTimerGroups.isNotEmpty()) {
+                    } else if (selectedTimerGroups.isNotEmpty()) {
                         selectedTimerGroups.firstOrNull()?.let { group ->
-                            navController.navigate("create_group/${group.groupName}")
+//                            navController.navigate("create_group/${group.groupName}")
+                            navController.navigate("create_group/${group.id}")
                         }
                     }
                 }

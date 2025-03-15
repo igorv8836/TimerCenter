@@ -12,7 +12,7 @@ import com.example.timercenter.ui_common.AppTheme
 import org.example.timercenter.navigation.AppNavigation
 import org.example.timercenter.ui.AppTopBar
 import org.example.timercenter.ui.BottomNavigationBar
-import org.example.timercenter.ui.Screen
+import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.bottomNavigationItems
 
 @Composable
@@ -24,7 +24,9 @@ fun TimerApp() {
 
         Scaffold(
             topBar = { if (showTopBar) {
-                AppTopBar(navController) {}
+                AppTopBar(navController) {
+
+                }
             }
             }, // Верхняя панель
             bottomBar = {

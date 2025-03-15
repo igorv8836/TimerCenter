@@ -1,4 +1,4 @@
-package org.example.timercenter.ui
+package org.example.timercenter.ui.item
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -25,21 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-
-data class TimerUiModel(
-    val timerName: String,
-    val totalTime: Long = 60_000L
-)
-
-fun createTimerList(count: Int): List<TimerUiModel> {
-    return List(count) { index ->
-        TimerUiModel(
-            timerName = "Timer ${index + 1}",
-//            totalTime = Random.nextLong(30_000L, 300_000L) // от 30 секунд до 5 минут
-            totalTime = 300_000L // от 30 секунд до 5 минут
-        )
-    }
-}
+import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.model.formatTime
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -137,54 +124,6 @@ fun CircularButton(icon: ImageVector, onClick: () -> Unit, progress: Float = 1f)
         }
         Icon(imageVector = icon, contentDescription = null, tint = Color.Black)
     }
-}
-
-@Composable
-fun TimerWithoutButtons(timer: TimerUiModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = formatTime(timer.totalTime),
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = timer.timerName,
-            fontSize = 14.sp,
-            color = Color.Gray
-        )
-    }
-}
-@Composable
-fun TimerWithoutButtons(timer: TimerUiModel, remainingTime: Long) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(
-            text = formatTime(remainingTime), // Отображаем оставшееся время
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = timer.timerName,
-            fontSize = 14.sp,
-            color = Color.Gray
-        )
-    }
-}
-
-
-
-// Функция для форматирования времени в "мм:сс"
-fun formatTime(timeMillis: Long): String {
-    val seconds = (timeMillis / 1000) % 60
-    val minutes = (timeMillis / 1000) / 60
-    return "${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}"
 }
 
 

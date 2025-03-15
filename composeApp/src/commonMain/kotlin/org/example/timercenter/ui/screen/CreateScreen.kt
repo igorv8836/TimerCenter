@@ -1,4 +1,4 @@
-package org.example.timercenter.ui
+package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
@@ -13,23 +13,37 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.example.timercenter.navigation.Screen
+import org.example.timercenter.ui.PopupMessage
+import org.example.timercenter.ui.model.exampleFindTimer
 
 
 @Composable
 fun CreateScreen(navController: NavController, onClose: () -> Unit) {
 
     // Получаем параметры из навигации
-    val nameString = navController.currentBackStackEntry?.arguments?.getString("timerName")
-    val name = if (nameString == "{timerName}") null else nameString
-    val totalTimeString = navController.currentBackStackEntry?.arguments?.getString("totalTime")
-    val totalTime = if (totalTimeString == "{totalTime}") null else totalTimeString?.toLong()
-    var showPartTimerGroup =
-        navController.currentBackStackEntry?.arguments?.getString("show") == "{show}"
+    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
+    val id = if (idString == "{id}") null else idString?.toInt()
+    var name : String? = null
+    var totalTime : Long? = null
+    var showPartTimerGroup = true
+    if (id != null) {
+        name = exampleFindTimer(id)?.timerName
+        totalTime = exampleFindTimer(id)?.totalTime
+        showPartTimerGroup = false
+    }
+
+
+//    val nameString = navController.currentBackStackEntry?.arguments?.getString("timerName")
+//    val name = if (nameString == "{timerName}") null else nameString
+//    val totalTimeString = navController.currentBackStackEntry?.arguments?.getString("totalTime")
+//    val totalTime = if (totalTimeString == "{totalTime}") null else totalTimeString?.toLong()
+//    var showPartTimerGroup =
+//        navController.currentBackStackEntry?.arguments?.getString("show") == "{show}"
 
     var timerName by remember { mutableStateOf(name ?: "") }
     var selectedHours by remember { mutableStateOf(((totalTime ?: 0L) / 3_600_000).toInt()) }
