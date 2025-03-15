@@ -1,27 +1,31 @@
-package org.example.timercenter.ui
+package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.example.timercenter.navigation.Screen
+import org.example.timercenter.ui.PopupMessage
+import org.example.timercenter.ui.item.TimerAddToGroup
+import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.model.exampleFindGroupTimer
 
 @Composable
 fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavController) {
 
 
-    // Получаем параметры из навигации
-    val nameString = navController.currentBackStackEntry?.arguments?.getString("groupName")
-    val name = if (nameString == "{groupName}") null else nameString
+    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
+    val id = if (idString == "{id}") null else idString?.toInt()
+    var name : String? = null
+    if (id != null) {
+        name = exampleFindGroupTimer(id = id)?.groupName
+    }
 
     var option by remember { mutableIntStateOf(0) }
     var groupName by remember { mutableStateOf(name ?: "") }
@@ -112,32 +116,6 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
                     showPopup = false
                     navController.navigate(Screen.HOME.route)
                 })
-        }
-    }
-}
-
-@Composable
-fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: (Boolean) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = timer.timerName,
-            fontSize = 16.sp,
-        )
-        Spacer(Modifier.weight(1f))
-        Text(
-            text = formatTime(timer.totalTime),
-            fontSize = 16.sp,
-        )
-        Spacer(Modifier.width(8.dp))
-        IconButton(onClick = { onToggle(!isSelected) }) {
-            Icon(
-                imageVector = if (isSelected) Icons.Default.Close else Icons.Default.Add,
-                contentDescription = if (isSelected) "Remove timer" else "Add timer",
-                tint = if (isSelected) Color.Red.copy(alpha = 0.7f) else Color.Green.copy(alpha = 0.7f)
-            )
         }
     }
 }

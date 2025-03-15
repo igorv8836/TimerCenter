@@ -1,5 +1,4 @@
-package org.example.timercenter.ui
-
+package org.example.timercenter.navigation
 
 enum class Screen(val route: String, val title: String) {
     HOME("home", "Главная"),
@@ -8,10 +7,12 @@ enum class Screen(val route: String, val title: String) {
     /*Тут желательно вместо параметров при изменении таймера {timerName}/{totalTime}/{show}
     * передавать id этого таймера, и потом по этому id находить таймер, применять к нему
     * изменения и обновлять этот таймер в базе данных.*/
-    CREATE("create/{timerName}/{totalTime}/{show}", "Создать"),
+//    CREATE("create/{timerName}/{totalTime}/{show}", "Создать"),
+    CREATE("create/{id}", "Создать"),
 
     /*Тут сделать аналогично CREATE.*/
-    CREATE_GROUP("create_group/{groupName}", "Создать группу"),
+//    CREATE_GROUP("create_group/{groupName}", "Создать группу"),
+    CREATE_GROUP("create_group/{id}", "Создать группу"),
 
     ADD_TO_GROUP("add_to_group", "Добавить в группу"),
 
