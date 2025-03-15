@@ -31,27 +31,39 @@ fun HomeScreen(
     var isTimerGroupsExpanded by remember { mutableStateOf(true) }
 
     var selectedTimers by remember { mutableStateOf(setOf<TimerUiModel>()) }
-
-    val isSelectionMode = selectedTimers.isNotEmpty()
-
+    var selectedTimerGroups by remember { mutableStateOf(setOf<TimerGroupUiModel>()) }
+    val isSelectionMode = selectedTimers.isNotEmpty() || selectedTimerGroups.isNotEmpty()
     var showPopup by remember { mutableStateOf(false) }
+
+
+    val isSelectionGroupMode = selectedTimers.isNotEmpty() || selectedTimerGroups.isNotEmpty()
+
+
 
     Scaffold(
         topBar = {
+            val isEditEnabled = (selectedTimers.size == 1 && selectedTimerGroups.isEmpty()) || (selectedTimerGroups.size == 1 && selectedTimers.isEmpty())
             HomeTopBar(
                 navController = navController,
                 onSettingsClick = {},
                 isSelectionMode = isSelectionMode,
-                selectCount = selectedTimers.size,
-                isEditEnabled = selectedTimers.size == 1,
+                selectCount = selectedTimers.size + selectedTimerGroups.size,
+                isEditEnabled = isEditEnabled,
+                isEditTimer = (isEditEnabled && selectedTimerGroups.isEmpty()),
                 onDeleteClick = {
                     showPopup = true
                 },
                 onEditClick = {
-                    selectedTimers.firstOrNull()?.let { timer ->
-                        navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
+                    if (selectedTimers.isNotEmpty()) {
+                        selectedTimers.firstOrNull()?.let { timer ->
+                            navController.navigate("create/${timer.timerName}/${timer.totalTime}/${false}")
+                        }
                     }
-
+                    else if (selectedTimerGroups.isNotEmpty()) {
+                        selectedTimerGroups.firstOrNull()?.let { group ->
+                            navController.navigate("create_group/${group.groupName}")
+                        }
+                    }
                 }
             )
         }
@@ -147,6 +159,16 @@ fun HomeScreen(
                 timerGroups.forEach { group ->
                     TimerGroup(
                         timerGroup = group,
+                        isSelected = selectedTimerGroups.contains(group),
+                        onSelect = { isLongPress ->
+                            selectedTimerGroups = if (selectedTimerGroups.contains(group)) {
+                                selectedTimerGroups - group
+                            } else {
+                                if (isLongPress || selectedTimerGroups.isNotEmpty()) selectedTimerGroups + group else setOf(
+                                    group
+                                )
+                            }
+                        },
                         onStartGroup = {},
                         onPauseGroup = {},
                         onResetGroup = {}

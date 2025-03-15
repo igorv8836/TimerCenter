@@ -4,11 +4,18 @@ package org.example.timercenter.ui
 enum class Screen(val route: String, val title: String) {
     HOME("home", "Главная"),
 //    CREATE("create", "Создать"),
+
+    /*Тут желательно вместо параметров при изменении таймера {timerName}/{totalTime}/{show}
+    * передавать id этого таймера, и потом по этому id находить таймер, применять к нему
+    * изменения и обновлять этот таймер в базе данных.*/
     CREATE("create/{timerName}/{totalTime}/{show}", "Создать"),
 
-    HISTORY("history", "История"),
-    CREATE_GROUP("create_group", "Создать группу"),
-    ADD_TO_GROUP("add_to_group", "Добавить в группу");
+    /*Тут сделать аналогично CREATE.*/
+    CREATE_GROUP("create_group/{groupName}", "Создать группу"),
+
+    ADD_TO_GROUP("add_to_group", "Добавить в группу"),
+
+    HISTORY("history", "История");
 
     companion object {
         fun getRouteByTitle(title: String): Screen? {

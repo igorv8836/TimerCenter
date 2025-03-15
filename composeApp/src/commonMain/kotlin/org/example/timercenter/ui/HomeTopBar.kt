@@ -23,14 +23,16 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(navController: NavController, onSettingsClick: () -> Unit,
-               isSelectionMode: Boolean,
-               selectCount: Int,
-               isEditEnabled: Boolean,
-               onDeleteClick: () -> Unit,
-               onEditClick: () -> Unit,
+fun HomeTopBar(
+    navController: NavController, onSettingsClick: () -> Unit,
+    isSelectionMode: Boolean,
+    selectCount: Int,
+    isEditEnabled: Boolean,
+    isEditTimer: Boolean,
+    onDeleteClick: () -> Unit,
+    onEditClick: () -> Unit,
 
-) {
+    ) {
     TopAppBar(
         title = {
             Text(

@@ -95,8 +95,7 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
                 /* Логика сохранения */
                 if (!showPartTimerGroup) {
                     showPopup = true
-                }
-                else {
+                } else {
                     navController.navigate(Screen.HOME.route)
                 }
 
