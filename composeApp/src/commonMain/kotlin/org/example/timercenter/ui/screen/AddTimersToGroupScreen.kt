@@ -15,10 +15,13 @@ fun AddTimersToGroupScreen(timerGroups: List<TimerGroupUiModel>, navController: 
     if (!isSelectGroup) {
         LazyColumn {
             items(timerGroups.size) { index ->
-                TimerGroupWithoutRun(timerGroup = timerGroups[index], id = timerGroups[index].id, selectGroup = { id ->
-                    isSelectGroup = true
-                    chosenGroup = id
-                })
+                TimerGroupWithoutRun(
+                    timerGroup = timerGroups[index],
+                    id = timerGroups[index].id,
+                    selectGroup = { id ->
+                        isSelectGroup = true
+                        chosenGroup = id
+                    })
             }
         }
     } else {

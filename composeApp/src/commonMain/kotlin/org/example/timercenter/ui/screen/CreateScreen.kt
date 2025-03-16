@@ -2,30 +2,48 @@ package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.model.TimerManager
-import timercenter.composeapp.generated.resources.Res
 
 
 @Composable
-fun CreateScreen(navController: NavController, onClose: () -> Unit) {
+fun CreateScreen(navController: NavController) {
 
     // Получаем параметры из навигации
     val idString = navController.currentBackStackEntry?.arguments?.getString("id")
@@ -34,9 +52,21 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
     // Данные таймера
     val existingTimer = id?.let { TimerManager.findTimer(it) }
     var timerName by remember { mutableStateOf(existingTimer?.timerName ?: "") }
-    var selectedHours by remember { mutableStateOf(((existingTimer?.totalTime ?: 0L) / 3_600_000).toInt()) }
-    var selectedMinutes by remember { mutableStateOf((((existingTimer?.totalTime ?: 0L) % 3_600_000) / 60_000).toInt()) }
-    var selectedSeconds by remember { mutableStateOf((((existingTimer?.totalTime ?: 0L) % 60_000) / 1_000).toInt()) }
+    var selectedHours by remember {
+        mutableStateOf(
+            ((existingTimer?.totalTime ?: 0L) / 3_600_000).toInt()
+        )
+    }
+    var selectedMinutes by remember {
+        mutableStateOf(
+            (((existingTimer?.totalTime ?: 0L) % 3_600_000) / 60_000).toInt()
+        )
+    }
+    var selectedSeconds by remember {
+        mutableStateOf(
+            (((existingTimer?.totalTime ?: 0L) % 60_000) / 1_000).toInt()
+        )
+    }
     var startImmediately by remember { mutableStateOf(false) }
     var showPopup by remember { mutableStateOf(false) }
 
@@ -49,7 +79,7 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
         OutlinedTextField(
             value = timerName,
             onValueChange = { timerName = it },
-            label = { Text("Name your timer", color = Color.Gray) },
+            label = { Text("Название таймера", color = Color.Gray) },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -71,7 +101,7 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Start the timer immediately", color = Color.White)
+            Text("Начать таймер немедленно")
             Spacer(Modifier.weight(1f))
             Switch(
                 checked = startImmediately,
@@ -90,7 +120,8 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
         // Кнопка сохранения
         Button(
             onClick = {
-                val totalMilliseconds = (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
+                val totalMilliseconds =
+                    (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
 
                 if (id == null) {
                     TimerManager.addTimer(timerName = timerName, totalTime = totalMilliseconds)
@@ -102,17 +133,18 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
             },
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
         ) {
-            Text("Save Timer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text("Сохранить таймер", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         }
 
         // Popup при редактировании таймера
         if (showPopup) {
             PopupMessage(
-                message = "Are you sure you want to edit this timer?",
-                buttonText = "Edit",
+                message = "Вы уверены, что хотите изменить этот таймер?",
+                buttonText = "Изменить",
                 onCancel = { showPopup = false },
                 onConfirm = {
-                    val totalMilliseconds = (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
+                    val totalMilliseconds =
+                        (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
                     TimerManager.editTimer(id!!, timerName, totalMilliseconds)
                     showPopup = false
                     navController.navigate(Screen.HOME.route)
@@ -128,10 +160,10 @@ fun PartTimerGroups(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text("Timer Groups", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
+        Text("Группы таймеров", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
-        GroupOption("Add timers to existing group") { navController.navigate(Screen.ADD_TO_GROUP.route) }
-        GroupOption("Create new group") { navController.navigate(Screen.CREATE_GROUP.route) }
+        GroupOption("Добавить таймеры в группу") { navController.navigate(Screen.ADD_TO_GROUP.route) }
+        GroupOption("Создать новую группу") { navController.navigate(Screen.CREATE_GROUP.route) }
 
 
     }
@@ -156,9 +188,9 @@ fun TimePicker(
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "hours", fontSize = 14.sp, color = Color.Gray)
-            Text(text = "min", fontSize = 14.sp, color = Color.Gray)
-            Text(text = "sec", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "часы", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "минуты", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "секунды", fontSize = 14.sp, color = Color.Gray)
         }
     }
     Row(
@@ -167,11 +199,26 @@ fun TimePicker(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TimePickerWheel(range = 0..23, selectedValue = selectedHours, onValueChange = onHoursChange, fontSize = fontSize)
+        TimePickerWheel(
+            range = 0..23,
+            selectedValue = selectedHours,
+            onValueChange = onHoursChange,
+            fontSize = fontSize
+        )
         TimePickerDivider(fontSize = fontSize)
-        TimePickerWheel(selectedValue = selectedMinutes, range = 0..59, onValueChange = onMinutesChange, fontSize = fontSize)
+        TimePickerWheel(
+            selectedValue = selectedMinutes,
+            range = 0..59,
+            onValueChange = onMinutesChange,
+            fontSize = fontSize
+        )
         TimePickerDivider(fontSize = fontSize)
-        TimePickerWheel(selectedValue = selectedSeconds, range = 0..59, onValueChange = onSecondsChange, fontSize = fontSize)
+        TimePickerWheel(
+            selectedValue = selectedSeconds,
+            range = 0..59,
+            onValueChange = onSecondsChange,
+            fontSize = fontSize
+        )
     }
 }
 
@@ -184,7 +231,8 @@ fun TimePickerWheel(
 ) {
     // Умножаем список на 2 для создания "повторяющегося" эффекта
     val fullList = List(range.count() * 2) { range.elementAt(it % range.count()) }
-    val initialIndex = fullList.size / 2 + range.indexOf(selectedValue) // Начинаем с выбранного элемента в центре
+    val initialIndex =
+        fullList.size / 2 + range.indexOf(selectedValue) // Начинаем с выбранного элемента в центре
 
     val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialIndex)
 
@@ -208,7 +256,8 @@ fun TimePickerWheel(
             modifier = Modifier.height(if (fontSize == 48) 100.dp else 75.dp)
         ) {
             itemsIndexed(fullList) { index, value ->
-                val isSelected = listState.firstVisibleItemIndex % range.count() == index % range.count()
+                val isSelected =
+                    listState.firstVisibleItemIndex % range.count() == index % range.count()
                 Text(
                     text = value.toString().padStart(2, '0'),
                     fontSize = fontSize.sp,
@@ -241,8 +290,8 @@ fun GroupOption(text: String, onClick: () -> Unit) {
             .padding(vertical = 18.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text, color = Color.White)
+        Text(text)
         Spacer(Modifier.weight(1f))
-        Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+        Icon(Icons.Default.Add, contentDescription = "Add")
     }
 }

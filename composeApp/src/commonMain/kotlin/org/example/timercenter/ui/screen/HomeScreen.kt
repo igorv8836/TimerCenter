@@ -1,14 +1,29 @@
 package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -23,7 +38,6 @@ import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.Timer
 import org.example.timercenter.ui.item.TimerGroup
 import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 
 
@@ -46,38 +60,17 @@ fun HomeScreen(
     val isSelectionMode = selectedTimers.isNotEmpty() || selectedTimerGroups.isNotEmpty()
     var showPopup by remember { mutableStateOf(false) }
 
-
-//    LaunchedEffect(timerRestartId, timerGroupRestartId) {
-//        timerRestartId?.let { id ->
-//            val timer = timers.find { it.id == id }
-//            timer?.let {
-//                println("Запускаем таймер: ${it.timerName}")
-//                // Здесь вызывай метод запуска таймера
-//            }
-//        }
-//
-//        timerGroupRestartId?.let { id ->
-//            val group = timerGroups.find { it.id == id }
-//            group?.let {
-//                println("Запускаем группу: ${it.groupName}")
-//                // Здесь вызывай метод запуска группы
-//            }
-//        }
-//    }
-
     Scaffold(
         topBar = {
             val isEditEnabled =
                 (selectedTimers.size == 1 && selectedTimerGroups.isEmpty()) || (selectedTimerGroups.size == 1 && selectedTimers.isEmpty())
             HomeTopBar(
-                navController = navController,
                 onSettingsClick = {
                     navController.navigate("settings")
                 },
                 isSelectionMode = isSelectionMode,
                 selectCount = selectedTimers.size + selectedTimerGroups.size,
                 isEditEnabled = isEditEnabled,
-                isEditTimer = (isEditEnabled && selectedTimerGroups.isEmpty()),
                 onDeleteClick = {
                     showPopup = true
                 },
@@ -114,7 +107,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = "Timers",
+                        text = "Таймеры",
                         fontSize = 22.sp,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
@@ -154,15 +147,15 @@ fun HomeScreen(
 
             if (showPopup) {
                 val text = if (selectedTimers.isEmpty()) {
-                    if (selectedTimerGroups.size == 1) "Are you sure want to delete this group?"
-                    else "Are you sure want to delete these groups?"
+                    if (selectedTimerGroups.size == 1) "Вы уверены, что хотите удалить эту группу?"
+                    else "Вы уверены, что хотите удалить эти группы?"
                 } else if (selectedTimerGroups.isEmpty()) {
-                    if (selectedTimers.size == 1) "Are you sure you want to delete this timer?"
-                    else "Are you sure you want to delete these timers?"
-                } else "Are you sure want to delete these timers and groups?"
+                    if (selectedTimers.size == 1) "Вы уверены, что хотите удалить этот таймер?"
+                    else "Вы уверены, что хотите удалить эти таймеры?"
+                } else "Вы уверены, что хотите удалить эти таймеры и группы?"
                 PopupMessage(
                     message = text,
-                    buttonText = "Delete",
+                    buttonText = "Удалить",
                     onCancel = { showPopup = false },
                     onConfirm = {
                         showPopup = false
@@ -178,7 +171,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = "Timer Groups",
+                    text = "Группы таймеров",
                     fontSize = 22.sp,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,

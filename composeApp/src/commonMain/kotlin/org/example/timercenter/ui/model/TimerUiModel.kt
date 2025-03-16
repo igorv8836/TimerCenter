@@ -1,6 +1,5 @@
 package org.example.timercenter.ui.model
 
-import kotlin.random.Random
 
 data class TimerUiModel(
     val id: Int,

@@ -10,7 +10,7 @@ enum class Screen(val route: String, val title: String) {
 
     companion object {
         fun getRouteByTitle(title: String): Screen? {
-            return values().find { it.title == title }
+            return entries.find { it.title == title }
         }
     }
 }

@@ -43,7 +43,10 @@ fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: (Boolean
         modifier = Modifier.Companion.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.Companion.CenterVertically
     ) {
-        Row(verticalAlignment = Alignment.Companion.CenterVertically, modifier = Modifier.weight(1f)) {
+        Row(
+            verticalAlignment = Alignment.Companion.CenterVertically,
+            modifier = Modifier.weight(1f)
+        ) {
             TimerWithoutAll(timer = timer)
         }
 //        Spacer(Modifier.Companion.width(8.dp))
@@ -51,7 +54,9 @@ fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: (Boolean
             Icon(
                 imageVector = if (isSelected) Icons.Default.Close else Icons.Default.Add,
                 contentDescription = if (isSelected) "Remove timer" else "Add timer",
-                tint = if (isSelected) Color.Companion.Red.copy(alpha = 0.7f) else Color.Companion.Green.copy(alpha = 0.7f)
+                tint = if (isSelected) Color.Companion.Red.copy(alpha = 0.7f) else Color.Companion.Green.copy(
+                    alpha = 0.7f
+                )
             )
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,7 +25,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.delay
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.model.TimerManager
@@ -196,10 +196,11 @@ fun CircularButton(icon: ImageVector, onClick: () -> Unit, progress: Float = 1f)
     ) {
         if (progress < 1f) {
             CircularProgressIndicator(
-                progress = progress,
+                progress = { progress },
                 modifier = Modifier.fillMaxSize(),
                 color = Color.Blue,
-                strokeWidth = 3.dp
+                strokeWidth = 3.dp,
+                trackColor = ProgressIndicatorDefaults.circularIndeterminateTrackColor,
             )
         }
         Icon(imageVector = icon, contentDescription = null, tint = Color.Black)

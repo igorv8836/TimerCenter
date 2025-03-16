@@ -24,11 +24,10 @@ import androidx.navigation.NavController
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(
-    navController: NavController, onSettingsClick: () -> Unit,
+    onSettingsClick: () -> Unit,
     isSelectionMode: Boolean,
     selectCount: Int,
     isEditEnabled: Boolean,
-    isEditTimer: Boolean,
     onDeleteClick: () -> Unit,
     onEditClick: () -> Unit,
 
@@ -57,7 +56,11 @@ fun HomeTopBar(
                     )
                 }
                 IconButton(onClick = onDeleteClick) {
-                    Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete", tint = Color.Red)
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.Red
+                    )
                 }
             }
             IconButton(onClick = onSettingsClick) { // Кнопка для настроек

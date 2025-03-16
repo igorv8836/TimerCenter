@@ -1,14 +1,9 @@
 package org.example.timercenter.ui.model
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import org.example.timercenter.TimeAgoManager
 import kotlin.random.Random
 
 object TimerManager {
@@ -26,12 +21,6 @@ object TimerManager {
         timers = createExampleTimers(10)
         timerGroups = createExampleTimerGroups(5)
     }
-
-    // Находит новый уникальный ID
-//    fun generateNewTimerId(): Int {
-//        return (exampleTimersList.maxOfOrNull { it.id } ?: 0) + 1
-//    }
-
     /** Создать новый таймер */
     fun addTimer(timerName: String, totalTime: Long) {
         val newTimer = TimerUiModel(
@@ -67,7 +56,10 @@ object TimerManager {
         // Обновляем таймер в группах
         timerGroups = timerGroups.map { group ->
             val updatedTimers = group.timers.map { timer ->
-                if (timer.id == id) timer.copy(timerName = newName, totalTime = newTotalTime) else timer
+                if (timer.id == id) timer.copy(
+                    timerName = newName,
+                    totalTime = newTotalTime
+                ) else timer
             }
             group.copy(timers = updatedTimers)
         }
@@ -94,18 +86,35 @@ object TimerManager {
     fun findTimerGroup(id: Int): TimerGroupUiModel? = timerGroups.find { it.id == id }
 
     /** Изменить группу */
-    fun editTimerGroup(id: Int, newName: String, newType: GroupType, newTimers: List<TimerUiModel>) {
+    fun editTimerGroup(
+        id: Int,
+        newName: String,
+        newType: GroupType,
+        newTimers: List<TimerUiModel>
+    ) {
         timerGroups = timerGroups.map { group ->
             if (group.id == id) {
                 group.copy(groupName = newName, groupType = newType, timers = newTimers)
             } else group
         }
     }
+
     /** Изменить группу */
-    fun editTimerGroup(id: Int, newName: String, newType: GroupType, delayTime: Long, newTimers: List<TimerUiModel>) {
+    fun editTimerGroup(
+        id: Int,
+        newName: String,
+        newType: GroupType,
+        delayTime: Long,
+        newTimers: List<TimerUiModel>
+    ) {
         timerGroups = timerGroups.map { group ->
             if (group.id == id) {
-                group.copy(groupName = newName, groupType = newType, timers = newTimers, delayTime = delayTime)
+                group.copy(
+                    groupName = newName,
+                    groupType = newType,
+                    timers = newTimers,
+                    delayTime = delayTime
+                )
             } else group
         }
     }

@@ -66,6 +66,7 @@ fun TimerGroup(
                     }
                 }
             }
+
             GroupType.CONSISTENT -> {
                 // Последовательный запуск таймеров
                 while (isRunning && remainingTimes.any { it > 0 }) {
@@ -73,12 +74,12 @@ fun TimerGroup(
                     if (activeTimerIndex != -1) {
                         // Запуск следующего таймера только после окончания предыдущего
                         delay(1000L)
-//                        remainingTimes[activeTimerIndex] -= 1000
                         remainingTimes[activeTimerIndex] = remainingTimes[activeTimerIndex] - 1000
 
                     }
                 }
             }
+
             GroupType.DELAY -> {
                 // Таймеры с задержкой между запуском
                 while (isRunning && remainingTimes.any { it > 0 }) {
@@ -105,7 +106,10 @@ fun TimerGroup(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .background(if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent, shape = RoundedCornerShape(8.dp))
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent,
+                shape = RoundedCornerShape(8.dp)
+            )
             .clip(RoundedCornerShape(8.dp))
             .combinedClickable(
                 onClick = { onSelect(false) },
@@ -138,7 +142,10 @@ fun TimerGroup(
                     isRunning = true
                     isStarted = true
                     onStartGroup()
-                    TimerManager.updateLastStartedTimeForGroup(groupId = timerGroup.id, currentTime = timerAgoManager.currentTimeMillis())
+                    TimerManager.updateLastStartedTimeForGroup(
+                        groupId = timerGroup.id,
+                        currentTime = timerAgoManager.currentTimeMillis()
+                    )
                 })
             } else {
                 CircularButton(
@@ -168,7 +175,10 @@ fun TimerGroup(
                     .heightIn(min = 80.dp, max = 320.dp)
             ) {
                 items(timerGroup.timers.size) { index ->
-                    TimerWithoutButtons(timer = timerGroup.timers[index], remainingTime = remainingTimes[index])
+                    TimerWithoutButtons(
+                        timer = timerGroup.timers[index],
+                        remainingTime = remainingTimes[index]
+                    )
                 }
             }
         }
