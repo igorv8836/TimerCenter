@@ -1,5 +1,7 @@
 package org.example.timercenter.ui
 
+import org.example.timercenter.ui.viewmodels.CreateTimerViewModel
+import org.example.timercenter.ui.viewmodels.HomeViewModel
 import org.example.timercenter.ui.viewmodels.SettingsViewModel
 import org.example.timercenter.ui.viewmodels.TimerDetailViewModel
 import org.example.timercenter.ui.viewmodels.TimerGroupViewModel
@@ -14,4 +16,6 @@ fun uiModule() = module {
     viewModel { TimerHistoryViewModel(get()) }
     viewModel { TimerListViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
+    viewModel { CreateTimerViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
 }
