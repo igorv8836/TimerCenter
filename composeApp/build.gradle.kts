@@ -34,6 +34,11 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         val desktopTest by getting
+        val commonMain by getting
+        val androidMain by getting
+        val iosArm64Main by getting
+        val iosX64Main by getting
+        val iosSimulatorArm64Main by getting
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -48,11 +53,7 @@ kotlin {
             implementation(libs.androidx.work.multiprocess)
         }
         commonMain.dependencies {
-//            implementation(libs.androidx.material3)
-//            implementation("androidx.compose.material3:material3-window-size-class:1.3.1")
-//            implementation("androidx.compose.material3:material3-adaptive-navigation-suite:1.4.0-alpha04")
             implementation(libs.ui.util)
-//            implementation(libs.androidx.compose.ui.tooling.preview)
 
 
             implementation(compose.runtime)

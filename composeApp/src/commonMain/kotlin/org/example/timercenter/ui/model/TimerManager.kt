@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import org.example.timercenter.TimeAgoManager
 import kotlin.random.Random
 
 object TimerManager {
@@ -22,7 +23,7 @@ object TimerManager {
 
     init {
         // Инициализируем тестовыми данными
-        timers = createExampleTimers(5)
+        timers = createExampleTimers(10)
         timerGroups = createExampleTimerGroups(5)
     }
 
@@ -100,6 +101,21 @@ object TimerManager {
             } else group
         }
     }
+
+    /** Обновляет время последнего запуска таймера */
+    fun updateLastStartedTime(timerId: Int, currentTime: Long) {
+        timers = timers.map { timer ->
+            if (timer.id == timerId) timer.copy(lastStartedTime = currentTime) else timer
+        }
+    }
+    /** Обновляет время последнего запуска группы */
+    fun updateLastStartedTimeForGroup(groupId: Int, currentTime: Long) {
+        timerGroups = timerGroups.map { group ->
+            if (group.id == groupId) group.copy(lastStartedTime = currentTime) else group
+        }
+    }
+
+
 
     /** Создание тестовых таймеров */
     private fun createExampleTimers(count: Int): List<TimerUiModel> {

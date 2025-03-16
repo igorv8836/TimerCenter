@@ -25,21 +25,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.model.TimerGroupUiModel
+import org.example.timercenter.ui.model.TimerManager
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TimerGroup(
+    timerAgoManager: TimeAgoManager,
     timerGroup: TimerGroupUiModel,
     isSelected: Boolean,
     onSelect: (isLongPress: Boolean) -> Unit,
     onStartGroup: () -> Unit,
     onPauseGroup: () -> Unit,
-    onResetGroup: () -> Unit
+    onResetGroup: () -> Unit,
+    toRun: Boolean = false
 ) {
-    var isRunning by remember { mutableStateOf(false) }
-    var isStarted by remember { mutableStateOf(false) }
+    var isRunning by remember { mutableStateOf(toRun) }
+    var isStarted by remember { mutableStateOf(toRun) }
     var isExpanded by remember { mutableStateOf(true) }
 
     val remainingTimes = remember {
@@ -71,7 +75,7 @@ fun TimerGroup(
                 onClick = { onSelect(false) },
                 onLongClick = { onSelect(true) }
             )
-            .padding(8.dp)
+            .padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -98,6 +102,7 @@ fun TimerGroup(
                     isRunning = true
                     isStarted = true
                     onStartGroup()
+                    TimerManager.updateLastStartedTimeForGroup(groupId = timerGroup.id, currentTime = timerAgoManager.currentTimeMillis())
                 })
             } else {
                 CircularButton(
@@ -122,8 +127,9 @@ fun TimerGroup(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentHeight()
                     .padding(top = 8.dp)
-                    .height(300.dp)
+                    .heightIn(min = 80.dp, max = 320.dp)
             ) {
                 items(timerGroup.timers.size) { index ->
                     TimerWithoutButtons(timer = timerGroup.timers[index], remainingTime = remainingTimes[index])

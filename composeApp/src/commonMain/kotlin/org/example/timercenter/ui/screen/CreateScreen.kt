@@ -80,6 +80,11 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
 
         Spacer(Modifier.height(16.dp))
 
+        if (id == null) {
+            PartTimerGroups(navController = navController)
+        }
+        Spacer(modifier = Modifier.weight(1f))
+
         // Кнопка сохранения
         Button(
             onClick = {
@@ -115,120 +120,18 @@ fun CreateScreen(navController: NavController, onClose: () -> Unit) {
     }
 }
 
-//@Composable
-//fun CreateScreen(navController: NavController, onClose: () -> Unit) {
-//
-//    // Получаем параметры из навигации
-//    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
-//    val id = if (idString == "{id}") null else idString?.toInt()
-//    var name : String? = null
-//    var totalTime : Long? = null
-//    var showPartTimerGroup = true
-//    if (id != null) {
-//        name = exampleFindTimer(id)?.timerName
-//        totalTime = exampleFindTimer(id)?.totalTime
-//        showPartTimerGroup = false
-//    }
-//
-//    var timerName by remember { mutableStateOf(name ?: "") }
-//    var selectedHours by remember { mutableStateOf(((totalTime ?: 0L) / 3_600_000).toInt()) }
-//    var selectedMinutes by remember { mutableStateOf((((totalTime ?: 0L) % 3_600_000) / 60_000).toInt()) }
-//    var selectedSeconds by remember { mutableStateOf((((totalTime ?: 0L) % 60_000) / 1_000).toInt()) }
-//    var startImmediately by remember { mutableStateOf(false) }
-//
-//    var showPopup by remember { mutableStateOf(false) }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//    ) {
-//
-//        // Поле ввода имени таймера
-//        OutlinedTextField(
-//            value = timerName,
-//            onValueChange = { timerName = it },
-//            label = { Text("Name your timer", color = Color.Gray) },
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//
-//        Spacer(Modifier.height(16.dp))
-//
-//        // Выбор времени
-//
-//        // Новый компонент выбора времени
-//        TimePicker(
-//            selectedHours = selectedHours,
-//            selectedMinutes = selectedMinutes,
-//            selectedSeconds = selectedSeconds,
-//            onHoursChange = { selectedHours = it },
-//            onMinutesChange = { selectedMinutes = it },
-//            onSecondsChange = { selectedSeconds = it }
-//        )
-//        Spacer(Modifier.height(16.dp))
-//
-//        // Тумблер мгновенного старта
-//        Row(
-//            modifier = Modifier.fillMaxWidth(),
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text("Start the timer immediately", color = Color.White)
-//            Spacer(Modifier.weight(1f))
-//            Switch(
-//                checked = startImmediately,
-//                onCheckedChange = { startImmediately = it },
-//                colors = SwitchDefaults.colors(checkedThumbColor = Color.Blue)
-//            )
-//        }
-//
-//        Spacer(Modifier.height(16.dp))
-//
-//        // Раздел групп
-//        if (showPartTimerGroup) {
-//            PartTimerGroups(navController = navController)
-//        }
-//
-//        // Кнопка сохранения
-//        Button(
-//            onClick = {
-//                /* Логика сохранения */
-//                if (!showPartTimerGroup) {
-//                    showPopup = true
-//                } else {
-//                    navController.navigate(Screen.HOME.route)
-//                }
-//
-//            },
-//            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
-//        ) {
-//            Text("Save Timer", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-//        }
-//        if (showPopup) {
-//            PopupMessage(
-//                message = "Are you sure you want to edit this timer?",
-//                buttonText = "Edit",
-//                onCancel = { showPopup = false },
-//                onConfirm = {
-//                    showPopup = false
-//                    navController.navigate(Screen.HOME.route)
-//                })
-//        }
-//    }
-//}
-
 @Composable
 fun PartTimerGroups(navController: NavController) {
     // Раздел групп
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text("Timer Groups", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
         GroupOption("Add timers to existing group") { navController.navigate(Screen.ADD_TO_GROUP.route) }
         GroupOption("Create new group") { navController.navigate(Screen.CREATE_GROUP.route) }
 
-        Spacer(Modifier.weight(1f))
+
     }
 }
 
@@ -304,7 +207,7 @@ fun TimePickerWheel(
                     text = value.toString().padStart(2, '0'),
                     fontSize = 48.sp,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                    color = if (isSelected) Color.White else Color.Gray,
+                    color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
                         .height(60.dp) // Устанавливаем высоту элемента
