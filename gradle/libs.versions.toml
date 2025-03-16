@@ -1,6 +1,6 @@
 [versions]
 accompanistSwiperefresh = "0.23.0"
-agp = "8.5.2"
+agp = "8.7.3"
 kotlin = "2.1.0"
 compose-plugin = "1.7.0"
 
@@ -35,12 +35,16 @@ cronetApi = "119.6045.31"
 atomicfu = "0.26.1"
 conventional-commits = "3.1.3"
 workVersion = "2.10.0"
+uiAndroid = "1.7.8"
+material3Android = "1.3.1"
+uiUtil = "1.7.0"
 
 [libraries]
 accompanist-swiperefresh = { module = "com.google.accompanist:accompanist-swiperefresh", version.ref = "accompanistSwiperefresh" }
 androidx-work-gcm = { module = "androidx.work:work-gcm", version.ref = "workVersion" }
 androidx-work-multiprocess = { module = "androidx.work:work-multiprocess", version.ref = "workVersion" }
 androidx-work-runtime-ktx = { module = "androidx.work:work-runtime-ktx", version.ref = "workVersion" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3Android" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
@@ -86,6 +90,9 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 cronet-api = { group = "org.chromium.net", name = "cronet-api", version.ref = "cronetApi" }
 
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroid" }
+androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+ui-util = { module = "org.jetbrains.compose.ui:ui-util", version.ref = "uiUtil" }
 
 [bundles]
 ktor = [

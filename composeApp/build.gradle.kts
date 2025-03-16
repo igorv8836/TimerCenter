@@ -34,6 +34,11 @@ kotlin {
     sourceSets {
         val desktopMain by getting
         val desktopTest by getting
+        val commonMain by getting
+        val androidMain by getting
+        val iosArm64Main by getting
+        val iosX64Main by getting
+        val iosSimulatorArm64Main by getting
 
         androidMain.dependencies {
             implementation(compose.preview)
@@ -48,9 +53,11 @@ kotlin {
             implementation(libs.androidx.work.multiprocess)
         }
         commonMain.dependencies {
+            implementation(libs.ui.util)
+
+
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
             implementation(compose.material3)
             implementation(compose.materialIconsExtended)
             implementation(compose.ui)
@@ -113,6 +120,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui.android)
+    implementation(libs.androidx.material3.android)
     debugImplementation(compose.uiTooling)
 }
 
