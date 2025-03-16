@@ -1,5 +1,7 @@
 package org.example.timercenter.ui.model
 
+import androidx.compose.runtime.Stable
+
 
 enum class GroupType {
     CONSISTENT,
@@ -7,6 +9,7 @@ enum class GroupType {
     DELAY
 }
 
+@Stable
 data class TimerGroupUiModel(
     val id: Int,
     val groupName: String,

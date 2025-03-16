@@ -27,9 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,38 +34,33 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.orbit_mvi.compose.collectAsState
+import com.example.orbit_mvi.compose.collectSideEffect
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
-import org.example.timercenter.ui.model.TimerManager
-
+import org.example.timercenter.ui.viewmodels.CreateTimerViewModel
+import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect
+import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CreateScreen(navController: NavController) {
+fun CreateScreen(
+    navController: NavController,
+    viewModel: CreateTimerViewModel = koinViewModel(),
+) {
+    val state by viewModel.collectAsState()
 
-    // Получаем параметры из навигации
-    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
-    val id = idString?.toIntOrNull()
+    viewModel.collectSideEffect {
+        when (it) {
+            is CreateTimerEffect.NavigateToHome -> navController.navigate(Screen.HOME.route)
+        }
+    }
 
-    // Данные таймера
-    val existingTimer = id?.let { TimerManager.findTimer(it) }
-    var timerName by remember { mutableStateOf(existingTimer?.timerName ?: "") }
-    var selectedHours by remember {
-        mutableStateOf(
-            ((existingTimer?.totalTime ?: 0L) / 3_600_000).toInt()
+    viewModel.onEvent(
+        CreateTimerEvent.SetTimerId(
+            navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
         )
-    }
-    var selectedMinutes by remember {
-        mutableStateOf(
-            (((existingTimer?.totalTime ?: 0L) % 3_600_000) / 60_000).toInt()
-        )
-    }
-    var selectedSeconds by remember {
-        mutableStateOf(
-            (((existingTimer?.totalTime ?: 0L) % 60_000) / 1_000).toInt()
-        )
-    }
-    var startImmediately by remember { mutableStateOf(false) }
-    var showPopup by remember { mutableStateOf(false) }
+    )
 
     Column(
         modifier = Modifier
@@ -77,8 +69,8 @@ fun CreateScreen(navController: NavController) {
     ) {
         // Поле ввода имени таймера
         OutlinedTextField(
-            value = timerName,
-            onValueChange = { timerName = it },
+            value = state.timerInfo.timerName,
+            onValueChange = { viewModel.onEvent(CreateTimerEvent.SetName(it)) },
             label = { Text("Название таймера", color = Color.Gray) },
             modifier = Modifier.fillMaxWidth()
         )
@@ -87,12 +79,12 @@ fun CreateScreen(navController: NavController) {
 
         // Выбор времени
         TimePicker(
-            selectedHours = selectedHours,
-            selectedMinutes = selectedMinutes,
-            selectedSeconds = selectedSeconds,
-            onHoursChange = { selectedHours = it },
-            onMinutesChange = { selectedMinutes = it },
-            onSecondsChange = { selectedSeconds = it }
+            selectedHours = state.selectedHours,
+            selectedMinutes = state.selectedMinutes,
+            selectedSeconds = state.selectedSeconds,
+            onHoursChange = { viewModel.onEvent(CreateTimerEvent.SetHours(it)) },
+            onMinutesChange = { viewModel.onEvent(CreateTimerEvent.SetMinutes(it)) },
+            onSecondsChange = { viewModel.onEvent(CreateTimerEvent.SetSeconds(it)) }
         )
         Spacer(Modifier.height(16.dp))
 
@@ -104,15 +96,17 @@ fun CreateScreen(navController: NavController) {
             Text("Начать таймер немедленно")
             Spacer(Modifier.weight(1f))
             Switch(
-                checked = startImmediately,
-                onCheckedChange = { startImmediately = it },
+                checked = state.startImmediately,
+                onCheckedChange = {
+                    viewModel.onEvent(CreateTimerEvent.SetStartImmediately(it))
+                },
                 colors = SwitchDefaults.colors(checkedThumbColor = Color.Blue)
             )
         }
 
         Spacer(Modifier.height(16.dp))
 
-        if (id == null) {
+        if (state.id == null) {
             PartTimerGroups(navController = navController)
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -120,16 +114,7 @@ fun CreateScreen(navController: NavController) {
         // Кнопка сохранения
         Button(
             onClick = {
-                val totalMilliseconds =
-                    (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
-
-                if (id == null) {
-                    TimerManager.addTimer(timerName = timerName, totalTime = totalMilliseconds)
-                    navController.navigate(Screen.HOME.route)
-                } else {
-                    // Редактирование существующего таймера
-                    showPopup = true
-                }
+                viewModel.onEvent(CreateTimerEvent.SaveTimer)
             },
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
         ) {
@@ -137,17 +122,13 @@ fun CreateScreen(navController: NavController) {
         }
 
         // Popup при редактировании таймера
-        if (showPopup) {
+        if (state.showPopup) {
             PopupMessage(
                 message = "Вы уверены, что хотите изменить этот таймер?",
                 buttonText = "Изменить",
-                onCancel = { showPopup = false },
+                onCancel = { viewModel.onEvent(CreateTimerEvent.SetShowPopup(false)) },
                 onConfirm = {
-                    val totalMilliseconds =
-                        (selectedHours * 3_600_000L) + (selectedMinutes * 60_000L) + (selectedSeconds * 1_000L)
-                    TimerManager.editTimer(id!!, timerName, totalMilliseconds)
-                    showPopup = false
-                    navController.navigate(Screen.HOME.route)
+                    viewModel.onEvent(CreateTimerEvent.SaveTimer)
                 }
             )
         }

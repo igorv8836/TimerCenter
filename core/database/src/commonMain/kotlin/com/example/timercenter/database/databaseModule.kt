@@ -19,7 +19,7 @@ fun databaseModule(): Module {
     return module {
         includes(platformDatabaseBuilderModule())
 
-        single { provideDatabase(get(), get(named(MyDispatchers.IO))) }
+        single(createdAtStart = true) { provideDatabase(get(), get(named(MyDispatchers.IO))) }
         single<TimerDao> { get<AppDatabase>().getTimerDao() }
         single<TimerGroupDao> { get<AppDatabase>().getTimerGroupDao() }
         single<TimerHistoryDao> { get<AppDatabase>().getTimerHistoryDao() }
