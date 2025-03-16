@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.HomeTopBar
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.Timer
@@ -28,12 +29,14 @@ import org.example.timercenter.ui.model.TimerUiModel
 
 @Composable
 fun HomeScreen(
+    timerAgoManager: TimeAgoManager,
     navController: NavController,
     timers: List<TimerUiModel>,
     timerGroups: List<TimerGroupUiModel>,
+    timerRestartId: Int? = null,
+    timerGroupRestartId: Int? = null,
     onDeleteTimers: (List<TimerUiModel>) -> Unit,
     onDeleteGroupTimers: (List<TimerGroupUiModel>) -> Unit,
-    onEditTimer: (TimerUiModel) -> Unit,
 ) {
     var isTimersExpanded by remember { mutableStateOf(true) }
     var isTimerGroupsExpanded by remember { mutableStateOf(true) }
@@ -44,9 +47,23 @@ fun HomeScreen(
     var showPopup by remember { mutableStateOf(false) }
 
 
-    val isSelectionGroupMode = selectedTimers.isNotEmpty() || selectedTimerGroups.isNotEmpty()
-
-
+//    LaunchedEffect(timerRestartId, timerGroupRestartId) {
+//        timerRestartId?.let { id ->
+//            val timer = timers.find { it.id == id }
+//            timer?.let {
+//                println("Запускаем таймер: ${it.timerName}")
+//                // Здесь вызывай метод запуска таймера
+//            }
+//        }
+//
+//        timerGroupRestartId?.let { id ->
+//            val group = timerGroups.find { it.id == id }
+//            group?.let {
+//                println("Запускаем группу: ${it.groupName}")
+//                // Здесь вызывай метод запуска группы
+//            }
+//        }
+//    }
 
     Scaffold(
         topBar = {
@@ -54,7 +71,9 @@ fun HomeScreen(
                 (selectedTimers.size == 1 && selectedTimerGroups.isEmpty()) || (selectedTimerGroups.size == 1 && selectedTimers.isEmpty())
             HomeTopBar(
                 navController = navController,
-                onSettingsClick = {},
+                onSettingsClick = {
+                    navController.navigate("settings")
+                },
                 isSelectionMode = isSelectionMode,
                 selectCount = selectedTimers.size + selectedTimerGroups.size,
                 isEditEnabled = isEditEnabled,
@@ -114,6 +133,7 @@ fun HomeScreen(
                 if (isTimersExpanded) {
                     timers.forEach { timer ->
                         Timer(
+                            timerAgoManager = timerAgoManager,
                             timer = timer,
                             isSelected = selectedTimers.contains(timer),
                             onSelect = { isLongPress ->
@@ -124,7 +144,8 @@ fun HomeScreen(
                                         timer
                                     )
                                 }
-                            }
+                            },
+                            toRun = timer.id == timerRestartId
                         )
                     }
                 }
@@ -176,6 +197,7 @@ fun HomeScreen(
             if (isTimerGroupsExpanded) {
                 timerGroups.forEach { group ->
                     TimerGroup(
+                        timerAgoManager = timerAgoManager,
                         timerGroup = group,
                         isSelected = selectedTimerGroups.contains(group),
                         onSelect = { isLongPress ->
@@ -189,7 +211,8 @@ fun HomeScreen(
                         },
                         onStartGroup = {},
                         onPauseGroup = {},
-                        onResetGroup = {}
+                        onResetGroup = {},
+                        toRun = group.id == timerGroupRestartId
                     )
                 }
             }

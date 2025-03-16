@@ -16,7 +16,7 @@ import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.bottomNavigationItems
 
 @Composable
-fun TimerApp() {
+fun TimerApp(timeAgoManager: TimeAgoManager) {
     AppTheme {
         val navController = rememberNavController()
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -25,7 +25,7 @@ fun TimerApp() {
         Scaffold(
             topBar = { if (showTopBar) {
                 AppTopBar(navController) {
-
+                    navController.navigate("settings")
                 }
             }
             }, // Верхняя панель
@@ -37,7 +37,7 @@ fun TimerApp() {
             } // Нижняя панель
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                AppNavigation(navController)
+                AppNavigation(timeAgoManager = timeAgoManager, navController = navController)
             }
         }
 
