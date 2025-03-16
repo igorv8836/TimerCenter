@@ -35,13 +35,15 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
 
-        composable(Screen.CREATE.route) { CreateScreen(navController = navController, onClose = {}) }
-        composable(Screen.HISTORY.route) { HistoryScreen(
-            timers = TimerManager.timers,
-            timerGroups = TimerManager.timerGroups,
-            timerAgoManager = timeAgoManager,
-            navController = navController
-        ) }
+        composable(Screen.CREATE.route) { CreateScreen(navController = navController) }
+        composable(Screen.HISTORY.route) {
+            HistoryScreen(
+                timers = TimerManager.timers,
+                timerGroups = TimerManager.timerGroups,
+                timerAgoManager = timeAgoManager,
+                navController = navController
+            )
+        }
         composable(Screen.CREATE_GROUP.route) {
             CreateTimerGroupScreen(
                 timers = TimerManager.timers,
@@ -55,7 +57,10 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
         composable(Screen.SETTINGS.route) {
-            SettingsScreen(navController = navController, settings = SettingsModel(NotificationType.SOUND), onSaveSettings = {})
+            SettingsScreen(
+                navController = navController,
+                settings = SettingsModel(NotificationType.SOUND),
+                onSaveSettings = {})
         }
     }
 }

@@ -2,7 +2,7 @@ package org.example.timercenter.ui.model
 
 // Enum для типа уведомления
 enum class NotificationType {
-    SOUND,        // Уведомление с звуком
+    SOUND,        // Уведомление со звуком
     VIBRATION,    // Уведомление с вибрацией
     TEXT,         // Уведомление с текстом
 }
