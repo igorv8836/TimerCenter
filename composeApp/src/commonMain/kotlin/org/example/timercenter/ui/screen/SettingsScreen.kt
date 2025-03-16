@@ -13,23 +13,51 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.orbit_mvi.compose.collectAsState
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.model.NotificationType
-import org.example.timercenter.ui.model.SettingsModel
+import org.example.timercenter.ui.viewmodels.SettingsViewModel
+import org.example.timercenter.ui.viewmodels.states.SettingsEvent
+import org.example.timercenter.ui.viewmodels.states.SettingsState
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    onSaveSettings: (SettingsModel) -> Unit,
-    settings: SettingsModel
+    viewModel: SettingsViewModel = koinViewModel(),
 ) {
-    var selectedNotificationType by remember { mutableStateOf(settings.notificationType) }
+    val state by viewModel.collectAsState()
+
+    when (state) {
+        is SettingsState.Success -> {
+            SettingsScreenContent(
+                state = state as SettingsState.Success,
+                onEvent = viewModel::onEvent,
+                navigateToHome = {
+                    navController.navigate(Screen.HOME.route)
+                }
+            )
+        }
+
+        is SettingsState.Error -> {
+            ErrorScreen(
+                errorMessage = (state as SettingsState.Error).text,
+            )
+        }
+
+        SettingsState.Loading -> { LoadingScreen() }
+    }
+}
+
+@Composable
+fun SettingsScreenContent(
+    state: SettingsState.Success,
+    onEvent: (SettingsEvent) -> Unit,
+    navigateToHome: () -> Unit,
+) {
 
     Column(
         modifier = Modifier
@@ -41,20 +69,16 @@ fun SettingsScreen(
 
         // Компонент для выбора типа уведомлений с помощью сегментированных кнопок
         SingleChoiceSegmentedButton(
-            onOptionChange = { selectedOption ->
-                selectedNotificationType = selectedOption
+            onOptionChange = {
+                onEvent(SettingsEvent.ChangeNotification(it))
             },
-            selectedOption = selectedNotificationType
+            selectedOption = state.data.notificationType
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = {
-                // Сохраняем выбранные настройки
-                onSaveSettings(SettingsModel(selectedNotificationType))
-                navController.navigate(Screen.HOME.route)
-            },
+            onClick = navigateToHome,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Сохранить настройки")

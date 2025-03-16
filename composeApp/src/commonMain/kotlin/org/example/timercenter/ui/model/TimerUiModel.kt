@@ -1,6 +1,8 @@
 package org.example.timercenter.ui.model
 
+import androidx.compose.runtime.Stable
 
+@Stable
 data class TimerUiModel(
     val id: Int,
     val timerName: String,
