@@ -12,5 +12,6 @@ data class TimerGroupUiModel(
     val groupName: String,
     val groupType: GroupType,
     val timers: List<TimerUiModel>,
-    val lastStartedTime: Long = 0L // Время последнего запуска в миллисекундах
+    val lastStartedTime: Long = 0L, // Время последнего запуска в миллисекундах
+    val delayTime: Long = 0L
 )

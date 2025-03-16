@@ -26,9 +26,6 @@ fun AppTopBar(
     // Отслеживаем текущий маршрут, чтобы перерисовывать TopAppBar при изменении маршрута
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
-    println("[$TAG] Текущий маршрут: ${navController.currentBackStackEntry?.destination?.route}")
-
-
     TopAppBar(
         title = {
             Text(

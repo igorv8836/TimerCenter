@@ -14,12 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.model.TimerManager
+import timercenter.composeapp.generated.resources.Res
 
 
 @Composable
@@ -143,17 +145,21 @@ fun TimePicker(
     selectedSeconds: Int,
     onHoursChange: (Int) -> Unit,
     onMinutesChange: (Int) -> Unit,
-    onSecondsChange: (Int) -> Unit
+    onSecondsChange: (Int) -> Unit,
+    fontSize: Int = 48,
+    showLabel: Boolean = true
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "hours", fontSize = 14.sp, color = Color.Gray)
-        Text(text = "min", fontSize = 14.sp, color = Color.Gray)
-        Text(text = "sec", fontSize = 14.sp, color = Color.Gray)
+    if (showLabel) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = "hours", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "min", fontSize = 14.sp, color = Color.Gray)
+            Text(text = "sec", fontSize = 14.sp, color = Color.Gray)
+        }
     }
     Row(
         modifier = Modifier
@@ -161,20 +167,20 @@ fun TimePicker(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        TimePickerWheel(range = 0..23, selectedValue = selectedHours, label = "hours", onValueChange = onHoursChange)
-        TimePickerDivider()
-        TimePickerWheel(selectedValue = selectedMinutes, range = 0..59, label = "min", onValueChange = onMinutesChange)
-        TimePickerDivider()
-        TimePickerWheel(selectedValue = selectedSeconds, range = 0..59, label = "sec", onValueChange = onSecondsChange)
+        TimePickerWheel(range = 0..23, selectedValue = selectedHours, onValueChange = onHoursChange, fontSize = fontSize)
+        TimePickerDivider(fontSize = fontSize)
+        TimePickerWheel(selectedValue = selectedMinutes, range = 0..59, onValueChange = onMinutesChange, fontSize = fontSize)
+        TimePickerDivider(fontSize = fontSize)
+        TimePickerWheel(selectedValue = selectedSeconds, range = 0..59, onValueChange = onSecondsChange, fontSize = fontSize)
     }
 }
 
 @Composable
 fun TimePickerWheel(
-    label: String,
     selectedValue: Int,
     range: IntRange,
-    onValueChange: (Int) -> Unit
+    onValueChange: (Int) -> Unit,
+    fontSize: Int = 48
 ) {
     // Умножаем список на 2 для создания "повторяющегося" эффекта
     val fullList = List(range.count() * 2) { range.elementAt(it % range.count()) }
@@ -199,18 +205,18 @@ fun TimePickerWheel(
             horizontalAlignment = Alignment.CenterHorizontally,
             contentPadding = PaddingValues(vertical = 16.dp),
             flingBehavior = rememberSnapFlingBehavior(lazyListState = listState),
-            modifier = Modifier.height(100.dp)
+            modifier = Modifier.height(if (fontSize == 48) 100.dp else 75.dp)
         ) {
             itemsIndexed(fullList) { index, value ->
                 val isSelected = listState.firstVisibleItemIndex % range.count() == index % range.count()
                 Text(
                     text = value.toString().padStart(2, '0'),
-                    fontSize = 48.sp,
+                    fontSize = fontSize.sp,
                     fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                    color = if (isSelected) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onBackground,
+                    color = if (isSelected) MaterialTheme.colorScheme.onBackground else Color.Gray,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
-                        .height(60.dp) // Устанавливаем высоту элемента
+                        .height(if (fontSize == 48) 60.dp else 30.dp) // Устанавливаем высоту элемента
                         .wrapContentHeight(Alignment.CenterVertically) // Центрируем элементы
                 )
             }
@@ -221,8 +227,8 @@ fun TimePickerWheel(
 
 // Разделитель между колесами времени
 @Composable
-fun TimePickerDivider() {
-    Text(":", fontSize = 48.sp)
+fun TimePickerDivider(fontSize: Int = 48) {
+    Text(":", fontSize = fontSize.sp)
 }
 
 // Компонент группы

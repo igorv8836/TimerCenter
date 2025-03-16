@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import org.example.timercenter.TimeAgoManager
+import org.example.timercenter.ui.model.GroupType
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerManager
-
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -50,15 +50,51 @@ fun TimerGroup(
         mutableStateListOf<Long>().apply { addAll(timerGroup.timers.map { it.totalTime }) }
     }
 
+    // Логика для задержки между таймерами
+    val delayTime = timerGroup.delayTime // Время задержки для DELAY
+
     LaunchedEffect(isRunning) {
-        while (isRunning && remainingTimes.any { it > 0 }) {
-            delay(1000L)
-            remainingTimes.forEachIndexed { index, time ->
-                if (time > 0) {
-                    remainingTimes[index] = time - 1000
+        when (timerGroup.groupType) {
+            GroupType.PARALLEL -> {
+                // Параллельный запуск таймеров
+                while (isRunning && remainingTimes.any { it > 0 }) {
+                    delay(1000L)
+                    remainingTimes.forEachIndexed { index, time ->
+                        if (time > 0) {
+                            remainingTimes[index] = time - 1000
+                        }
+                    }
+                }
+            }
+            GroupType.CONSISTENT -> {
+                // Последовательный запуск таймеров
+                while (isRunning && remainingTimes.any { it > 0 }) {
+                    val activeTimerIndex = remainingTimes.indexOfFirst { it > 0 }
+                    if (activeTimerIndex != -1) {
+                        // Запуск следующего таймера только после окончания предыдущего
+                        delay(1000L)
+//                        remainingTimes[activeTimerIndex] -= 1000
+                        remainingTimes[activeTimerIndex] = remainingTimes[activeTimerIndex] - 1000
+
+                    }
+                }
+            }
+            GroupType.DELAY -> {
+                // Таймеры с задержкой между запуском
+                while (isRunning && remainingTimes.any { it > 0 }) {
+                    remainingTimes.forEachIndexed { index, time ->
+                        if (time > 0) {
+                            delay(1000L)
+                            remainingTimes[index] = time - 1000
+                        }
+                    }
+                    // После завершения всех таймеров мы вводим задержку между стартами
+                    delay(delayTime)
                 }
             }
         }
+
+        // Завершаем все таймеры, когда они все закончены
         if (remainingTimes.all { it == 0L }) {
             isRunning = false
             isStarted = false
