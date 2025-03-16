@@ -101,6 +101,14 @@ object TimerManager {
             } else group
         }
     }
+    /** Изменить группу */
+    fun editTimerGroup(id: Int, newName: String, newType: GroupType, delayTime: Long, newTimers: List<TimerUiModel>) {
+        timerGroups = timerGroups.map { group ->
+            if (group.id == id) {
+                group.copy(groupName = newName, groupType = newType, timers = newTimers, delayTime = delayTime)
+            } else group
+        }
+    }
 
     /** Обновляет время последнего запуска таймера */
     fun updateLastStartedTime(timerId: Int, currentTime: Long) {
@@ -108,13 +116,14 @@ object TimerManager {
             if (timer.id == timerId) timer.copy(lastStartedTime = currentTime) else timer
         }
     }
+
+
     /** Обновляет время последнего запуска группы */
     fun updateLastStartedTimeForGroup(groupId: Int, currentTime: Long) {
         timerGroups = timerGroups.map { group ->
             if (group.id == groupId) group.copy(lastStartedTime = currentTime) else group
         }
     }
-
 
 
     /** Создание тестовых таймеров */
@@ -134,7 +143,7 @@ object TimerManager {
             TimerGroupUiModel(
                 id = nextGroupId++,
                 groupName = "Timer Group ${index + 1}",
-                groupType = GroupType.values().random(),
+                groupType = GroupType.entries.toTypedArray().random(),
                 timers = timers.shuffled().take(Random.nextInt(1, 4)) // От 1 до 3 таймеров в группе
             )
         }

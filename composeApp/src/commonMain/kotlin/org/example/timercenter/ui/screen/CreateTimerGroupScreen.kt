@@ -19,21 +19,29 @@ import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 
 
+private const val TAG = "CreateTimerGroupScreen"
+
 @Composable
 fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavController) {
 
     val idString = navController.currentBackStackEntry?.arguments?.getString("id")
     val id = idString?.toIntOrNull()
     val existingGroup = id?.let { TimerManager.findTimerGroup(it) }
-
+    println("${TAG} existingGroup is $existingGroup")
     var groupName by remember { mutableStateOf(existingGroup?.groupName ?: "") }
     var option by remember { mutableStateOf(existingGroup?.groupType ?: GroupType.CONSISTENT) }
+    println("${TAG} option is ${option}")
     var showPopup by remember { mutableStateOf(false) }
-
+    val isDelayMode = remember(option) { option == GroupType.DELAY }
+    println("${TAG} idDelayMode $isDelayMode")
     // Если редактируем, берем выбранные таймеры из группы, иначе пустой список
     var selectedTimers by remember {
         mutableStateOf(existingGroup?.timers?.toSet() ?: emptySet())
     }
+
+    var selectedHours by remember { mutableStateOf(0) }
+    var selectedMinutes by remember { mutableStateOf(0) }
+    var selectedSeconds by remember { mutableStateOf(0) }
 
     // Разделяем таймеры: выбранные и остальные
     val (addedTimers, otherTimers) = timers.partition { it in selectedTimers }
@@ -50,7 +58,23 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
         )
 
         Text(text = "Group Type", modifier = Modifier.padding(vertical = 16.dp))
-        SingleChoiceSegmentedButton { selectedOption -> option = selectedOption }
+        SingleChoiceSegmentedButton(selectedOption = option) {
+            selectedOption -> option = selectedOption
+        }
+
+        if (isDelayMode) {
+            Spacer(Modifier.height(16.dp))
+            // Выбор времени
+            TimePicker(
+                selectedHours = selectedHours,
+                selectedMinutes = selectedMinutes,
+                selectedSeconds = selectedSeconds,
+                onHoursChange = { selectedHours = it },
+                onMinutesChange = { selectedMinutes = it },
+                onSecondsChange = { selectedSeconds = it },
+                showLabel = false,
+            )
+        }
 
         // Заголовок с количеством выбранных таймеров
         Text(
@@ -134,12 +158,23 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
                 buttonText = "Edit",
                 onCancel = { showPopup = false },
                 onConfirm = {
-                    TimerManager.editTimerGroup(
-                        id = id!!,
-                        newName = groupName,
-                        newType = option,
-                        newTimers = selectedTimers.toList()
-                    )
+                    if (isDelayMode) {
+                        TimerManager.editTimerGroup(
+                            id = id!!,
+                            newName = groupName,
+                            newType = option,
+                            delayTime = (selectedHours * 3600000).toLong() + (selectedMinutes * 60000) + (selectedSeconds * 1000),
+                            newTimers = selectedTimers.toList()
+                        )
+                    }
+                    else {
+                        TimerManager.editTimerGroup(
+                            id = id!!,
+                            newName = groupName,
+                            newType = option,
+                            newTimers = selectedTimers.toList()
+                        )
+                    }
                     showPopup = false
                     navController.navigate(Screen.HOME.route)
                 }
@@ -150,8 +185,7 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
 
 
 @Composable
-fun SingleChoiceSegmentedButton(onOptionChange: (GroupType) -> Unit) {
-    var selectedOption by remember { mutableStateOf(GroupType.CONSISTENT) } // Используем GroupType вместо индекса
+fun SingleChoiceSegmentedButton(selectedOption: GroupType, onOptionChange: (GroupType) -> Unit) {
     val options = listOf(GroupType.CONSISTENT, GroupType.PARALLEL, GroupType.DELAY) // Список типов GroupType
 
     SingleChoiceSegmentedButtonRow {
@@ -162,7 +196,6 @@ fun SingleChoiceSegmentedButton(onOptionChange: (GroupType) -> Unit) {
                     count = options.size
                 ),
                 onClick = {
-                    selectedOption = groupType // Обновляем выбранный тип
                     onOptionChange(groupType) // Передаем GroupType в onOptionChange
                 },
                 selected = groupType == selectedOption,

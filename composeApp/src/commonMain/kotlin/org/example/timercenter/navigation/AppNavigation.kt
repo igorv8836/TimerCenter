@@ -5,6 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.timercenter.TimeAgoManager
+import org.example.timercenter.ui.model.NotificationType
+import org.example.timercenter.ui.model.SettingsModel
 import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.screen.*
 
@@ -53,7 +55,7 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
         composable(Screen.SETTINGS.route) {
-            SettingsScreen()
+            SettingsScreen(navController = navController, settings = SettingsModel(NotificationType.SOUND), onSaveSettings = {})
         }
     }
 }
