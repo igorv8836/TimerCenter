@@ -17,21 +17,15 @@ class TimerHistoryRepositoryImpl(
 
     override fun getAllHistory(): Flow<List<TimerHistoryEntity>> = timerHistoryDao.getAllHistoryFlow()
 
-    override suspend fun addRecord(
-        timerId: Int,
-        startTime: Long,
-        endTime: Long?,
-        completed: Boolean
-    ) = withContext(ioDispatcher) {
-        timerHistoryDao.insertRecord(
-            TimerHistoryEntity(
-                timerId = timerId,
-                startTime = startTime,
-                endTime = endTime,
-                completed = completed
+    override suspend fun addRecord(name: String, lastStartedTime: Long) =
+        withContext(ioDispatcher) {
+            timerHistoryDao.insertRecord(
+                TimerHistoryEntity(
+                    name = name,
+                    lastStartedTime = lastStartedTime
+                )
             )
-        )
-    }
+        }
 
     override suspend fun clearAll() = withContext(ioDispatcher) {
         timerHistoryDao.clearHistory()

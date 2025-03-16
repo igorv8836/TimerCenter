@@ -60,6 +60,7 @@ fun HomeScreen(
     }
     var isTimersExpanded by remember { mutableStateOf(true) }
     var isTimerGroupsExpanded by remember { mutableStateOf(true) }
+
     Scaffold(
         topBar = {
             val isEditEnabled =
@@ -106,7 +107,10 @@ fun HomeScreen(
                             onSelect = { isLongPress ->
                                 homeViewModel.onEvent(HomeEvent.ToggleTimerSelection(timer, isLongPress))
                             },
-                            toRun = timer.id == state.timerRestartId
+                            toRun = timer.id == state.timerRestartId,
+                            onStart = {
+                                homeViewModel.onEvent(HomeEvent.UpdateTimerLastStartedTime(timerId = timer.id, lastStartedTime = timerAgoManager.currentTimeMillis()))
+                            }
                         )
                     }
                 }

@@ -42,10 +42,8 @@ class TimerRepositoryImpl(
         timerDao.updateTimer(updatedTimer)
         timerHistoryDao.insertRecord(
             TimerHistoryEntity(
-                timerId = updatedTimer.id,
-                startTime = currentTime,
-                endTime = null,
-                completed = false
+                name = timer.name,
+                lastStartedTime = currentTime
             )
         )
         timerScheduler.scheduleTimer(updatedTimer.id, updatedTimer.durationMillis)

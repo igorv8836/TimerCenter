@@ -53,6 +53,7 @@ class HomeViewModel(
                 }
                 reduce { state.copy(selectedTimers = newSelection) }
             }
+
             is HomeEvent.ToggleTimerGroupSelection -> {
                 val isSelected = state.selectedTimerGroups.contains(event.timerGroup)
                 val newSelection = if (isSelected) {
@@ -65,12 +66,15 @@ class HomeViewModel(
                 }
                 reduce { state.copy(selectedTimerGroups = newSelection) }
             }
+
             HomeEvent.ClearSelection -> {
                 reduce { state.copy(selectedTimers = emptySet(), selectedTimerGroups = emptySet()) }
             }
+
             HomeEvent.ShowDeleteConfirmation -> {
                 reduce { state.copy(showDeleteConfirmation = true) }
             }
+
             HomeEvent.ConfirmDeletion -> {
                 state.selectedTimers.forEach { timer ->
                     intent { timerRepository.deleteTimer(timer.id) }
@@ -86,9 +90,11 @@ class HomeViewModel(
                     )
                 }
             }
+
             HomeEvent.CancelDeletion -> {
                 reduce { state.copy(showDeleteConfirmation = false) }
             }
+
             HomeEvent.EditSelected -> {
                 if (state.selectedTimers.size == 1 && state.selectedTimerGroups.isEmpty()) {
                     val timer = state.selectedTimers.first()
@@ -98,12 +104,25 @@ class HomeViewModel(
                     postSideEffect(HomeEffect.NavigateToEditTimerGroup(group.id))
                 }
             }
+
             is HomeEvent.SetTimerRestart -> {
                 reduce { state.copy(timerRestartId = event.timerId) }
             }
+
             is HomeEvent.SetTimerGroupRestart -> {
                 reduce { state.copy(timerGroupRestartId = event.timerGroupId) }
             }
+
+            is HomeEvent.UpdateTimerLastStartedTime -> {
+                val timers =
+                    state.timers.map { if (it.id == event.timerId) it.copy(lastStartedTime = event.lastStartedTime) else it }
+                reduce { state.copy(timers = timers) }
+            }
+            is HomeEvent.UpdateTimerGroupLastStartedTime -> {
+                val timerGroups = state.timerGroups.map { if (it.id == event.timerGroupId) it.copy(lastStartedTime = event.lastStartedTime) else it}
+                reduce { state.copy(timerGroups = timerGroups) }
+            }
+
             HomeEvent.NavigateToSettingsEvent -> {
                 postSideEffect(HomeEffect.NavigateToSettings)
             }

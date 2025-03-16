@@ -18,9 +18,8 @@ import org.example.timercenter.TimeAgoManager
 
 @Composable
 fun TimerHistory(
-    timeAgoManager: TimeAgoManager,
     name: String,
-    lastStartedTime: Long,
+    lastStartedTimeText: String,
     onRestart: () -> Unit
 ) {
     Row(
@@ -37,7 +36,7 @@ fun TimerHistory(
                 fontSize = 18.sp
             )
             Text(
-                text = timeAgoManager.timeAgo(lastStartedTime),
+                text = lastStartedTimeText,
                 color = Color.Gray,
                 fontSize = 14.sp
             )
@@ -47,3 +46,36 @@ fun TimerHistory(
         }
     }
 }
+
+
+//@Composable
+//fun TimerHistory(
+//    timeAgoManager: TimeAgoManager,
+//    name: String,
+//    lastStartedTime: Long,
+//    onRestart: () -> Unit
+//) {
+//    Row(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(vertical = 8.dp),
+//        verticalAlignment = Alignment.CenterVertically,
+//        horizontalArrangement = Arrangement.SpaceBetween
+//    ) {
+//        Column {
+//            Text(
+//                text = name,
+//                fontWeight = FontWeight.Bold,
+//                fontSize = 18.sp
+//            )
+//            Text(
+//                text = timeAgoManager.timeAgo(lastStartedTime),
+//                color = Color.Gray,
+//                fontSize = 14.sp
+//            )
+//        }
+//        Button(onClick = onRestart) {
+//            Text("Запустить")
+//        }
+//    }
+//}

@@ -29,6 +29,8 @@ sealed interface HomeEvent {
     object ConfirmDeletion : HomeEvent
     object CancelDeletion : HomeEvent
     object EditSelected : HomeEvent
+    data class UpdateTimerLastStartedTime(val timerId: Int, val lastStartedTime: Long) : HomeEvent
+    data class UpdateTimerGroupLastStartedTime(val timerGroupId: Int, val lastStartedTime: Long) : HomeEvent
     data class SetTimerRestart(val timerId: Int) : HomeEvent
     data class SetTimerGroupRestart(val timerGroupId: Int) : HomeEvent
     object NavigateToSettingsEvent : HomeEvent

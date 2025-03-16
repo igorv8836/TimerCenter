@@ -50,10 +50,8 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
         composable(Screen.CREATE.route) { CreateScreen(navController = navController) }
         composable(Screen.HISTORY.route) {
             HistoryScreen(
-                timers = TimerManager.timers,
-                timerGroups = TimerManager.timerGroups,
                 timerAgoManager = timeAgoManager,
-                navController = navController
+                navController = navController,
             )
         }
         composable(Screen.CREATE_GROUP.route) {

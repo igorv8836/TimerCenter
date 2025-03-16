@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface TimerHistoryRepository {
     fun getHistoryForTimer(timerId: Int): Flow<List<TimerHistoryEntity>>
     fun getAllHistory(): Flow<List<TimerHistoryEntity>>
-    suspend fun addRecord(timerId: Int, startTime: Long, endTime: Long?, completed: Boolean): Long
+    suspend fun addRecord(name: String, lastStartedTime: Long): Long
     suspend fun clearAll()
 }

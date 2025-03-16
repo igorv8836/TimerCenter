@@ -40,7 +40,8 @@ fun Timer(
     timer: TimerUiModel,
     isSelected: Boolean,
     onSelect: (isLongPress: Boolean) -> Unit,
-    toRun: Boolean = false
+    toRun: Boolean = false,
+    onStart: () -> Unit
 ) {
     var remainingTime by remember { mutableStateOf(timer.totalTime) }
     var isRunning by remember { mutableStateOf(toRun) }
@@ -92,6 +93,8 @@ fun Timer(
                 CircularButton(icon = Icons.Default.PlayArrow, onClick = {
                     isRunning = true
                     isStarted = true
+                    //Вызов метода onStart, который обрабатывается в HomeScreen, обновляя значения lastStartedTimer у этого таймера
+                    onStart()
                     TimerManager.updateLastStartedTime(timerId = timer.id, currentTime = timerAgoManager.currentTimeMillis()) // Обновляем время запуска
                 })
             } else {
