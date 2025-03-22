@@ -1,9 +1,6 @@
 package org.example.timercenter.ui.viewmodels.states
 
-import com.example.timercenter.database.model.TimerEntity
-import com.example.timercenter.database.model.TimerHistoryEntity
 import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerHistoryUiModel
 import org.example.timercenter.ui.model.TimerUiModel
 
 //data class TimerHistoryState(
@@ -39,7 +36,7 @@ sealed interface TimerHistoryEvent {
     data class SetTimerRestart(val timerId: Int) : TimerHistoryEvent
     data class SetTimerGroupRestart(val timerGroupId: Int) : TimerHistoryEvent
     data class NavigateToHomeRestartTimerEvent(val timerId: Int) : TimerHistoryEvent
-    data class NaviagateToHomeRestartTimerGroupEvent(val timerGroupId: Int) : TimerHistoryEvent
+    data class NavigateToHomeRestartTimerGroupEvent(val timerGroupId: Int) : TimerHistoryEvent
 
 }
 //

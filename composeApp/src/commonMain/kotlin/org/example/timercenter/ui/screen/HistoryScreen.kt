@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.item.TimerHistory
@@ -17,10 +16,11 @@ import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.viewmodels.TimerHistoryViewModel
-import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.example.timercenter.ui.viewmodels.states.TimerHistoryEvent
 import org.example.timercenter.ui.viewmodels.states.TimerHistorySideEffect
 import org.koin.compose.viewmodel.koinViewModel
+
+private const val TAG = "HistoryScreen"
 
 @Composable
 fun HistoryScreen(
@@ -38,6 +38,9 @@ fun HistoryScreen(
             }
         }
     }
+    println("$TAG Timers - ${state.timers}")
+    println("$TAG TimerGroups - ${state.timerGroups}")
+
     val historyItems = (state.timers.map { it to it.lastStartedTime } +
             state.timerGroups.map { it to it.lastStartedTime })
         .filter { it.second > 0L } // Убираем элементы, у которых lastStartedTime == 0
@@ -71,7 +74,7 @@ fun HistoryScreen(
                             item.id,
                             timerAgoManager.currentTimeMillis()
                         )
-                        historyViewModel.onEvent(TimerHistoryEvent.NaviagateToHomeRestartTimerGroupEvent(timerGroupId = item.id))
+                        historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent(timerGroupId = item.id))
                     }
                 )
             }

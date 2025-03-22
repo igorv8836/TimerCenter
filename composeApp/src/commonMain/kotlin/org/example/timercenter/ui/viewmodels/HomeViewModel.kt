@@ -14,6 +14,8 @@ import org.example.timercenter.ui.viewmodels.states.HomeState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 
+private const val TAG = "HomeViewModel"
+
 @OptIn(OrbitExperimental::class)
 class HomeViewModel(
     private val timerRepository: TimerRepository,
@@ -114,12 +116,22 @@ class HomeViewModel(
             }
 
             is HomeEvent.UpdateTimerLastStartedTime -> {
+
                 val timers =
                     state.timers.map { if (it.id == event.timerId) it.copy(lastStartedTime = event.lastStartedTime) else it }
+                if (timerRepository.getTimer(event.timerId) != null) {
+                    timerRepository.updateTimer(
+                        timerRepository.getTimer(event.timerId)!!
+                            .copy(startTime = event.lastStartedTime)
+                    )
+                }
+                println("$TAG timers - $timers")
                 reduce { state.copy(timers = timers) }
             }
+
             is HomeEvent.UpdateTimerGroupLastStartedTime -> {
-                val timerGroups = state.timerGroups.map { if (it.id == event.timerGroupId) it.copy(lastStartedTime = event.lastStartedTime) else it}
+                val timerGroups =
+                    state.timerGroups.map { if (it.id == event.timerGroupId) it.copy(lastStartedTime = event.lastStartedTime) else it }
                 reduce { state.copy(timerGroups = timerGroups) }
             }
 

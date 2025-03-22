@@ -40,12 +40,12 @@ class TimerRepositoryImpl(
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val updatedTimer = timer.copy(isRunning = true, startTime = currentTime)
         timerDao.updateTimer(updatedTimer)
-        timerHistoryDao.insertRecord(
-            TimerHistoryEntity(
-                name = timer.name,
-                lastStartedTime = currentTime
-            )
-        )
+//        timerHistoryDao.insertRecord(
+//            TimerHistoryEntity(
+//                name = timer.name,
+//                lastStartedTime = currentTime
+//            )
+//        )
         timerScheduler.scheduleTimer(updatedTimer.id, updatedTimer.durationMillis)
     }
 

@@ -13,7 +13,7 @@ import org.koin.dsl.module
 fun uiModule() = module {
     viewModel { TimerDetailViewModel(get()) }
     viewModel { TimerGroupViewModel(get()) }
-    viewModel { TimerHistoryViewModel(get()) }
+    viewModel { TimerHistoryViewModel(get(), get()) }
     viewModel { TimerListViewModel(get()) }
     viewModel { SettingsViewModel(get()) }
     viewModel { CreateTimerViewModel(get()) }
