@@ -34,7 +34,6 @@ import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.TimerAddToGroup
 import org.example.timercenter.ui.model.GroupType
-import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.viewmodels.CreateTimerGroupViewModel
 import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect

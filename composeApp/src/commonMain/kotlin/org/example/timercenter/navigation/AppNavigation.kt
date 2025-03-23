@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import org.example.timercenter.TimeAgoManager
-import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.screen.AddTimersToGroupScreen
 import org.example.timercenter.ui.screen.CreateScreen
 import org.example.timercenter.ui.screen.CreateTimerGroupScreen
@@ -61,7 +60,6 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
         }
         composable(Screen.ADD_TO_GROUP.route) {
             AddTimersToGroupScreen(
-                timerGroups = TimerManager.timerGroups,
                 navController = navController
             )
         }

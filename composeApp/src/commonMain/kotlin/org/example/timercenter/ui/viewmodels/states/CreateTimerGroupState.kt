@@ -42,18 +42,6 @@ fun CreateTimerGroupState.toEntity() : TimerGroupEntity {
     )
 }
 
-fun TimerGroupEntity.toUiModel(): TimerGroupUiModel {
-    return TimerGroupUiModel(
-        id = id,
-        groupName = name,
-        groupType = groupType.toGroupType(),
-        timers = emptyList(),
-        lastStartedTime = lastStartedTime,
-        delayTime = delayTime
-    )
-}
-
-
 sealed interface CreateTimerGroupEvent {
     data class SetTimerGroupId(val id: Int?) : CreateTimerGroupEvent
     data class SetName(val text: String) : CreateTimerGroupEvent

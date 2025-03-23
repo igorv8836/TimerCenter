@@ -1,6 +1,7 @@
 package org.example.timercenter.ui.model
 
 import androidx.compose.runtime.Stable
+import com.example.timercenter.database.model.TimerGroupEntity
 
 
 enum class GroupType {
@@ -35,3 +36,25 @@ data class TimerGroupUiModel(
     val lastStartedTime: Long = 0L, // Время последнего запуска в миллисекундах
     val delayTime: Long = 0L
 )
+
+fun TimerGroupEntity.toUiModel(timers: List<TimerUiModel>): TimerGroupUiModel {
+    return TimerGroupUiModel(
+        id = id,
+        groupName = name,
+        groupType = GroupType.CONSISTENT,
+        timers = timers,
+        lastStartedTime = 0L,
+        delayTime = 0L
+    )
+}
+
+fun TimerGroupEntity.toUiModel(): TimerGroupUiModel {
+    return TimerGroupUiModel(
+        id = id,
+        groupName = name,
+        groupType = groupType.toGroupType(),
+        timers = emptyList(),
+        lastStartedTime = lastStartedTime,
+        delayTime = delayTime
+    )
+}

@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.item.TimerHistory
 import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.viewmodels.TimerHistoryViewModel
 import org.example.timercenter.ui.viewmodels.states.TimerHistoryEvent
@@ -58,10 +57,10 @@ fun HistoryScreen(
                     name = item.timerName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-                        TimerManager.updateLastStartedTime(
-                            item.id,
-                            timerAgoManager.currentTimeMillis()
-                        )
+//                        TimerManager.updateLastStartedTime(
+//                            item.id,
+//                            timerAgoManager.currentTimeMillis()
+//                        )
                         historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerEvent(timerId = item.id))
                     }
                 )
@@ -70,10 +69,10 @@ fun HistoryScreen(
                     name = item.groupName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-                        TimerManager.updateLastStartedTime(
-                            item.id,
-                            timerAgoManager.currentTimeMillis()
-                        )
+//                        TimerManager.updateLastStartedTime(
+//                            item.id,
+//                            timerAgoManager.currentTimeMillis()
+//                        )
                         historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent(timerGroupId = item.id))
                     }
                 )
@@ -82,70 +81,4 @@ fun HistoryScreen(
         }
     }
 }
-
-//@Composable
-//fun HistoryScreen(
-//    timerAgoManager: TimeAgoManager,
-//    navController: NavController,
-//    timers: List<TimerUiModel>,
-//    timerGroups: List<TimerGroupUiModel>,
-//    historyViewModel: TimerHistoryViewModel = viewModel()
-//) {
-//    val state by historyViewModel.container.stateFlow.collectAsState()
-//    LaunchedEffect(historyViewModel) {
-//        historyViewModel.container.sideEffectFlow.collect { effect ->
-//            when (effect) {
-//                is TimerHistorySideEffect.ShowToast -> ""
-//                is TimerHistorySideEffect.NavigateToHomeRestartTimer -> navController.navigate("home/${effect.timerId}/-1")
-//                is TimerHistorySideEffect.NavigateToHomeRestartTimerGroup -> navController.navigate("home/-1/${effect.timerGroupId}")
-//            }
-//        }
-//    }
-//    val historyItems = (timers.map { it to it.lastStartedTime } +
-//            timerGroups.map { it to it.lastStartedTime })
-//        .filter { it.second > 0L } // Убираем элементы, у которых lastStartedTime == 0
-//        .sortedByDescending { it.second } // Сортировка по последнему запуску
-//
-//    LazyColumn(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(16.dp)
-//    ) {
-//        items(historyItems.size) { index ->
-//            val (item, lastStartedTime) = historyItems[index] // Получаем элемент по индексу
-//
-//            when (item) {
-//                is TimerUiModel -> TimerHistory(
-//                    timeAgoManager = timerAgoManager,
-//                    name = item.timerName,
-//                    lastStartedTime = lastStartedTime,
-//                    onRestart = {
-//                        TimerManager.updateLastStartedTime(
-//                            item.id,
-//                            timerAgoManager.currentTimeMillis()
-//                        )
-//                        navController.navigate("home/${item.id}/-1") {
-//                            popUpTo("history") { inclusive = true }
-//                        }
-//                    }
-//                )
-//
-//                is TimerGroupUiModel -> TimerHistory(
-//                    timeAgoManager = timerAgoManager,
-//                    name = item.groupName,
-//                    lastStartedTime = lastStartedTime,
-//                    onRestart = {
-//                        TimerManager.updateLastStartedTime(
-//                            item.id,
-//                            timerAgoManager.currentTimeMillis()
-//                        )
-//                        navController.navigate("home/-1/${item.id}") {
-//                            popUpTo("history") { inclusive = true }
-//                        }
-//                    }
-//                )
-//            }
-//        }
-//    }
-//}
 

@@ -5,31 +5,47 @@ import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import org.example.timercenter.ui.item.TimerGroupWithoutRun
 import org.example.timercenter.ui.model.TimerGroupUiModel
+import org.example.timercenter.ui.viewmodels.AddTimersToGroupViewModel
+import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEffect
+import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEvent
+import org.example.timercenter.ui.viewmodels.states.HomeEffect
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun AddTimersToGroupScreen(timerGroups: List<TimerGroupUiModel>, navController: NavController) {
+fun AddTimersToGroupScreen(
+    navController: NavController,
+    viewModel: AddTimersToGroupViewModel = koinViewModel()
+) {
     var isSelectGroup by remember { mutableStateOf(false) }
-    var chosenGroup by remember { mutableStateOf(1) }
+
+    val state by viewModel.container.stateFlow.collectAsState()
+    LaunchedEffect(viewModel) {
+        viewModel.container.sideEffectFlow.collect { effect ->
+            when (effect) {
+                is AddTimersToGroupEffect.NavigateToEditTimerGroup -> navController.navigate("create_group/${effect.timerGroupId}")
+            }
+        }
+    }
 
     if (!isSelectGroup) {
         LazyColumn {
-            items(timerGroups.size) { index ->
+            items(state.timerGroups.size) { index ->
                 TimerGroupWithoutRun(
-                    timerGroup = timerGroups[index],
-                    id = timerGroups[index].id,
+                    timerGroup = state.timerGroups[index],
+                    id = state.timerGroups[index].id,
                     selectGroup = { id ->
                         isSelectGroup = true
-                        chosenGroup = id
+                        viewModel.onEvent(AddTimersToGroupEvent.SetTimerChooseId(groupId = id))
                     })
             }
         }
     } else {
-        println("navigate to add timers to chosen group")
         isSelectGroup = false
-        navController.navigate("create_group/${chosenGroup}")
+        if (state.timerChooseId != null) {
+            viewModel.onEvent(AddTimersToGroupEvent.ChooseGroupToEdit(state.timerChooseId!!))
+        }
     }
-
 
 }
 

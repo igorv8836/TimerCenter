@@ -9,6 +9,7 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEvent
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupState
 import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
+import org.example.timercenter.ui.model.toUiModel
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 
 private const val TAG = "CreateTimerGroupViewModel"
@@ -18,7 +19,8 @@ class CreateTimerGroupViewModel(
     private val timerGroupRepository: TimerGroupRepository,
     private val timerRepository: TimerRepository
 ) : ViewModel(), ContainerHost<CreateTimerGroupState, CreateTimerGroupEffect> {
-    override val container = container<CreateTimerGroupState, CreateTimerGroupEffect>(CreateTimerGroupState())
+    override val container =
+        container<CreateTimerGroupState, CreateTimerGroupEffect>(CreateTimerGroupState())
 
     init {
         intent {
@@ -50,8 +52,23 @@ class CreateTimerGroupViewModel(
                 }
                 postSideEffect(CreateTimerGroupEffect.NavigateToHome)
             }
-            is CreateTimerGroupEvent.SetDelayHours -> blockingIntent { reduce { state.copy(delaySelectedHours = event.value) } }
-            is CreateTimerGroupEvent.SetDelayMinutes -> blockingIntent { reduce { state.copy(delaySelectedMinutes = event.value) } }
+
+            is CreateTimerGroupEvent.SetDelayHours -> blockingIntent {
+                reduce {
+                    state.copy(
+                        delaySelectedHours = event.value
+                    )
+                }
+            }
+
+            is CreateTimerGroupEvent.SetDelayMinutes -> blockingIntent {
+                reduce {
+                    state.copy(
+                        delaySelectedMinutes = event.value
+                    )
+                }
+            }
+
             is CreateTimerGroupEvent.SetName -> blockingIntent {
                 reduce {
                     state.copy(
@@ -59,7 +76,15 @@ class CreateTimerGroupViewModel(
                     )
                 }
             }
-            is CreateTimerGroupEvent.SetDelaySeconds -> blockingIntent { reduce { state.copy(delaySelectedSeconds = event.value) } }
+
+            is CreateTimerGroupEvent.SetDelaySeconds -> blockingIntent {
+                reduce {
+                    state.copy(
+                        delaySelectedSeconds = event.value
+                    )
+                }
+            }
+
             is CreateTimerGroupEvent.SetShowPopup -> intent { reduce { state.copy(showPopup = event.value) } }
 
             is CreateTimerGroupEvent.SetTimerGroupId -> blockingIntent {
@@ -85,16 +110,21 @@ class CreateTimerGroupViewModel(
                     }
                 }
             }
+
             is CreateTimerGroupEvent.SetGroupType -> blockingIntent {
-                reduce { state.copy(
-                    timerGroupInfo = state.timerGroupInfo.copy(groupType = event.groupType)
-                )}
+                reduce {
+                    state.copy(
+                        timerGroupInfo = state.timerGroupInfo.copy(groupType = event.groupType)
+                    )
+                }
             }
+
             is CreateTimerGroupEvent.AddTimerToGroup -> blockingIntent {
                 reduce {
                     state.copy(addedTimers = state.addedTimers + event.timer)
                 }
             }
+
             is CreateTimerGroupEvent.DeleteTimerFromGroup -> blockingIntent {
                 reduce {
                     state.copy(addedTimers = state.addedTimers - event.timer)

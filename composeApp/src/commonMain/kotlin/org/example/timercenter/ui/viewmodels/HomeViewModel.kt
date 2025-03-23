@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.orbit_mvi.viewmodel.container
 import com.example.timercenter.database.model.TimerEntity
 import com.example.timercenter.database.model.TimerGroupEntity
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.domain.repositories.TimerRepository
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.model.toUiModel
 import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.example.timercenter.ui.viewmodels.states.HomeState
@@ -47,22 +49,30 @@ class HomeViewModel(
 
     init {
         intent {
-            viewModelScope.launch {
-                timerRepository.getAllTimers().collect { timerEntities ->
-                    val timers = timerEntities.map { it.toUiModel() }
-                    println("$TAG timers: $timers")
-                    reduce { state.copy(timers = timers) }
+            // Объединяем два потока в один
+            combine(
+                timerRepository.getAllTimers(),
+                timerGroupRepository.getAllGroups()
+            ) { timerEntities, groupEntities ->
+                // Сначала маппим таймеры
+                val timers = timerEntities.map { it.toUiModel() }
+
+                // Потом маппим группы, уже имея под рукой свежие TimerEntity
+                val groups = groupEntities.map { groupEntity ->
+                    groupEntity.toUiModel(
+                        timers.filter { it.groupId == groupEntity.id }
+                    )
                 }
-            }
-            viewModelScope.launch {
-                timerGroupRepository.getAllGroups().collect { groupEntities ->
-                    val groups = groupEntities.map { it.toUiModel(state.timers.filter { it }) }
-                    println("$TAG groups: $groups")
-                    reduce { state.copy(timerGroups = groups) }
-                }
+
+                // Возвращаем пару (или любой другой контейнер)
+                timers to groups
+            }.collect { (timers, groups) ->
+                // Когда combine «собрал» обе коллекции, обновляем стейт
+                reduce { state.copy(timers = timers, timerGroups = groups) }
             }
         }
     }
+
 
     fun onEvent(event: HomeEvent) = intent {
         when (event) {
@@ -166,33 +176,5 @@ class HomeViewModel(
     }
 }
 
-fun TimerEntity.toUiModel(): TimerUiModel {
-    return TimerUiModel(
-        id = id,
-        timerName = name,
-        totalTime = durationMillis,
-        lastStartedTime = startTime ?: 0L
-    )
-}
 
-fun TimerGroupEntity.toUiModel(timers: List<TimerUiModel>): TimerGroupUiModel {
-    return TimerGroupUiModel(
-        id = id,
-        groupName = name,
-        groupType = org.example.timercenter.ui.model.GroupType.CONSISTENT,
-        timers = timers,
-        lastStartedTime = 0L,
-        delayTime = 0L
-    )
-}
 
-fun TimerGroupEntity.toUiModel(): TimerGroupUiModel {
-    return TimerGroupUiModel(
-        id = id,
-        groupName = name,
-        groupType = org.example.timercenter.ui.model.GroupType.CONSISTENT,
-        timers = emptyList(),
-        lastStartedTime = 0L,
-        delayTime = 0L
-    )
-}

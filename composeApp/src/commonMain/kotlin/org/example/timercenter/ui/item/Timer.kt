@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import org.example.timercenter.TimeAgoManager
-import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.formatTime
 import org.example.timercenter.ui.model.TimerUiModel
 

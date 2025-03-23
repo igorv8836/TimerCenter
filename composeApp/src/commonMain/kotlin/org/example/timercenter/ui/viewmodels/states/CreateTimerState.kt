@@ -39,6 +39,7 @@ fun TimerEntity.toUiModel(): TimerUiModel {
         id = id,
         timerName = name,
         totalTime = durationMillis,
+        groupId = groupId,
         lastStartedTime = startTime ?: 0L
     )
 }

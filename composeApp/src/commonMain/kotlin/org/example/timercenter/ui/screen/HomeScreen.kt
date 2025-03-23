@@ -138,7 +138,6 @@ fun HomeScreen(
                 if (isTimerGroupsExpanded) {
                     state.timerGroups.forEach { group ->
                         TimerGroup(
-                            timerAgoManager = timerAgoManager,
                             timerGroup = group,
                             isSelected = state.selectedTimerGroups.contains(group),
                             onSelect = { isLongPress ->

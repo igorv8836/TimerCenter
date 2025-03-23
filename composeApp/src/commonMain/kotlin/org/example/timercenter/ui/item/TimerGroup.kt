@@ -28,12 +28,10 @@ import kotlinx.coroutines.delay
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.model.GroupType
 import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerManager
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TimerGroup(
-    timerAgoManager: TimeAgoManager,
     timerGroup: TimerGroupUiModel,
     isSelected: Boolean,
     onSelect: (isLongPress: Boolean) -> Unit,
@@ -142,10 +140,6 @@ fun TimerGroup(
                     isRunning = true
                     isStarted = true
                     onStartGroup()
-                    TimerManager.updateLastStartedTimeForGroup(
-                        groupId = timerGroup.id,
-                        currentTime = timerAgoManager.currentTimeMillis()
-                    )
                 })
             } else {
                 CircularButton(
