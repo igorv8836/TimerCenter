@@ -32,6 +32,10 @@ class TimerRepositoryImpl(
         timerDao.updateTimer(timer)
     }
 
+    override suspend fun updateTimerInGroupId(timerId: Int, groupId: Int) {
+        timerDao.updateTimerInGroupId(timerId = timerId, groupId = groupId)
+    }
+
     override suspend fun deleteTimer(id: Int): Unit = withContext(ioDispatcher) {
         timerDao.getTimerById(id)?.let { timerDao.deleteTimer(it) }
     }

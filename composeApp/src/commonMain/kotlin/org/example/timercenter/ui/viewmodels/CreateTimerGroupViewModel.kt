@@ -11,6 +11,8 @@ import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 
+private const val TAG = "CreateTimerGroupViewModel"
+
 @OptIn(OrbitExperimental::class)
 class CreateTimerGroupViewModel(
     private val timerGroupRepository: TimerGroupRepository,
@@ -26,12 +28,6 @@ class CreateTimerGroupViewModel(
                     reduce { state.copy(allTimers = timers) }
                 }
             }
-//            subIntent {
-//                timerGroupRepository.getAllGroups().collect { groupEntities ->
-//                    val groups = groupEntities.map { it.toUiModel() }
-//                    reduce { state.copy(timerGroups = groups) }
-//                }
-//            }
         }
     }
 
@@ -39,7 +35,13 @@ class CreateTimerGroupViewModel(
         when (event) {
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {
                 val timerGroupEntity = state.toEntity()
+                println("$TAG timerGroupEntity - $timerGroupEntity")
                 val newId = timerGroupRepository.createGroup(timerGroupEntity)
+
+                state.addedTimers.forEach { timerUiModel ->
+                    timerRepository.updateTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
+                }
+
                 reduce {
                     state.copy(
                         id = newId,
@@ -59,9 +61,7 @@ class CreateTimerGroupViewModel(
             }
             is CreateTimerGroupEvent.SetDelaySeconds -> blockingIntent { reduce { state.copy(delaySelectedSeconds = event.value) } }
             is CreateTimerGroupEvent.SetShowPopup -> intent { reduce { state.copy(showPopup = event.value) } }
-            is CreateTimerGroupEvent.SetStartImmediately -> blockingIntent {
-                reduce { state.copy(startImmediately = event.value) }
-            }
+
             is CreateTimerGroupEvent.SetTimerGroupId -> blockingIntent {
                 if (event.id == null) {
                     reduce { state.copy(id = null) }

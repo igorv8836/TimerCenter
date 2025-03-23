@@ -36,7 +36,6 @@ import org.example.timercenter.ui.model.TimerUiModel
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Timer(
-    timerAgoManager: TimeAgoManager,
     timer: TimerUiModel,
     isSelected: Boolean,
     onSelect: (isLongPress: Boolean) -> Unit,
@@ -95,7 +94,6 @@ fun Timer(
                     isStarted = true
                     //Вызов метода onStart, который обрабатывается в HomeScreen, обновляя значения lastStartedTimer у этого таймера
                     onStart()
-                    TimerManager.updateLastStartedTime(timerId = timer.id, currentTime = timerAgoManager.currentTimeMillis()) // Обновляем время запуска
                 })
             } else {
                 CircularButton(icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow, onClick = {

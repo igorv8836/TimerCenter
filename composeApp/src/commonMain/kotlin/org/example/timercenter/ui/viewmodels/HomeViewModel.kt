@@ -1,9 +1,11 @@
 package org.example.timercenter.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.orbit_mvi.viewmodel.container
 import com.example.timercenter.database.model.TimerEntity
 import com.example.timercenter.database.model.TimerGroupEntity
+import kotlinx.coroutines.launch
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.domain.repositories.TimerRepository
 import org.example.timercenter.ui.model.TimerGroupUiModel
@@ -21,19 +23,41 @@ class HomeViewModel(
     private val timerRepository: TimerRepository,
     private val timerGroupRepository: TimerGroupRepository
 ) : ViewModel(), ContainerHost<HomeState, HomeEffect> {
+
     override val container = container<HomeState, HomeEffect>(HomeState())
+
+//    init {
+//        intent {
+//            subIntent {
+//                timerRepository.getAllTimers().collect { timerEntities ->
+//                    val timers = timerEntities.map { it.toUiModel() }
+//                    println("$TAG timers: $timers")
+//                    reduce { state.copy(timers = timers) }
+//                }
+//            }
+//            subIntent {
+//                timerGroupRepository.getAllGroups().collect { groupEntities ->
+//                    val groups = groupEntities.map { it.toUiModel() }
+//                    println("$TAG groups: $groups")
+//                    reduce { state.copy(timerGroups = groups) }
+//                }
+//            }
+//        }
+//    }
 
     init {
         intent {
-            subIntent {
+            viewModelScope.launch {
                 timerRepository.getAllTimers().collect { timerEntities ->
                     val timers = timerEntities.map { it.toUiModel() }
+                    println("$TAG timers: $timers")
                     reduce { state.copy(timers = timers) }
                 }
             }
-            subIntent {
+            viewModelScope.launch {
                 timerGroupRepository.getAllGroups().collect { groupEntities ->
-                    val groups = groupEntities.map { it.toUiModel() }
+                    val groups = groupEntities.map { it.toUiModel(state.timers.filter { it }) }
+                    println("$TAG groups: $groups")
                     reduce { state.copy(timerGroups = groups) }
                 }
             }
@@ -148,6 +172,17 @@ fun TimerEntity.toUiModel(): TimerUiModel {
         timerName = name,
         totalTime = durationMillis,
         lastStartedTime = startTime ?: 0L
+    )
+}
+
+fun TimerGroupEntity.toUiModel(timers: List<TimerUiModel>): TimerGroupUiModel {
+    return TimerGroupUiModel(
+        id = id,
+        groupName = name,
+        groupType = org.example.timercenter.ui.model.GroupType.CONSISTENT,
+        timers = timers,
+        lastStartedTime = 0L,
+        delayTime = 0L
     )
 }
 

@@ -10,19 +10,29 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 
+private const val TAG = "TimerGroupRepositoryImpl"
+
 class TimerGroupRepositoryImpl(
     private val timerGroupDao: TimerGroupDao,
     private val timerDao: TimerDao,
     private val ioDispatcher: CoroutineDispatcher
 ) : TimerGroupRepository {
 
-    override fun getAllGroups(): Flow<List<TimerGroupEntity>> = timerGroupDao.getAllGroupsFlow()
+    init {
+        println("$TAG init")
+    }
+
+    override fun getAllGroups(): Flow<List<TimerGroupEntity>> {
+        println("$TAG getAllGroups" )
+        return timerGroupDao.getAllGroupsFlow()
+    }
 
     override suspend fun getGroup(id: Int): TimerGroupEntity? = withContext(ioDispatcher) {
         timerGroupDao.getGroupById(id = id)
     }
 
     override suspend fun createGroup(group: TimerGroupEntity): Int = withContext(ioDispatcher) {
+        println("$TAG createGroup $group")
         timerGroupDao.insertGroup(group).toInt()
     }
 

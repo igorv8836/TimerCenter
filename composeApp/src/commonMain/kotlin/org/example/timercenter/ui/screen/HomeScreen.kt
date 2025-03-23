@@ -101,7 +101,6 @@ fun HomeScreen(
                 if (isTimersExpanded) {
                     state.timers.forEach { timer ->
                         Timer(
-                            timerAgoManager = timerAgoManager,
                             timer = timer,
                             isSelected = state.selectedTimers.contains(timer),
                             onSelect = { isLongPress ->
@@ -116,6 +115,44 @@ fun HomeScreen(
                 }
                 Spacer(modifier = Modifier.height(18.dp))
             }
+
+            if (state.timerGroups.isNotEmpty()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Группы таймеров",
+                        fontSize = 22.sp,
+                        style = TextStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground),
+                        modifier = Modifier.padding(bottom = 8.dp, start = 12.dp)
+                    )
+                    IconButton(onClick = { isTimerGroupsExpanded = !isTimerGroupsExpanded }) {
+                        Icon(
+                            imageVector = if (isTimerGroupsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                            contentDescription = if (isTimerGroupsExpanded) "Collapse" else "Expand"
+                        )
+                    }
+                }
+                if (isTimerGroupsExpanded) {
+                    state.timerGroups.forEach { group ->
+                        TimerGroup(
+                            timerAgoManager = timerAgoManager,
+                            timerGroup = group,
+                            isSelected = state.selectedTimerGroups.contains(group),
+                            onSelect = { isLongPress ->
+                                homeViewModel.onEvent(HomeEvent.ToggleTimerGroupSelection(group, isLongPress))
+                            },
+                            onStartGroup = {},
+                            onPauseGroup = {},
+                            onResetGroup = {},
+                            toRun = group.id == state.timerGroupRestartId
+                        )
+                    }
+                }
+            }
+
             if (state.showDeleteConfirmation) {
                 val text = when {
                     state.selectedTimers.isEmpty() -> if (state.selectedTimerGroups.size == 1)
@@ -135,40 +172,6 @@ fun HomeScreen(
                     buttonText = "Удалить",
                     onCancel = { homeViewModel.onEvent(HomeEvent.CancelDeletion) },
                     onConfirm = { homeViewModel.onEvent(HomeEvent.ConfirmDeletion) })
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = "Группы таймеров",
-                    fontSize = 22.sp,
-                    style = TextStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground),
-                    modifier = Modifier.padding(bottom = 8.dp, start = 12.dp)
-                )
-                IconButton(onClick = { isTimerGroupsExpanded = !isTimerGroupsExpanded }) {
-                    Icon(
-                        imageVector = if (isTimerGroupsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
-                        contentDescription = if (isTimerGroupsExpanded) "Collapse" else "Expand"
-                    )
-                }
-            }
-            if (isTimerGroupsExpanded) {
-                state.timerGroups.forEach { group ->
-                    TimerGroup(
-                        timerAgoManager = timerAgoManager,
-                        timerGroup = group,
-                        isSelected = state.selectedTimerGroups.contains(group),
-                        onSelect = { isLongPress ->
-                            homeViewModel.onEvent(HomeEvent.ToggleTimerGroupSelection(group, isLongPress))
-                        },
-                        onStartGroup = {},
-                        onPauseGroup = {},
-                        onResetGroup = {},
-                        toRun = group.id == state.timerGroupRestartId
-                    )
-                }
             }
         }
     }

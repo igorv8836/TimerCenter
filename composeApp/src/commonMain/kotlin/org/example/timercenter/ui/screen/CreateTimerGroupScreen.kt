@@ -196,6 +196,7 @@ fun CreateTimerGroupScreen(
                 buttonText = "Изменить",
                 onCancel = { viewModel.onEvent(CreateTimerGroupEvent.SetShowPopup(false)) },
                 onConfirm = {
+                    viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
 //                    if (isDelayMode) {
 //
 //                        TimerManager.editTimerGroup(
@@ -213,7 +214,6 @@ fun CreateTimerGroupScreen(
 //                            newTimers = selectedTimers.toList()
 //                        )
 //                    }
-                    viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
                 }
             )
         }

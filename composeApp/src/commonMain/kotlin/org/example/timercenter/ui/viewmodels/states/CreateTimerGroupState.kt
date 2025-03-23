@@ -19,7 +19,6 @@ data class CreateTimerGroupState(
     val delaySelectedHours: Int = 0,
     val delaySelectedMinutes: Int = 0,
     val delaySelectedSeconds: Int = 0,
-    val startImmediately: Boolean = false,
     val showPopup: Boolean = false
 )
 
@@ -62,7 +61,6 @@ sealed interface CreateTimerGroupEvent {
     data class SetDelayHours(val value: Int) : CreateTimerGroupEvent
     data class SetDelayMinutes(val value: Int) : CreateTimerGroupEvent
     data class SetDelaySeconds(val value: Int) : CreateTimerGroupEvent
-    data class SetStartImmediately(val value: Boolean) : CreateTimerGroupEvent
     data class SetShowPopup(val value: Boolean) : CreateTimerGroupEvent
 
     data object SaveTimerGroup : CreateTimerGroupEvent
