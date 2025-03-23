@@ -40,13 +40,13 @@ class CreateTimerGroupViewModel(
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {
                 val timerGroupEntity = state.toEntity()
                 val newId = timerGroupRepository.createGroup(timerGroupEntity)
-                state.addedTimers.forEach { timerUiModel ->
+                state.timerGroupInfo.timers.forEach { timerUiModel ->
                     timerRepository.updateTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
                 }
-                val notAddedTimers = state.allTimers - state.addedTimers.toSet()
+                val notAddedTimers = state.allTimers - state.timerGroupInfo.timers.toSet()
                 println("$TAG notAddedTimers - $notAddedTimers")
                 notAddedTimers.forEach { timerUiModel ->
-                    timerRepository.resetTimerInGroupId(timerId = timerUiModel.id)
+                    timerRepository.resetTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
                 }
 
                 reduce {
@@ -76,15 +76,27 @@ class CreateTimerGroupViewModel(
                                     groupName = it.name,
                                     groupType = it.groupType.toGroupType(),
                                     delayTime = it.delayTime,
+                                    timers = timersUi,
                                     lastStartedTime = it.lastStartedTime ?: 0L
                                 ),
-                                addedTimers = timersUi,
                                 delaySelectedHours = (it.delayTime / 3_600_000L).toInt(),
                                 delaySelectedMinutes = ((it.delayTime % 3_600_000L) / 60_000L).toInt(),
                                 delaySelectedSeconds = ((it.delayTime % 60_000L) / 1_000L).toInt()
                             )
                         }
                     }
+                }
+            }
+
+            is CreateTimerGroupEvent.AddTimerToGroup -> blockingIntent {
+                reduce {
+                    state.copy(timerGroupInfo = state.timerGroupInfo.copy(timers = state.timerGroupInfo.timers + event.timer))
+                }
+            }
+
+            is CreateTimerGroupEvent.DeleteTimerFromGroup -> blockingIntent {
+                reduce {
+                    state.copy(timerGroupInfo = state.timerGroupInfo.copy(timers = state.timerGroupInfo.timers - event.timer))
                 }
             }
 
@@ -127,19 +139,6 @@ class CreateTimerGroupViewModel(
                     state.copy(
                         timerGroupInfo = state.timerGroupInfo.copy(groupType = event.groupType)
                     )
-                }
-            }
-
-            is CreateTimerGroupEvent.AddTimerToGroup -> blockingIntent {
-                reduce {
-                    state.copy(addedTimers = state.addedTimers + event.timer)
-                }
-            }
-
-            is CreateTimerGroupEvent.DeleteTimerFromGroup -> blockingIntent {
-                reduce {
-                    state.copy(addedTimers = state.addedTimers - event.timer)
-
                 }
             }
         }

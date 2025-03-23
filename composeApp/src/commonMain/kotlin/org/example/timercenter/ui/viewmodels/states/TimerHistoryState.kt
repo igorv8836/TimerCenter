@@ -3,18 +3,6 @@ package org.example.timercenter.ui.viewmodels.states
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerUiModel
 
-//data class TimerHistoryState(
-//    val history: List<TimerHistoryEntity> = emptyList(),
-//    val isLoading: Boolean = false,
-//    val error: String? = null
-//)
-
-//sealed class TimerHistorySideEffect {
-//    data class ShowToast(val message: String) : TimerHistorySideEffect()
-//    data class NavigateToHomeRestartTimer(val timerId: Int) : TimerHistorySideEffect
-//    data class NavigateToHomeRestartTimerGroup(val timerGroupId: Int) : TimerHistorySideEffect
-//}
-
 data class TimerHistoryState(
     val timers: List<TimerUiModel> = emptyList(),
     val timerGroups: List<TimerGroupUiModel> = emptyList(),
@@ -23,7 +11,6 @@ data class TimerHistoryState(
 )
 
 sealed interface TimerHistorySideEffect {
-    data class ShowToast(val message: String) : TimerHistorySideEffect
     data class NavigateToHomeRestartTimer(val timerId: Int) : TimerHistorySideEffect
     data class NavigateToHomeRestartTimerGroup(val timerGroupId: Int) : TimerHistorySideEffect
 }
@@ -39,10 +26,3 @@ sealed interface TimerHistoryEvent {
     data class NavigateToHomeRestartTimerGroupEvent(val timerGroupId: Int) : TimerHistoryEvent
 
 }
-//
-//fun TimerHistoryEntity.toUiModel(): TimerHistoryUiModel {
-//    return TimerHistoryUiModel(
-//        id = id,
-//        name =
-//    )
-//}

@@ -43,6 +43,7 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect
 import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
 import org.koin.compose.viewmodel.koinViewModel
 
+private const val TAG = "CreateScreen"
 @Composable
 fun CreateScreen(
     navController: NavController,
@@ -56,11 +57,14 @@ fun CreateScreen(
         }
     }
 
-    viewModel.onEvent(
-        CreateTimerEvent.SetTimerId(
-            navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
+    LaunchedEffect(viewModel) {
+        println("$TAG LaunchedEffect")
+        viewModel.onEvent(
+            CreateTimerEvent.SetTimerId(
+                navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
+            )
         )
-    )
+    }
 
     Column(
         modifier = Modifier
@@ -77,6 +81,8 @@ fun CreateScreen(
 
         Spacer(Modifier.height(16.dp))
 
+        println("$TAG state - $state")
+        println("$TAG hours - ${state.selectedHours}, minutes - ${state.selectedMinutes}, seconds - ${state.selectedSeconds}")
         // Выбор времени
         TimePicker(
             selectedHours = state.selectedHours,
@@ -114,7 +120,7 @@ fun CreateScreen(
         // Кнопка сохранения
         Button(
             onClick = {
-                viewModel.onEvent(CreateTimerEvent.SaveTimer)
+                viewModel.onEvent(CreateTimerEvent.SetShowPopup(value = true))
             },
             modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
         ) {

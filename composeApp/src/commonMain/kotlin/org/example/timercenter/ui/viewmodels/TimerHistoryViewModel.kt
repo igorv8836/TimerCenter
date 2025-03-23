@@ -1,7 +1,9 @@
 package org.example.timercenter.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.orbit_mvi.viewmodel.container
+import kotlinx.coroutines.launch
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.domain.repositories.TimerRepository
 import org.example.timercenter.ui.model.toUiModel
@@ -18,19 +20,19 @@ class TimerHistoryViewModel(
     private val timerGroupRepository: TimerGroupRepository
 ) : ViewModel(), ContainerHost<TimerHistoryState, TimerHistorySideEffect> {
 
-    override val container = container<TimerHistoryState, TimerHistorySideEffect>(TimerHistoryState())
-
+    override val container =
+        container<TimerHistoryState, TimerHistorySideEffect>(TimerHistoryState())
 
 
     init {
         intent {
-            subIntent {
+            viewModelScope.launch {
                 timerRepository.getAllTimers().collect { timerEntities ->
                     val timers = timerEntities.map { it.toUiModel() }
                     reduce { state.copy(timers = timers) }
                 }
             }
-            subIntent {
+            viewModelScope.launch {
                 timerGroupRepository.getAllGroups().collect { groupEntities ->
                     val groups = groupEntities.map { it.toUiModel() }
                     reduce { state.copy(timerGroups = groups) }
@@ -44,9 +46,11 @@ class TimerHistoryViewModel(
             is TimerHistoryEvent.NavigateToHomeRestartTimerEvent -> {
                 postSideEffect(TimerHistorySideEffect.NavigateToHomeRestartTimer(timerId = event.timerId))
             }
+
             is TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent -> {
                 postSideEffect(TimerHistorySideEffect.NavigateToHomeRestartTimerGroup(timerGroupId = event.timerGroupId))
             }
+
             else -> {}
         }
     }

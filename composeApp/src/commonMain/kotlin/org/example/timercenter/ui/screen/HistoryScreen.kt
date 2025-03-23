@@ -28,17 +28,15 @@ fun HistoryScreen(
     historyViewModel: TimerHistoryViewModel = koinViewModel()
 ) {
     val state by historyViewModel.container.stateFlow.collectAsState()
+
     LaunchedEffect(historyViewModel) {
         historyViewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
-                is TimerHistorySideEffect.ShowToast -> ""
                 is TimerHistorySideEffect.NavigateToHomeRestartTimer -> navController.navigate("home/${effect.timerId}/-1")
                 is TimerHistorySideEffect.NavigateToHomeRestartTimerGroup -> navController.navigate("home/-1/${effect.timerGroupId}")
             }
         }
     }
-    println("$TAG Timers - ${state.timers}")
-    println("$TAG TimerGroups - ${state.timerGroups}")
 
     val historyItems = (state.timers.map { it to it.lastStartedTime } +
             state.timerGroups.map { it to it.lastStartedTime })
@@ -57,10 +55,6 @@ fun HistoryScreen(
                     name = item.timerName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-//                        TimerManager.updateLastStartedTime(
-//                            item.id,
-//                            timerAgoManager.currentTimeMillis()
-//                        )
                         historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerEvent(timerId = item.id))
                     }
                 )
@@ -69,10 +63,6 @@ fun HistoryScreen(
                     name = item.groupName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-//                        TimerManager.updateLastStartedTime(
-//                            item.id,
-//                            timerAgoManager.currentTimeMillis()
-//                        )
                         historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent(timerGroupId = item.id))
                     }
                 )

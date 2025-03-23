@@ -14,7 +14,6 @@ import org.example.timercenter.ui.model.toInt
 data class CreateTimerGroupState(
     val id: Int? = null,
     val timerGroupInfo: TimerGroupUiModel = TimerGroupUiModel(),
-    val addedTimers: List<TimerUiModel> = emptyList(),
     val allTimers: List<TimerUiModel> = emptyList(),
     val delaySelectedHours: Int = 0,
     val delaySelectedMinutes: Int = 0,
@@ -38,7 +37,7 @@ fun CreateTimerGroupState.toEntity() : TimerGroupEntity {
         groupType = timerGroupInfo.groupType.toInt(),
         isRunning = false,
         lastStartedTime = timerGroupInfo.lastStartedTime,
-        delayTime = timerGroupInfo.delayTime
+        delayTime = getMilliseconds()
     )
 }
 

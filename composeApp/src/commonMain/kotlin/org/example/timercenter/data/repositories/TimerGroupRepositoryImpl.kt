@@ -18,12 +18,8 @@ class TimerGroupRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : TimerGroupRepository {
 
-    init {
-        println("$TAG init")
-    }
 
     override fun getAllGroups(): Flow<List<TimerGroupEntity>> {
-        println("$TAG getAllGroups" )
         return timerGroupDao.getAllGroupsFlow()
     }
 
@@ -32,7 +28,6 @@ class TimerGroupRepositoryImpl(
     }
 
     override suspend fun createGroup(group: TimerGroupEntity): Int = withContext(ioDispatcher) {
-        println("$TAG createGroup $group")
         timerGroupDao.insertGroup(group).toInt()
     }
 
@@ -43,8 +38,8 @@ class TimerGroupRepositoryImpl(
     override fun getTimersInGroup(id: Int): Flow<List<TimerEntity>> =
         timerDao.getTimersByGroupFlow(id)
 
-    override suspend fun updateGroup(group: TimerGroupEntity) {
-        TODO("Not yet implemented")
+    override suspend fun updateGroup(group: TimerGroupEntity) = withContext(ioDispatcher) {
+        timerGroupDao.updateGroup(group)
     }
 
     override suspend fun startGroup(group: TimerGroupEntity) {

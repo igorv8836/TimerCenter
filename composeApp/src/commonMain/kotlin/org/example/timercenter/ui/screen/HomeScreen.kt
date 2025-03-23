@@ -143,7 +143,9 @@ fun HomeScreen(
                             onSelect = { isLongPress ->
                                 homeViewModel.onEvent(HomeEvent.ToggleTimerGroupSelection(group, isLongPress))
                             },
-                            onStartGroup = {},
+                            onStartGroup = {
+                                homeViewModel.onEvent(HomeEvent.UpdateTimerGroupLastStartedTime(timerGroupId = group.id, lastStartedTime = timerAgoManager.currentTimeMillis()))
+                            },
                             onPauseGroup = {},
                             onResetGroup = {},
                             toRun = group.id == state.timerGroupRestartId

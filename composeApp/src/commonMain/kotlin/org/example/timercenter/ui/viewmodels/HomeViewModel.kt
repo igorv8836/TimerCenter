@@ -159,13 +159,18 @@ class HomeViewModel(
                             .copy(startTime = event.lastStartedTime)
                     )
                 }
-                println("$TAG timers - $timers")
                 reduce { state.copy(timers = timers) }
             }
 
             is HomeEvent.UpdateTimerGroupLastStartedTime -> {
                 val timerGroups =
                     state.timerGroups.map { if (it.id == event.timerGroupId) it.copy(lastStartedTime = event.lastStartedTime) else it }
+                if (timerGroupRepository.getGroup(event.timerGroupId) != null) {
+                    timerGroupRepository.updateGroup(
+                        timerGroupRepository.getGroup(event.timerGroupId)!!
+                            .copy(lastStartedTime = event.lastStartedTime)
+                    )
+                }
                 reduce { state.copy(timerGroups = timerGroups) }
             }
 

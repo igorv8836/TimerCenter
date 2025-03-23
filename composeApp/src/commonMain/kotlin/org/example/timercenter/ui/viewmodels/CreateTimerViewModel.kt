@@ -9,6 +9,8 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerState
 import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
 
+private const val TAG = "CreateTimerViewModel"
+
 class CreateTimerViewModel(
     private val timerRepository: TimerRepository
 ) : ViewModel(), ContainerHost<CreateTimerState, CreateTimerEffect> {
@@ -26,20 +28,6 @@ class CreateTimerViewModel(
                     )
                 }
                 postSideEffect(CreateTimerEffect.NavigateToHome)
-            }
-            is CreateTimerEvent.SetHours -> blockingIntent { reduce { state.copy(selectedHours = event.value) } }
-            is CreateTimerEvent.SetMinutes -> blockingIntent { reduce { state.copy(selectedMinutes = event.value) } }
-            is CreateTimerEvent.SetName -> blockingIntent {
-                reduce {
-                    state.copy(
-                        timerInfo = state.timerInfo.copy(timerName = event.text)
-                    )
-                }
-            }
-            is CreateTimerEvent.SetSeconds -> blockingIntent { reduce { state.copy(selectedSeconds = event.value) } }
-            is CreateTimerEvent.SetShowPopup -> intent { reduce { state.copy(showPopup = event.value) } }
-            is CreateTimerEvent.SetStartImmediately -> blockingIntent {
-                reduce { state.copy(startImmediately = event.value) }
             }
             is CreateTimerEvent.SetTimerId -> blockingIntent {
                 if (event.id == null) {
@@ -62,7 +50,22 @@ class CreateTimerViewModel(
                             )
                         }
                     }
+                    println("$TAG hours - ${state.selectedHours}, minutes - ${state.selectedMinutes}, seconds - ${state.selectedSeconds}")
                 }
+            }
+            is CreateTimerEvent.SetHours -> blockingIntent { reduce { state.copy(selectedHours = event.value) } }
+            is CreateTimerEvent.SetMinutes -> blockingIntent { reduce { state.copy(selectedMinutes = event.value) } }
+            is CreateTimerEvent.SetName -> blockingIntent {
+                reduce {
+                    state.copy(
+                        timerInfo = state.timerInfo.copy(timerName = event.text)
+                    )
+                }
+            }
+            is CreateTimerEvent.SetSeconds -> blockingIntent { reduce { state.copy(selectedSeconds = event.value) } }
+            is CreateTimerEvent.SetShowPopup -> intent { reduce { state.copy(showPopup = event.value) } }
+            is CreateTimerEvent.SetStartImmediately -> blockingIntent {
+                reduce { state.copy(startImmediately = event.value) }
             }
         }
     }

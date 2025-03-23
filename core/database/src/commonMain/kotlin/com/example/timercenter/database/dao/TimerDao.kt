@@ -35,8 +35,8 @@ interface TimerDao {
     @Query("UPDATE timers SET groupId = :groupId WHERE id = :timerId")
     suspend fun updateTimerInGroupId(timerId: Int, groupId: Int)
 
-    @Query("UPDATE timers SET groupId = NULL WHERE id = :timerId")
-    suspend fun resetTimerInGroupId(timerId: Int)
+    @Query("UPDATE timers SET groupId = NULL WHERE id = :timerId AND groupId = :groupId")
+    suspend fun resetTimerInGroupId(timerId: Int, groupId: Int)
 
     @Delete
     suspend fun deleteTimer(timer: TimerEntity)

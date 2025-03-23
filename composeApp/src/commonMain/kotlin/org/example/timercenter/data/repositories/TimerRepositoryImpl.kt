@@ -36,8 +36,9 @@ class TimerRepositoryImpl(
         timerDao.updateTimerInGroupId(timerId = timerId, groupId = groupId)
     }
 
-    override suspend fun resetTimerInGroupId(timerId: Int) {
-        timerDao.resetTimerInGroupId(timerId = timerId)
+
+    override suspend fun resetTimerInGroupId(timerId: Int, groupId: Int) {
+        timerDao.resetTimerInGroupId(timerId = timerId, groupId = groupId)
     }
 
     override suspend fun deleteTimer(id: Int): Unit = withContext(ioDispatcher) {
@@ -48,12 +49,6 @@ class TimerRepositoryImpl(
         val currentTime = Clock.System.now().toEpochMilliseconds()
         val updatedTimer = timer.copy(isRunning = true, startTime = currentTime)
         timerDao.updateTimer(updatedTimer)
-//        timerHistoryDao.insertRecord(
-//            TimerHistoryEntity(
-//                name = timer.name,
-//                lastStartedTime = currentTime
-//            )
-//        )
         timerScheduler.scheduleTimer(updatedTimer.id, updatedTimer.durationMillis)
     }
 

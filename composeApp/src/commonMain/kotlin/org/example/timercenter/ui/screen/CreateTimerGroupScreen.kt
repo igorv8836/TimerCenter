@@ -61,6 +61,7 @@ fun CreateTimerGroupScreen(
     }
 
     LaunchedEffect(viewModel) {
+        println("$TAG LaunchedEffect")
         viewModel.onEvent(
             CreateTimerGroupEvent.SetTimerGroupId(
                 navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
@@ -101,7 +102,7 @@ fun CreateTimerGroupScreen(
 
         // Заголовок с количеством выбранных таймеров
         Text(
-            text = "Добавить таймеры (${state.addedTimers.size})",
+            text = "Добавить таймеры (${state.timerGroupInfo.timers.size})",
             modifier = Modifier.padding(top = 20.dp, bottom = 4.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
@@ -111,23 +112,23 @@ fun CreateTimerGroupScreen(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
             // Сначала добавленные таймеры (с крестиком)
-            items(state.addedTimers.size) { index ->
+            items(state.timerGroupInfo.timers.size) { index ->
                 TimerAddToGroup(
-                    timer = state.addedTimers[index],
+                    timer = state.timerGroupInfo.timers[index],
                     isSelected = true,  // Они уже выбраны
                     onToggle = {
-                        viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.addedTimers[index]))
+                        viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.timerGroupInfo.timers[index]))
                     }
                 )
             }
 //             Затем остальные таймеры (с плюсиком)
-            items(state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }.size) { index ->
+            items(state.allTimers.filter { timer -> !state.timerGroupInfo.timers.contains(timer) }.size) { index ->
                 TimerAddToGroup(
-                    timer = state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }[index],
+                    timer = state.allTimers.filter { timer -> !state.timerGroupInfo.timers.contains(timer) }[index],
                     isSelected = false,  // Они еще не выбраны
                     onToggle = {
                         viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
-                            !state.addedTimers.contains(
+                            !state.timerGroupInfo.timers.contains(
                                 timer
                             )
                         }[index]))
