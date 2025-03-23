@@ -56,7 +56,6 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
         }
         composable(Screen.CREATE_GROUP.route) {
             CreateTimerGroupScreen(
-                timers = TimerManager.timers,
                 navController = navController
             )
         }

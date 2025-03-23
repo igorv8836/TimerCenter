@@ -154,7 +154,7 @@ fun TimerEntity.toUiModel(): TimerUiModel {
 fun TimerGroupEntity.toUiModel(): TimerGroupUiModel {
     return TimerGroupUiModel(
         id = id,
-        groupName = title,
+        groupName = name,
         groupType = org.example.timercenter.ui.model.GroupType.CONSISTENT,
         timers = emptyList(),
         lastStartedTime = 0L,

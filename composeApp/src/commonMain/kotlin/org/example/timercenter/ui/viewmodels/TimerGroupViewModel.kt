@@ -23,12 +23,12 @@ class TimerGroupViewModel(
                 }
             }
             is TimerGroupEvent.CreateGroup -> {
-                try {
-                    timerGroupRepository.createGroup(event.name)
-                    postSideEffect(TimerGroupSideEffect.NavigateToGroupDetail)
-                } catch (e: Exception) {
-                    postSideEffect(TimerGroupSideEffect.ShowToast("Ошибка создания группы"))
-                }
+//                try {
+//                    timerGroupRepository.createGroup(event.group)
+//                    postSideEffect(TimerGroupSideEffect.NavigateToGroupDetail)
+//                } catch (e: Exception) {
+//                    postSideEffect(TimerGroupSideEffect.ShowToast("Ошибка создания группы"))
+//                }
             }
             is TimerGroupEvent.DeleteGroup -> {
                 try {

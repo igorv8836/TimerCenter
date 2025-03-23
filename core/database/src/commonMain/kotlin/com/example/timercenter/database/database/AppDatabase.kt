@@ -19,7 +19,7 @@ import com.example.timercenter.database.model.TimerHistoryEntity
         TimerGroupEntity::class,
         TimerHistoryEntity::class,
     ],
-    version = 1
+    version = 2
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {

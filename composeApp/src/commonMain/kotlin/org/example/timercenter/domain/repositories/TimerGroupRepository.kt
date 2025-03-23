@@ -6,7 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface TimerGroupRepository {
     fun getAllGroups(): Flow<List<TimerGroupEntity>>
-    suspend fun createGroup(name: String): Int
+    suspend fun getGroup(id: Int): TimerGroupEntity?
+    suspend fun createGroup(group: TimerGroupEntity): Int
     suspend fun deleteGroup(id: Int)
-    fun getTimersInGroup(groupId: Int): Flow<List<TimerEntity>>
+    fun getTimersInGroup(id: Int): Flow<List<TimerEntity>>
+    suspend fun updateGroup(group: TimerGroupEntity)
+    suspend fun startGroup(group: TimerGroupEntity)
+    suspend fun stopGroup(group: TimerGroupEntity)
 }

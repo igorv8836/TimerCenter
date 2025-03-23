@@ -28,74 +28,99 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.orbit_mvi.compose.collectAsState
+import com.example.orbit_mvi.compose.collectSideEffect
 import org.example.timercenter.navigation.Screen
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.TimerAddToGroup
 import org.example.timercenter.ui.model.GroupType
 import org.example.timercenter.ui.model.TimerManager
 import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.viewmodels.CreateTimerGroupViewModel
+import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect
+import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
+import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEffect
+import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 
 private const val TAG = "CreateTimerGroupScreen"
 
 @Composable
-fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavController) {
+fun CreateTimerGroupScreen(
+    navController: NavController,
+    viewModel: CreateTimerGroupViewModel = koinViewModel()
+) {
 
-    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
-    val id = idString?.toIntOrNull()
-    val existingGroup = id?.let { TimerManager.findTimerGroup(it) }
-    println("$TAG existingGroup is $existingGroup")
-    var groupName by remember { mutableStateOf(existingGroup?.groupName ?: "") }
-    var option by remember { mutableStateOf(existingGroup?.groupType ?: GroupType.CONSISTENT) }
-    println("$TAG option is $option")
-    var showPopup by remember { mutableStateOf(false) }
-    val isDelayMode = remember(option) { option == GroupType.DELAY }
-    println("$TAG idDelayMode $isDelayMode")
-    // Если редактируем, берем выбранные таймеры из группы, иначе пустой список
-    var selectedTimers by remember {
-        mutableStateOf(existingGroup?.timers?.toSet() ?: emptySet())
+    val state by viewModel.collectAsState()
+
+    viewModel.collectSideEffect {
+        when (it) {
+            is CreateTimerGroupEffect.NavigateToHome -> navController.navigate(Screen.HOME.route)
+        }
     }
 
-    var selectedHours by remember { mutableStateOf(0) }
-    var selectedMinutes by remember { mutableStateOf(0) }
-    var selectedSeconds by remember { mutableStateOf(0) }
+    viewModel.onEvent(
+        CreateTimerGroupEvent.SetTimerGroupId(
+            navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
+        )
+    )
 
-    // Разделяем таймеры: выбранные и остальные
-    val (addedTimers, otherTimers) = timers.partition { it in selectedTimers }
+//    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
+//    val id = idString?.toIntOrNull()
+//    val existingGroup = id?.let { TimerManager.findTimerGroup(it) }
+//    println("$TAG existingGroup is $existingGroup")
+//    var groupName by remember { mutableStateOf(existingGroup?.groupName ?: "") }
+//    var option by remember { mutableStateOf(existingGroup?.groupType ?: GroupType.CONSISTENT) }
+//    println("$TAG option is $option")
+//    var showPopup by remember { mutableStateOf(false) }
+//    val isDelayMode = remember(option) { option == GroupType.DELAY }
+//    println("$TAG idDelayMode $isDelayMode")
+//    // Если редактируем, берем выбранные таймеры из группы, иначе пустой список
+//    var selectedTimers by remember {
+//        mutableStateOf(existingGroup?.timers?.toSet() ?: emptySet())
+//    }
+//
+//    var selectedHours by remember { mutableStateOf(0) }
+//    var selectedMinutes by remember { mutableStateOf(0) }
+//    var selectedSeconds by remember { mutableStateOf(0) }
+//
+//    // Разделяем таймеры: выбранные и остальные
+//    val (addedTimers, otherTimers) = timers.partition { it in selectedTimers }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
     ) {
         // Поле ввода имени группы
         OutlinedTextField(
-            value = groupName,
-            onValueChange = { groupName = it },
+            value = state.timerGroupInfo.groupName,
+            onValueChange = { viewModel.onEvent(CreateTimerGroupEvent.SetName(it)) },
             label = { Text("Name your group") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Text(text = "Тип группы", modifier = Modifier.padding(vertical = 16.dp))
-        SingleChoiceSegmentedButton(selectedOption = option) { selectedOption ->
-            option = selectedOption
+        SingleChoiceSegmentedButton(selectedOption = state.timerGroupInfo.groupType) { selectedOption ->
+            viewModel.onEvent(CreateTimerGroupEvent.SetGroupType(selectedOption))
         }
 
-        if (isDelayMode) {
+        if (state.timerGroupInfo.groupType == GroupType.DELAY) {
             Spacer(Modifier.height(16.dp))
             // Выбор времени
             TimePicker(
-                selectedHours = selectedHours,
-                selectedMinutes = selectedMinutes,
-                selectedSeconds = selectedSeconds,
-                onHoursChange = { selectedHours = it },
-                onMinutesChange = { selectedMinutes = it },
-                onSecondsChange = { selectedSeconds = it },
+                selectedHours = state.delaySelectedHours,
+                selectedMinutes = state.delaySelectedMinutes,
+                selectedSeconds = state.delaySelectedSeconds,
+                onHoursChange = { viewModel.onEvent(CreateTimerGroupEvent.SetDelayHours(it)) },
+                onMinutesChange = { viewModel.onEvent(CreateTimerGroupEvent.SetDelayMinutes(it)) },
+                onSecondsChange = { viewModel.onEvent(CreateTimerGroupEvent.SetDelaySeconds(it)) },
                 showLabel = false,
             )
         }
 
         // Заголовок с количеством выбранных таймеров
         Text(
-            text = "Добавить таймеры (${selectedTimers.size})",
+            text = "Добавить таймеры (${state.timerGroupInfo.timers.size})",
             modifier = Modifier.padding(top = 20.dp, bottom = 4.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
@@ -105,24 +130,32 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
             // Сначала добавленные таймеры (с крестиком)
-            items(addedTimers.size) { index ->
+            items(state.addedTimers.size) { index ->
                 TimerAddToGroup(
-                    timer = addedTimers[index],
+                    timer = state.addedTimers[index],
                     isSelected = true,  // Они уже выбраны
                     onToggle = { selected ->
-                        selectedTimers =
-                            if (selected) selectedTimers + addedTimers[index] else selectedTimers - addedTimers[index]
+                        if (selected) viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.addedTimers[index]))
+                        else viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.addedTimers[index]))
                     }
                 )
             }
             // Затем остальные таймеры (с плюсиком)
-            items(otherTimers.size) { index ->
+            items(state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }.size) { index ->
                 TimerAddToGroup(
-                    timer = otherTimers[index],
+                    timer = state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }[index],
                     isSelected = false,  // Они еще не выбраны
                     onToggle = { selected ->
-                        selectedTimers =
-                            if (selected) selectedTimers + otherTimers[index] else selectedTimers - otherTimers[index]
+                        if (selected) viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
+                            !state.addedTimers.contains(
+                                timer
+                            )
+                        }[index]))
+                        else viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.allTimers.filter { timer ->
+                            !state.addedTimers.contains(
+                                timer
+                            )
+                        }[index]))
                     }
                 )
             }
@@ -146,15 +179,9 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
             Spacer(Modifier.width(12.dp))
             Button(
                 onClick = {
-                    if (id != null) showPopup = true
+                    if (state.id != null) viewModel.onEvent(CreateTimerGroupEvent.SetShowPopup(true))
                     else {
-                        // Добавляем группу в список
-                        TimerManager.addTimerGroup(
-                            groupName = groupName,
-                            groupType = option,
-                            timers = selectedTimers.toList()
-                        )
-                        navController.navigate(Screen.HOME.route)
+                        viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
                     }
                 },
                 modifier = Modifier.height(48.dp),
@@ -163,30 +190,30 @@ fun CreateTimerGroupScreen(timers: List<TimerUiModel>, navController: NavControl
             }
         }
 
-        if (showPopup) {
+        if (state.showPopup) {
             PopupMessage(
                 message = "Вы уверены, что хотите изменить эту группу таймеров?",
                 buttonText = "Изменить",
-                onCancel = { showPopup = false },
+                onCancel = { viewModel.onEvent(CreateTimerGroupEvent.SetShowPopup(false)) },
                 onConfirm = {
-                    if (isDelayMode) {
-                        TimerManager.editTimerGroup(
-                            id = id!!,
-                            newName = groupName,
-                            newType = option,
-                            delayTime = (selectedHours * 3600000).toLong() + (selectedMinutes * 60000) + (selectedSeconds * 1000),
-                            newTimers = selectedTimers.toList()
-                        )
-                    } else {
-                        TimerManager.editTimerGroup(
-                            id = id!!,
-                            newName = groupName,
-                            newType = option,
-                            newTimers = selectedTimers.toList()
-                        )
-                    }
-                    showPopup = false
-                    navController.navigate(Screen.HOME.route)
+//                    if (isDelayMode) {
+//
+//                        TimerManager.editTimerGroup(
+//                            id = id!!,
+//                            newName = groupName,
+//                            newType = option,
+//                            delayTime = (selectedHours * 3600000).toLong() + (selectedMinutes * 60000) + (selectedSeconds * 1000),
+//                            newTimers = selectedTimers.toList()
+//                        )
+//                    } else {
+//                        TimerManager.editTimerGroup(
+//                            id = id!!,
+//                            newName = groupName,
+//                            newType = option,
+//                            newTimers = selectedTimers.toList()
+//                        )
+//                    }
+                    viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
                 }
             )
         }
