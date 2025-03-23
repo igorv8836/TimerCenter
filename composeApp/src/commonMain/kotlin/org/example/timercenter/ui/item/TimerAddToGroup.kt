@@ -38,7 +38,7 @@ fun TimerWithoutAll(timer: TimerUiModel) {
 }
 
 @Composable
-fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: (Boolean) -> Unit) {
+fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: () -> Unit) {
     Row(
         modifier = Modifier.Companion.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.Companion.CenterVertically
@@ -49,8 +49,7 @@ fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: (Boolean
         ) {
             TimerWithoutAll(timer = timer)
         }
-//        Spacer(Modifier.Companion.width(8.dp))
-        IconButton(onClick = { onToggle(!isSelected) }) {
+        IconButton(onClick = { onToggle() }) {
             Icon(
                 imageVector = if (isSelected) Icons.Default.Close else Icons.Default.Add,
                 contentDescription = if (isSelected) "Remove timer" else "Add timer",

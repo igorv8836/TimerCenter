@@ -18,6 +18,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,33 +60,13 @@ fun CreateTimerGroupScreen(
         }
     }
 
-    viewModel.onEvent(
-        CreateTimerGroupEvent.SetTimerGroupId(
-            navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
+    LaunchedEffect(viewModel) {
+        viewModel.onEvent(
+            CreateTimerGroupEvent.SetTimerGroupId(
+                navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
+            )
         )
-    )
-
-//    val idString = navController.currentBackStackEntry?.arguments?.getString("id")
-//    val id = idString?.toIntOrNull()
-//    val existingGroup = id?.let { TimerManager.findTimerGroup(it) }
-//    println("$TAG existingGroup is $existingGroup")
-//    var groupName by remember { mutableStateOf(existingGroup?.groupName ?: "") }
-//    var option by remember { mutableStateOf(existingGroup?.groupType ?: GroupType.CONSISTENT) }
-//    println("$TAG option is $option")
-//    var showPopup by remember { mutableStateOf(false) }
-//    val isDelayMode = remember(option) { option == GroupType.DELAY }
-//    println("$TAG idDelayMode $isDelayMode")
-//    // Если редактируем, берем выбранные таймеры из группы, иначе пустой список
-//    var selectedTimers by remember {
-//        mutableStateOf(existingGroup?.timers?.toSet() ?: emptySet())
-//    }
-//
-//    var selectedHours by remember { mutableStateOf(0) }
-//    var selectedMinutes by remember { mutableStateOf(0) }
-//    var selectedSeconds by remember { mutableStateOf(0) }
-//
-//    // Разделяем таймеры: выбранные и остальные
-//    val (addedTimers, otherTimers) = timers.partition { it in selectedTimers }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)
@@ -94,11 +75,12 @@ fun CreateTimerGroupScreen(
         OutlinedTextField(
             value = state.timerGroupInfo.groupName,
             onValueChange = { viewModel.onEvent(CreateTimerGroupEvent.SetName(it)) },
-            label = { Text("Name your group") },
+            label = { Text("Назовите вашу группу") },
             modifier = Modifier.fillMaxWidth()
         )
 
         Text(text = "Тип группы", modifier = Modifier.padding(vertical = 16.dp))
+
         SingleChoiceSegmentedButton(selectedOption = state.timerGroupInfo.groupType) { selectedOption ->
             viewModel.onEvent(CreateTimerGroupEvent.SetGroupType(selectedOption))
         }
@@ -119,7 +101,7 @@ fun CreateTimerGroupScreen(
 
         // Заголовок с количеством выбранных таймеров
         Text(
-            text = "Добавить таймеры (${state.timerGroupInfo.timers.size})",
+            text = "Добавить таймеры (${state.addedTimers.size})",
             modifier = Modifier.padding(top = 20.dp, bottom = 4.dp),
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold
@@ -133,24 +115,18 @@ fun CreateTimerGroupScreen(
                 TimerAddToGroup(
                     timer = state.addedTimers[index],
                     isSelected = true,  // Они уже выбраны
-                    onToggle = { selected ->
-                        if (selected) viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.addedTimers[index]))
-                        else viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.addedTimers[index]))
+                    onToggle = {
+                        viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.addedTimers[index]))
                     }
                 )
             }
-            // Затем остальные таймеры (с плюсиком)
+//             Затем остальные таймеры (с плюсиком)
             items(state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }.size) { index ->
                 TimerAddToGroup(
                     timer = state.allTimers.filter { timer -> !state.addedTimers.contains(timer) }[index],
                     isSelected = false,  // Они еще не выбраны
-                    onToggle = { selected ->
-                        if (selected) viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
-                            !state.addedTimers.contains(
-                                timer
-                            )
-                        }[index]))
-                        else viewModel.onEvent(CreateTimerGroupEvent.DeleteTimerFromGroup(state.allTimers.filter { timer ->
+                    onToggle = {
+                        viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
                             !state.addedTimers.contains(
                                 timer
                             )
@@ -196,23 +172,6 @@ fun CreateTimerGroupScreen(
                 onCancel = { viewModel.onEvent(CreateTimerGroupEvent.SetShowPopup(false)) },
                 onConfirm = {
                     viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
-//                    if (isDelayMode) {
-//
-//                        TimerManager.editTimerGroup(
-//                            id = id!!,
-//                            newName = groupName,
-//                            newType = option,
-//                            delayTime = (selectedHours * 3600000).toLong() + (selectedMinutes * 60000) + (selectedSeconds * 1000),
-//                            newTimers = selectedTimers.toList()
-//                        )
-//                    } else {
-//                        TimerManager.editTimerGroup(
-//                            id = id!!,
-//                            newName = groupName,
-//                            newType = option,
-//                            newTimers = selectedTimers.toList()
-//                        )
-//                    }
                 }
             )
         }

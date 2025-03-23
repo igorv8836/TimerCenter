@@ -50,9 +50,7 @@ sealed interface CreateTimerGroupEvent {
     data class SetDelayMinutes(val value: Int) : CreateTimerGroupEvent
     data class SetDelaySeconds(val value: Int) : CreateTimerGroupEvent
     data class SetShowPopup(val value: Boolean) : CreateTimerGroupEvent
-
     data object SaveTimerGroup : CreateTimerGroupEvent
-
     data class AddTimerToGroup(val timer: TimerUiModel) : CreateTimerGroupEvent
     data class DeleteTimerFromGroup(val timer: TimerUiModel) : CreateTimerGroupEvent
 }

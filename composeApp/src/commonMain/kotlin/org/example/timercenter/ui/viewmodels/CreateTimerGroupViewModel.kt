@@ -2,8 +2,10 @@ package org.example.timercenter.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.orbit_mvi.viewmodel.container
+import kotlinx.coroutines.flow.first
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.domain.repositories.TimerRepository
+import org.example.timercenter.ui.model.toGroupType
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEffect
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEvent
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupState
@@ -37,11 +39,14 @@ class CreateTimerGroupViewModel(
         when (event) {
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {
                 val timerGroupEntity = state.toEntity()
-                println("$TAG timerGroupEntity - $timerGroupEntity")
                 val newId = timerGroupRepository.createGroup(timerGroupEntity)
-
                 state.addedTimers.forEach { timerUiModel ->
                     timerRepository.updateTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
+                }
+                val notAddedTimers = state.allTimers - state.addedTimers.toSet()
+                println("$TAG notAddedTimers - $notAddedTimers")
+                notAddedTimers.forEach { timerUiModel ->
+                    timerRepository.resetTimerInGroupId(timerId = timerUiModel.id)
                 }
 
                 reduce {
@@ -51,6 +56,36 @@ class CreateTimerGroupViewModel(
                     )
                 }
                 postSideEffect(CreateTimerGroupEffect.NavigateToHome)
+            }
+
+            is CreateTimerGroupEvent.SetTimerGroupId -> blockingIntent {
+                if (event.id == null) {
+                    reduce { state.copy(id = null) }
+                } else {
+                    val timerGroup = timerGroupRepository.getGroup(event.id)
+                    timerGroup?.let {
+                        val timersInGroup = timerGroupRepository.getTimersInGroup(it.id).first()
+                        // Преобразуем в UI-модель
+                        val timersUi = timersInGroup.map { entity -> entity.toUiModel() }
+
+                        reduce {
+                            state.copy(
+                                id = it.id,
+                                timerGroupInfo = state.timerGroupInfo.copy(
+                                    id = it.id,
+                                    groupName = it.name,
+                                    groupType = it.groupType.toGroupType(),
+                                    delayTime = it.delayTime,
+                                    lastStartedTime = it.lastStartedTime ?: 0L
+                                ),
+                                addedTimers = timersUi,
+                                delaySelectedHours = (it.delayTime / 3_600_000L).toInt(),
+                                delaySelectedMinutes = ((it.delayTime % 3_600_000L) / 60_000L).toInt(),
+                                delaySelectedSeconds = ((it.delayTime % 60_000L) / 1_000L).toInt()
+                            )
+                        }
+                    }
+                }
             }
 
             is CreateTimerGroupEvent.SetDelayHours -> blockingIntent {
@@ -87,30 +122,6 @@ class CreateTimerGroupViewModel(
 
             is CreateTimerGroupEvent.SetShowPopup -> intent { reduce { state.copy(showPopup = event.value) } }
 
-            is CreateTimerGroupEvent.SetTimerGroupId -> blockingIntent {
-                if (event.id == null) {
-                    reduce { state.copy(id = null) }
-                } else {
-                    val timerGroup = timerGroupRepository.getGroup(event.id)
-                    timerGroup?.let {
-                        reduce {
-                            state.copy(
-                                id = it.id,
-                                timerGroupInfo = state.timerGroupInfo.copy(
-                                    id = it.id,
-                                    groupName = it.name,
-                                    delayTime = it.delayTime,
-                                    lastStartedTime = it.lastStartedTime ?: 0L
-                                ),
-                                delaySelectedHours = (it.delayTime / 3_600_000L).toInt(),
-                                delaySelectedMinutes = (((it.delayTime % 3_600_000L) / 60_000L)).toInt(),
-                                delaySelectedSeconds = (((it.delayTime % 60_000L) / 1_000L).toInt())
-                            )
-                        }
-                    }
-                }
-            }
-
             is CreateTimerGroupEvent.SetGroupType -> blockingIntent {
                 reduce {
                     state.copy(
@@ -128,6 +139,7 @@ class CreateTimerGroupViewModel(
             is CreateTimerGroupEvent.DeleteTimerFromGroup -> blockingIntent {
                 reduce {
                     state.copy(addedTimers = state.addedTimers - event.timer)
+
                 }
             }
         }
