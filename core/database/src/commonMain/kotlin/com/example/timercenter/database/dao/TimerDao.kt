@@ -1,11 +1,6 @@
 package com.example.timercenter.database.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.timercenter.database.model.TimerEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -20,10 +15,18 @@ interface TimerDao {
     @Query("SELECT * FROM timers WHERE id = :id")
     suspend fun getTimerById(id: Int): TimerEntity?
 
-    @Query("SELECT * FROM timers WHERE groupId = :groupId")
+    @Query("""
+           SELECT t.* FROM timers t 
+           INNER JOIN timer_group_cross_ref tc ON t.id = tc.timerId 
+           WHERE tc.groupId = :groupId
+           """)
     suspend fun getTimersByGroup(groupId: Int): List<TimerEntity>
 
-    @Query("SELECT * FROM timers WHERE groupId = :groupId")
+    @Query("""
+           SELECT t.* FROM timers t 
+           INNER JOIN timer_group_cross_ref tc ON t.id = tc.timerId 
+           WHERE tc.groupId = :groupId
+           """)
     fun getTimersByGroupFlow(groupId: Int): Flow<List<TimerEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -31,12 +34,6 @@ interface TimerDao {
 
     @Update
     suspend fun updateTimer(timer: TimerEntity)
-
-    @Query("UPDATE timers SET groupId = :groupId WHERE id = :timerId")
-    suspend fun updateTimerInGroupId(timerId: Int, groupId: Int)
-
-    @Query("UPDATE timers SET groupId = NULL WHERE id = :timerId AND groupId = :groupId")
-    suspend fun resetTimerInGroupId(timerId: Int, groupId: Int)
 
     @Delete
     suspend fun deleteTimer(timer: TimerEntity)

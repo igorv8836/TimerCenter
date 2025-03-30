@@ -2,6 +2,8 @@ package org.example.timercenter.ui.viewmodels.states
 
 import androidx.compose.runtime.Stable
 import com.example.timercenter.database.model.TimerEntity
+import org.example.timercenter.TimeAgoManager
+import org.example.timercenter.di.KoinFactory
 import org.example.timercenter.ui.model.TimerUiModel
 
 @Stable
@@ -28,9 +30,8 @@ fun CreateTimerState.toEntity(): TimerEntity {
         id = id ?: 0,
         name = timerInfo.timerName,
         durationMillis = getMilliseconds(),
-        groupId = null,
-        isRunning = false,
-        startTime = null,
+        isRunning = startImmediately,
+        startTime = KoinFactory.getDI().get<TimeAgoManager>().currentTimeMillis(),
     )
 }
 
@@ -39,7 +40,6 @@ fun TimerEntity.toUiModel(): TimerUiModel {
         id = id,
         timerName = name,
         totalTime = durationMillis,
-        groupId = groupId,
         lastStartedTime = startTime ?: 0L
     )
 }

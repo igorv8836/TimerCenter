@@ -14,6 +14,6 @@ import org.koin.dsl.module
 fun dataModule() = module {
     includes(timerSchedulerModule())
     single<TimerRepository> { TimerRepositoryImpl(get(), get(), get(), get(named(MyDispatchers.IO))) }
-    single<TimerGroupRepository> { TimerGroupRepositoryImpl(get(), get(), get(named(MyDispatchers.IO))) }
+    single<TimerGroupRepository> { TimerGroupRepositoryImpl(get(), get(), get(), get(named(MyDispatchers.IO))) }
     single<TimerHistoryRepository> { TimerHistoryRepositoryImpl(get(), get(named(MyDispatchers.IO))) }
 }

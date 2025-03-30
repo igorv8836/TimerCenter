@@ -8,6 +8,7 @@ import com.example.timercenter.datastore.datastoreModule
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.example.timercenter.data.dataModule
+import org.example.timercenter.timeManagerModule
 import org.example.timercenter.ui.uiModule
 import org.koin.core.Koin
 import org.koin.core.context.startKoin
@@ -24,7 +25,8 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             createDataStoreModule(),
             datastoreModule(),
             dataModule(),
-            uiModule()
+            uiModule(),
+            timeManagerModule(),
         )
 
     }

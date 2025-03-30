@@ -3,7 +3,6 @@ package org.example.timercenter.data.repositories
 import com.example.timercenter.database.dao.TimerDao
 import com.example.timercenter.database.dao.TimerHistoryDao
 import com.example.timercenter.database.model.TimerEntity
-import com.example.timercenter.database.model.TimerHistoryEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -33,12 +32,12 @@ class TimerRepositoryImpl(
     }
 
     override suspend fun updateTimerInGroupId(timerId: Int, groupId: Int) {
-        timerDao.updateTimerInGroupId(timerId = timerId, groupId = groupId)
+//        timerDao.updateTimerInGroupId(timerId = timerId, groupId = groupId)
     }
 
 
     override suspend fun resetTimerInGroupId(timerId: Int, groupId: Int) {
-        timerDao.resetTimerInGroupId(timerId = timerId, groupId = groupId)
+//        timerDao.resetTimerInGroupId(timerId = timerId, groupId = groupId)
     }
 
     override suspend fun deleteTimer(id: Int): Unit = withContext(ioDispatcher) {

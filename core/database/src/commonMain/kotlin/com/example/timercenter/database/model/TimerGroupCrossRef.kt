@@ -2,17 +2,16 @@ package com.example.timercenter.database.model
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "timer_history",
+    tableName = "timer_group_cross_ref",
+    primaryKeys = ["timerId", "groupId"],
     foreignKeys = [
         ForeignKey(entity = TimerEntity::class, parentColumns = ["id"], childColumns = ["timerId"], onDelete = ForeignKey.CASCADE),
+        ForeignKey(entity = TimerGroupEntity::class, parentColumns = ["id"], childColumns = ["groupId"], onDelete = ForeignKey.CASCADE)
     ]
 )
-data class TimerHistoryEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+data class TimerGroupCrossRef(
     val timerId: Int,
-    val name: String,
-    val lastStartedTime: Long,
+    val groupId: Int,
 )

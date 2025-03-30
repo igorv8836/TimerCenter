@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4ca4bfe1f1bacc955b58e132c78e1bbd",
+    "identityHash": "6d2c2b3fe9d16236f89a84087467594e",
     "entities": [
       {
         "tableName": "timers",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `durationMillis` INTEGER NOT NULL, `remainingMillis` INTEGER NOT NULL, `groupId` INTEGER, `isRunning` INTEGER NOT NULL, `startTime` INTEGER, `status` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT NOT NULL, `durationMillis` INTEGER NOT NULL, `remainingMillis` INTEGER NOT NULL, `isRunning` INTEGER NOT NULL, `startTime` INTEGER, `status` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,11 +31,6 @@
             "columnName": "remainingMillis",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "groupId",
-            "columnName": "groupId",
-            "affinity": "INTEGER"
           },
           {
             "fieldPath": "isRunning",
@@ -112,7 +107,7 @@
       },
       {
         "tableName": "timer_history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timerId` INTEGER NOT NULL, `name` TEXT NOT NULL, `lastStartedTime` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timerId` INTEGER NOT NULL, `name` TEXT NOT NULL, `lastStartedTime` INTEGER NOT NULL, FOREIGN KEY(`timerId`) REFERENCES `timers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -144,12 +139,74 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "foreignKeys": [
+          {
+            "table": "timers",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "timerId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "timer_group_cross_ref",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`timerId` INTEGER NOT NULL, `groupId` INTEGER NOT NULL, PRIMARY KEY(`timerId`, `groupId`), FOREIGN KEY(`timerId`) REFERENCES `timers`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`groupId`) REFERENCES `timer_groups`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "timerId",
+            "columnName": "timerId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "groupId",
+            "columnName": "groupId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "timerId",
+            "groupId"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "timers",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "timerId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "timer_groups",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "groupId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4ca4bfe1f1bacc955b58e132c78e1bbd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6d2c2b3fe9d16236f89a84087467594e')"
     ]
   }
 }

@@ -9,8 +9,6 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerState
 import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
 
-private const val TAG = "CreateTimerViewModel"
-
 class CreateTimerViewModel(
     private val timerRepository: TimerRepository
 ) : ViewModel(), ContainerHost<CreateTimerState, CreateTimerEffect> {
@@ -50,7 +48,6 @@ class CreateTimerViewModel(
                             )
                         }
                     }
-                    println("$TAG hours - ${state.selectedHours}, minutes - ${state.selectedMinutes}, seconds - ${state.selectedSeconds}")
                 }
             }
             is CreateTimerEvent.SetHours -> blockingIntent { reduce { state.copy(selectedHours = event.value) } }

@@ -1,5 +1,7 @@
 package org.example.timercenter
 
+import org.koin.dsl.module
+
 actual class TimeAgoManager {
     actual fun timeAgo(lastStartedTime: Long): String {
         val currentTime = System.currentTimeMillis()
@@ -22,4 +24,8 @@ actual class TimeAgoManager {
     actual fun currentTimeMillis(): Long {
         return System.currentTimeMillis()
     }
+}
+
+actual fun timeManagerModule() = module {
+    single { TimeAgoManager() }
 }

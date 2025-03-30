@@ -6,15 +6,13 @@ import kotlinx.coroutines.flow.first
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.domain.repositories.TimerRepository
 import org.example.timercenter.ui.model.toGroupType
+import org.example.timercenter.ui.model.toUiModel
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEffect
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEvent
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupState
 import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
-import org.example.timercenter.ui.model.toUiModel
 import org.orbitmvi.orbit.annotation.OrbitExperimental
-
-private const val TAG = "CreateTimerGroupViewModel"
 
 @OptIn(OrbitExperimental::class)
 class CreateTimerGroupViewModel(
@@ -39,12 +37,14 @@ class CreateTimerGroupViewModel(
         when (event) {
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {
                 val timerGroupEntity = state.toEntity()
-                val newId = timerGroupRepository.createGroup(timerGroupEntity)
+                val newId = timerGroupRepository.createGroup(
+                    timerGroupEntity,
+                    timerIds = state.allTimers.mapNotNull { it.id },
+                )
                 state.timerGroupInfo.timers.forEach { timerUiModel ->
                     timerRepository.updateTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
                 }
                 val notAddedTimers = state.allTimers - state.timerGroupInfo.timers.toSet()
-                println("$TAG notAddedTimers - $notAddedTimers")
                 notAddedTimers.forEach { timerUiModel ->
                     timerRepository.resetTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
                 }
