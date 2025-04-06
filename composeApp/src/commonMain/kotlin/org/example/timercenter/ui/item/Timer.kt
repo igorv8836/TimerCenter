@@ -11,11 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +22,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
-import org.example.timercenter.TimeAgoManager
-import org.example.timercenter.ui.model.formatTime
+import kotlinx.datetime.Clock
 import org.example.timercenter.ui.model.TimerUiModel
-
+import org.example.timercenter.ui.model.formatTime
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -38,31 +33,31 @@ fun Timer(
     timer: TimerUiModel,
     isSelected: Boolean,
     onSelect: (isLongPress: Boolean) -> Unit,
-    toRun: Boolean = false,
-    onStart: () -> Unit
+    onStart: (Int) -> Unit,
+    onPause: (Int) -> Unit,
+    onStop: (Int) -> Unit,
 ) {
-    var remainingTime by remember { mutableStateOf(timer.totalTime) }
-    var isRunning by remember { mutableStateOf(toRun) }
-    var isStarted by remember { mutableStateOf(toRun) }
+    val remainingTime = remember(timer) {
+        mutableStateOf(calculateRemainingTime(timer))
+    }
 
-    val progress = remainingTime.toFloat() / timer.totalTime
-
-    LaunchedEffect(isRunning) {
-        while (isRunning && remainingTime > 0) {
+    LaunchedEffect(timer.isRunning) {
+        while (timer.isRunning) {
             delay(1000L)
-            remainingTime -= 1000L
-        }
-        if (remainingTime == 0L) {
-            isRunning = false
-            isStarted = false
+            remainingTime.value = calculateRemainingTime(timer)
         }
     }
+
+    val progress = remainingTime.value.toFloat() / timer.totalTime
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp)
-            .background(if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent, shape = RoundedCornerShape(8.dp))
+            .background(
+                if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent,
+                shape = RoundedCornerShape(8.dp)
+            )
             .clip(RoundedCornerShape(8.dp))
             .combinedClickable(
                 onClick = { onSelect(false) },
@@ -75,7 +70,7 @@ fun Timer(
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = formatTime(remainingTime),
+                text = formatTime(remainingTime.value),
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -87,103 +82,40 @@ fun Timer(
         }
 
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (!isStarted) {
+            if (!timer.isRunning && remainingTime.value == timer.totalTime) {
                 CircularButton(icon = Icons.Default.PlayArrow, onClick = {
-                    isRunning = true
-                    isStarted = true
-                    //Вызов метода onStart, который обрабатывается в HomeScreen, обновляя значения lastStartedTimer у этого таймера
-                    onStart()
+                    onStart(timer.id)
                 })
             } else {
-                CircularButton(icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow, onClick = {
-                    isRunning = !isRunning
-                }, progress = progress)
+                CircularButton(
+                    icon = if (timer.isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    onClick = {
+                        if (timer.isRunning) {
+                            onPause(timer.id)
+                        } else {
+                            onStart(timer.id)
+                        }
+                    },
+                    progress = if (timer.isRunning) progress else 1f
+                )
 
                 CircularButton(icon = Icons.Default.Stop, onClick = {
-                    isRunning = false
-                    isStarted = false
-                    remainingTime = timer.totalTime
+                    onStop(timer.id)
                 })
             }
         }
     }
 }
 
-//@OptIn(ExperimentalFoundationApi::class)
-//@Composable
-//fun Timer(
-//    timer: TimerUiModel,
-//    isSelected: Boolean,
-//    onSelect: (isLongPress: Boolean) -> Unit
-//) {
-//    var remainingTime by remember { mutableStateOf(timer.totalTime) }
-//    var isRunning by remember { mutableStateOf(false) }
-//    var isStarted by remember { mutableStateOf(false) }
-//
-//    val progress = remainingTime.toFloat() / timer.totalTime
-//
-//    LaunchedEffect(isRunning) {
-//        while (isRunning && remainingTime > 0) {
-//            delay(1000L)
-//            remainingTime -= 1000L
-//        }
-//        if (remainingTime == 0L) {
-//            isRunning = false
-//            isStarted = false
-//        }
-//    }
-//
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(12.dp)
-//            .background(if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent, shape = RoundedCornerShape(8.dp))
-//            .clip(RoundedCornerShape(8.dp))
-//            .combinedClickable(
-//                onClick = { onSelect(false) },
-//                onLongClick = { onSelect(true) }
-//            )
-//            .padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        Column(
-//            modifier = Modifier.weight(1f)
-//        ) {
-//            Text(
-//                text = formatTime(remainingTime),
-//                fontSize = 32.sp,
-//                fontWeight = FontWeight.Bold
-//            )
-//            Text(
-//                text = timer.timerName,
-//                fontSize = 14.sp,
-//                color = Color.Gray
-//            )
-//        }
-//
-//        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-//            if (!isStarted) {
-//                CircularButton(icon = Icons.Default.PlayArrow, onClick = {
-//                    isRunning = true
-//                    isStarted = true
-//                })
-//            } else {
-//                CircularButton(icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow, onClick = {
-//                    isRunning = !isRunning
-//                }, progress = progress)
-//
-//                CircularButton(icon = Icons.Default.Stop, onClick = {
-//                    isRunning = false
-//                    isStarted = false
-//                    remainingTime = timer.totalTime
-//                })
-//            }
-//        }
-//    }
-//}
-//
+private fun calculateRemainingTime(timer: TimerUiModel): Long {
+    return if (timer.isRunning) {
+        val elapsed = Clock.System.now().toEpochMilliseconds() - timer.lastStartedTime
+        maxOf(0, timer.remainingMillis - elapsed)
+    } else {
+        timer.remainingMillis
+    }
+}
 
-// Кнопка в виде круга (с анимацией обводки для кнопки "Пауза")
 @Composable
 fun CircularButton(icon: ImageVector, onClick: () -> Unit, progress: Float = 1f) {
     Box(

@@ -22,7 +22,5 @@ sealed interface TimerHistoryEvent {
     object RestartSelected: TimerHistoryEvent
     data class SetTimerRestart(val timerId: Int) : TimerHistoryEvent
     data class SetTimerGroupRestart(val timerGroupId: Int) : TimerHistoryEvent
-    data class NavigateToHomeRestartTimerEvent(val timerId: Int) : TimerHistoryEvent
-    data class NavigateToHomeRestartTimerGroupEvent(val timerGroupId: Int) : TimerHistoryEvent
 
 }

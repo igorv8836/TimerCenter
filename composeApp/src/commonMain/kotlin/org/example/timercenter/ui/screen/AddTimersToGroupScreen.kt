@@ -5,11 +5,9 @@ import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import org.example.timercenter.navigation.navigateToCreateGroup
 import org.example.timercenter.ui.item.TimerGroupWithoutRun
-import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.viewmodels.AddTimersToGroupViewModel
 import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEffect
 import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEvent
-import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.koin.compose.viewmodel.koinViewModel
 
 

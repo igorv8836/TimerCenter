@@ -2,6 +2,8 @@ package org.example.timercenter.ui.model
 
 import androidx.compose.runtime.Stable
 import com.example.timercenter.database.model.TimerEntity
+import com.example.timercenter.database.model.TimerStatus
+import kotlinx.datetime.Clock
 
 @Stable
 data class TimerUiModel(
@@ -9,14 +11,32 @@ data class TimerUiModel(
     val timerName: String = "",
     val totalTime: Long = 60_000L,
     val groupId: Int? = null,
-    val lastStartedTime: Long = 0L // Время последнего запуска в миллисекундах
+    val isRunning: Boolean = false,
+    val lastStartedTime: Long = 0L,
+    val remainingMillis: Long = totalTime,
 )
 
 fun TimerEntity.toUiModel(): TimerUiModel {
+    val currentTime = Clock.System.now().toEpochMilliseconds()
+
     return TimerUiModel(
         id = id,
         timerName = name,
         totalTime = durationMillis,
-        lastStartedTime = startTime ?: 0L
+        isRunning = isRunning,
+        lastStartedTime = startTime ?: 0L,
+        remainingMillis = remainingMillis,
+//        remainingMillis = when (status) {
+//            TimerStatus.PAUSED -> remainingMillis
+//            TimerStatus.RUNNING -> {
+//                if (startTime != null) {
+//                    val elapsed = currentTime - (startTime ?: 0L)
+//                    maxOf(0, durationMillis - elapsed)
+//                } else {
+//                    remainingMillis
+//                }
+//            }
+//            else -> durationMillis
+//        }
     )
 }

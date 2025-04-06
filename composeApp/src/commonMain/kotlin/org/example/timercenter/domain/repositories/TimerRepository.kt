@@ -11,6 +11,8 @@ interface TimerRepository {
     suspend fun updateTimerInGroupId(timerId: Int, groupId: Int)
     suspend fun resetTimerInGroupId(timerId: Int, groupId: Int)
     suspend fun deleteTimer(id: Int)
-    suspend fun startTimer(timer: TimerEntity)
-    suspend fun stopTimer(timer: TimerEntity)
+    suspend fun startTimer(id: Int)
+    suspend fun stopTimer(id: Int)
+    suspend fun pauseTimer(id: Int)
+    suspend fun copyTimer(id: Int)
 }

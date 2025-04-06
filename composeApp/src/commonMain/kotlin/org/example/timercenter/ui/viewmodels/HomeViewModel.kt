@@ -111,11 +111,11 @@ class HomeViewModel(
                 }
             }
 
-            is HomeEvent.SetTimerRestart -> {
-                reduce { state.copy(timerRestartId = event.timerId) }
+            is HomeEvent.CreateTimerFromHistory -> {
+               timerRepository.copyTimer(event.timerId)
             }
 
-            is HomeEvent.SetTimerGroupRestart -> {
+            is HomeEvent.CreateTimerGroupFromHistory -> {
                 reduce { state.copy(timerGroupRestartId = event.timerGroupId) }
             }
 
@@ -145,8 +145,16 @@ class HomeViewModel(
                 reduce { state.copy(timerGroups = timerGroups) }
             }
 
-            HomeEvent.NavigateToSettingsEvent -> {
-                postSideEffect(HomeEffect.NavigateToSettings)
+            is HomeEvent.RunTimer -> {
+                timerRepository.startTimer(event.timerId)
+            }
+
+            is HomeEvent.StopTimer -> {
+                timerRepository.stopTimer(event.timerId)
+            }
+
+            is HomeEvent.PauseTimer -> {
+                timerRepository.pauseTimer(event.timerId)
             }
         }
     }

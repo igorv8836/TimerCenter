@@ -3,6 +3,7 @@ package org.example.timercenter.data.repositories
 import com.example.timercenter.database.dao.TimerDao
 import com.example.timercenter.database.dao.TimerHistoryDao
 import com.example.timercenter.database.model.TimerEntity
+import com.example.timercenter.database.model.TimerStatus
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -44,16 +45,87 @@ class TimerRepositoryImpl(
         timerDao.getTimerById(id)?.let { timerDao.deleteTimer(it) }
     }
 
-    override suspend fun startTimer(timer: TimerEntity) = withContext(ioDispatcher) {
+    override suspend fun startTimer(id: Int) = withContext(ioDispatcher) {
         val currentTime = Clock.System.now().toEpochMilliseconds()
-        val updatedTimer = timer.copy(isRunning = true, startTime = currentTime)
+        val timer = timerDao.getTimerById(id) ?: return@withContext
+
+        val updatedTimer = when (timer.status) {
+            TimerStatus.NOT_STARTED -> {
+                timer.copy(
+                    isRunning = true,
+                    startTime = currentTime,
+                    remainingMillis = timer.durationMillis,
+                    status = TimerStatus.RUNNING,
+                )
+            }
+            TimerStatus.PAUSED -> {
+                timer.copy(
+                    isRunning = true,
+                    startTime = currentTime,
+                    remainingMillis = timer.remainingMillis - (currentTime - timer.startTime!!),
+                    status = TimerStatus.RUNNING,
+                )
+            }
+            else -> {
+                null
+            }
+        } ?: timer
+
         timerDao.updateTimer(updatedTimer)
         timerScheduler.scheduleTimer(updatedTimer.id, updatedTimer.durationMillis)
     }
 
-    override suspend fun stopTimer(timer: TimerEntity) = withContext(ioDispatcher) {
-        timerScheduler.cancelTimer(timer.id)
-        val updatedTimer = timer.copy(isRunning = false, startTime = null)
+    override suspend fun stopTimer(id: Int) = withContext(ioDispatcher) {
+        val timer = timerDao.getTimerById(id) ?: return@withContext
+        timerScheduler.cancelTimer(id)
+
+        val updatedTimer = timer.copy(
+            isRunning = false,
+            startTime = null,
+            status = TimerStatus.NOT_STARTED,
+            remainingMillis = timer.durationMillis,
+        )
+
         timerDao.updateTimer(updatedTimer)
+    }
+
+    override suspend fun pauseTimer(id: Int) = withContext(ioDispatcher) {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        val timer = timerDao.getTimerById(id) ?: return@withContext
+        timerScheduler.cancelTimer(id)
+
+        val updatedTimer = when (timer.status) {
+            TimerStatus.RUNNING -> {
+                timer.startTime?.let { startTime ->
+                    val elapsed = currentTime - startTime
+                    val newRemaining = maxOf(0, timer.remainingMillis - elapsed)
+
+                    timer.copy(
+                        isRunning = false,
+                        status = TimerStatus.PAUSED,
+                        remainingMillis = newRemaining,
+                        startTime = currentTime
+                    )
+                } ?: timer
+            }
+            else -> timer
+        }
+
+        timerDao.updateTimer(updatedTimer)
+    }
+
+    override suspend fun copyTimer(id: Int) {
+        val currentTime = Clock.System.now().toEpochMilliseconds()
+        timerDao.getTimerById(id)?.let {
+            timerDao.insertTimer(
+                it.copy(
+                    id = 0,
+                    remainingMillis = it.durationMillis,
+                    isRunning = true,
+                    startTime = currentTime,
+                    status = TimerStatus.RUNNING,
+                )
+            )
+        }
     }
 }

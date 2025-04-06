@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,8 +32,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.orbit_mvi.compose.collectSideEffect
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.navigation.navigateToCreate
 import org.example.timercenter.navigation.navigateToCreateGroup
@@ -46,21 +45,23 @@ import org.example.timercenter.ui.item.TimerGroup
 import org.example.timercenter.ui.viewmodels.HomeViewModel
 import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    timerAgoManager: TimeAgoManager, navController: NavController, homeViewModel: HomeViewModel = viewModel()
+    timerAgoManager: TimeAgoManager,
+    navController: NavController,
+    homeViewModel: HomeViewModel = koinViewModel(),
 ) {
     val state by homeViewModel.container.stateFlow.collectAsState()
-    LaunchedEffect(homeViewModel) {
-        homeViewModel.container.sideEffectFlow.collect { effect ->
-            when (effect) {
-                is HomeEffect.NavigateToSettings -> navController.navigateToSettings()
-                is HomeEffect.NavigateToEditTimer -> navController.navigateToCreate(effect.timerId)
-                is HomeEffect.NavigateToEditTimerGroup -> navController.navigateToCreateGroup(effect.timerGroupId)
-            }
+
+    homeViewModel.collectSideEffect { effect ->
+        when (effect) {
+            is HomeEffect.NavigateToEditTimer -> navController.navigateToCreate(effect.timerId)
+            is HomeEffect.NavigateToEditTimerGroup -> navController.navigateToCreateGroup(effect.timerGroupId)
         }
     }
+
     var isTimersExpanded by remember { mutableStateOf(true) }
     var isTimerGroupsExpanded by remember { mutableStateOf(true) }
 
@@ -70,7 +71,7 @@ fun HomeScreen(
                 (state.selectedTimers.size == 1 && state.selectedTimerGroups.isEmpty())
                         || (state.selectedTimerGroups.size == 1 && state.selectedTimers.isEmpty())
             HomeTopBar(
-                onSettingsClick = { homeViewModel.onEvent(HomeEvent.NavigateToSettingsEvent) },
+                onSettingsClick = { navController.navigateToSettings() },
                 isSelectionMode = state.selectedTimers.isNotEmpty() || state.selectedTimerGroups.isNotEmpty(),
                 selectCount = state.selectedTimers.size + state.selectedTimerGroups.size,
                 isEditEnabled = isEditEnabled,
@@ -109,9 +110,14 @@ fun HomeScreen(
                             onSelect = { isLongPress ->
                                 homeViewModel.onEvent(HomeEvent.ToggleTimerSelection(timer, isLongPress))
                             },
-                            toRun = timer.id == state.timerRestartId,
                             onStart = {
-                                homeViewModel.onEvent(HomeEvent.UpdateTimerLastStartedTime(timerId = timer.id, lastStartedTime = timerAgoManager.currentTimeMillis()))
+                                homeViewModel.onEvent(HomeEvent.RunTimer(timerId = timer.id))
+                            },
+                            onPause = {
+                                homeViewModel.onEvent(HomeEvent.PauseTimer(timerId = timer.id))
+                            },
+                            onStop = {
+                                homeViewModel.onEvent(HomeEvent.StopTimer(timerId = timer.id))
                             }
                         )
                     }

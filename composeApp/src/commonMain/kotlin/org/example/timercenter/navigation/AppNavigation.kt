@@ -39,12 +39,12 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             // Если переданы аргументы для рестарта, отправляем соответствующие события в ViewModel.
             LaunchedEffect(timerId) {
                 if (timerId != null) {
-                    homeViewModel.onEvent(HomeEvent.SetTimerRestart(timerId))
+                    homeViewModel.onEvent(HomeEvent.CreateTimerFromHistory(timerId))
                 }
             }
             LaunchedEffect(groupId) {
                 if (groupId != null) {
-                    homeViewModel.onEvent(HomeEvent.SetTimerGroupRestart(groupId))
+                    homeViewModel.onEvent(HomeEvent.CreateTimerGroupFromHistory(groupId))
                 }
             }
 

@@ -13,8 +13,6 @@ import org.example.timercenter.ui.viewmodels.states.TimerHistoryState
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 
-
-@OptIn(OrbitExperimental::class)
 class TimerHistoryViewModel(
     private val timerRepository: TimerRepository,
     private val timerGroupRepository: TimerGroupRepository
@@ -43,15 +41,9 @@ class TimerHistoryViewModel(
 
     fun onEvent(event: TimerHistoryEvent) = intent {
         when (event) {
-            is TimerHistoryEvent.NavigateToHomeRestartTimerEvent -> {
-                postSideEffect(TimerHistorySideEffect.NavigateToHomeRestartTimer(timerId = event.timerId))
-            }
+            else -> {
 
-            is TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent -> {
-                postSideEffect(TimerHistorySideEffect.NavigateToHomeRestartTimerGroup(timerGroupId = event.timerGroupId))
             }
-
-            else -> {}
         }
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.orbit_mvi.compose.collectSideEffect
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.item.TimerHistory
@@ -30,20 +31,6 @@ fun HistoryScreen(
 ) {
     val state by historyViewModel.container.stateFlow.collectAsState()
 
-    LaunchedEffect(historyViewModel) {
-        historyViewModel.container.sideEffectFlow.collect { effect ->
-            when (effect) {
-                is TimerHistorySideEffect.NavigateToHomeRestartTimer -> {
-                    navController.navigateToHome(timerId = effect.timerId)
-                }
-
-                is TimerHistorySideEffect.NavigateToHomeRestartTimerGroup -> {
-                    navController.navigateToHome(groupId = effect.timerGroupId)
-                }
-            }
-        }
-    }
-
     val historyItems = (state.timers.map { it to it.lastStartedTime } +
             state.timerGroups.map { it to it.lastStartedTime })
         .filter { it.second > 0L } // Убираем элементы, у которых lastStartedTime == 0
@@ -61,7 +48,7 @@ fun HistoryScreen(
                     name = item.timerName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-                        historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerEvent(timerId = item.id))
+                        navController.navigateToHome(timerId = item.id)
                     }
                 )
 
@@ -69,7 +56,7 @@ fun HistoryScreen(
                     name = item.groupName,
                     lastStartedTimeText = timerAgoManager.timeAgo(lastStartedTime),
                     onRestart = {
-                        historyViewModel.onEvent(TimerHistoryEvent.NavigateToHomeRestartTimerGroupEvent(timerGroupId = item.id))
+                        navController.navigateToHome(groupId = item.id)
                     }
                 )
             }

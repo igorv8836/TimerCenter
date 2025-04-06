@@ -24,14 +24,14 @@ class TimerListViewModel(
             }
             is TimerListEvent.StartTimer -> {
                 try {
-                    timerRepository.startTimer(event.timer)
+                    timerRepository.startTimer(event.timer.id)
                 } catch (e: Exception) {
                     postSideEffect(TimerListSideEffect.ShowToast("Ошибка запуска таймера"))
                 }
             }
             is TimerListEvent.StopTimer -> {
                 try {
-                    timerRepository.stopTimer(event.timer)
+                    timerRepository.stopTimer(event.timer.id)
                 } catch (e: Exception) {
                     postSideEffect(TimerListSideEffect.ShowToast("Ошибка остановки таймера"))
                 }

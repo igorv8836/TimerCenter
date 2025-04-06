@@ -11,7 +11,7 @@ actual fun platformDatabaseBuilderModule() = module {
 }
 
 private fun provideDatabase(): RoomDatabase.Builder<AppDatabase> {
-    val dbFile = File("C:\\My_app_Android\\TimerCenter", "app_database.db")
+    val dbFile = File("database/", "app_database.db")
     return Room.databaseBuilder<AppDatabase>(
         name = dbFile.absolutePath
     )
