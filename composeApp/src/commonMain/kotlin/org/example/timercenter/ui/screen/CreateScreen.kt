@@ -21,7 +21,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.orbit_mvi.compose.collectAsState
 import com.example.orbit_mvi.compose.collectSideEffect
-import org.example.timercenter.navigation.Screen
+import org.example.timercenter.navigation.navigateToAddToGroup
+import org.example.timercenter.navigation.navigateToCreateGroup
+import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.viewmodels.CreateTimerViewModel
 import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect
@@ -37,16 +39,8 @@ fun CreateScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is CreateTimerEffect.NavigateToHome -> navController.navigate(Screen.HOME.route)
+            is CreateTimerEffect.NavigateToHome -> navController.navigateToHome()
         }
-    }
-
-    LaunchedEffect(viewModel) {
-        viewModel.onEvent(
-            CreateTimerEvent.SetTimerId(
-                navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
-            )
-        )
     }
 
     Column(
@@ -130,8 +124,8 @@ fun PartTimerGroups(navController: NavController) {
     ) {
         Text("Группы таймеров", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         Spacer(Modifier.height(7.dp))
-        GroupOption("Добавить таймеры в группу") { navController.navigate(Screen.ADD_TO_GROUP.route) }
-        GroupOption("Создать новую группу") { navController.navigate(Screen.CREATE_GROUP.route) }
+        GroupOption("Добавить таймеры в группу") { navController.navigateToAddToGroup() }
+        GroupOption("Создать новую группу") { navController.navigateToCreateGroup() }
 
 
     }

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.orbit_mvi.compose.collectAsState
 import com.example.orbit_mvi.compose.collectSideEffect
-import org.example.timercenter.navigation.Screen
+import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.TimerAddToGroup
 import org.example.timercenter.ui.model.GroupType
@@ -36,7 +36,7 @@ fun CreateTimerGroupScreen(
 
     viewModel.collectSideEffect {
         when (it) {
-            is CreateTimerGroupEffect.NavigateToHome -> navController.navigate(Screen.HOME.route)
+            is CreateTimerGroupEffect.NavigateToHome -> navController.navigateToHome()
         }
     }
 
@@ -122,7 +122,7 @@ fun CreateTimerGroupScreen(
         ) {
             Spacer(Modifier.weight(1f))
             Button(
-                onClick = { navController.navigate(Screen.HOME.route) },
+                onClick = { navController.navigateToHome() },
                 modifier = Modifier.height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,

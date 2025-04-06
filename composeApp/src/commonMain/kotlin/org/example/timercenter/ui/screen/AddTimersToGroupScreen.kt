@@ -3,6 +3,7 @@ package org.example.timercenter.ui.screen
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.navigation.NavController
+import org.example.timercenter.navigation.navigateToCreateGroup
 import org.example.timercenter.ui.item.TimerGroupWithoutRun
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.viewmodels.AddTimersToGroupViewModel
@@ -23,7 +24,9 @@ fun AddTimersToGroupScreen(
     LaunchedEffect(viewModel) {
         viewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
-                is AddTimersToGroupEffect.NavigateToEditTimerGroup -> navController.navigate("create_group/${effect.timerGroupId}")
+                is AddTimersToGroupEffect.NavigateToEditTimerGroup -> {
+                    navController.navigateToCreateGroup(effect.timerGroupId)
+                }
             }
         }
     }

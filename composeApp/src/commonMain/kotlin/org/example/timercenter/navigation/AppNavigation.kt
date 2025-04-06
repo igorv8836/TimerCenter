@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.ui.screen.AddTimersToGroupScreen
 import org.example.timercenter.ui.screen.CreateScreen
@@ -12,29 +13,37 @@ import org.example.timercenter.ui.screen.CreateTimerGroupScreen
 import org.example.timercenter.ui.screen.HistoryScreen
 import org.example.timercenter.ui.screen.HomeScreen
 import org.example.timercenter.ui.screen.SettingsScreen
+import org.example.timercenter.ui.viewmodels.CreateTimerViewModel
 import org.example.timercenter.ui.viewmodels.HomeViewModel
+import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostController) {
 
-    NavHost(navController = navController, startDestination = Screen.HOME.route) {
-
-        composable(Screen.HOME.route) { backStackEntry ->
-            val timerId = backStackEntry.arguments?.getString("timerId")?.toIntOrNull() ?: -1
-            val groupId = backStackEntry.arguments?.getString("groupId")?.toIntOrNull() ?: -1
+    NavHost(
+        navController = navController,
+        startDestination = HomeScreenRoute(
+            timerId = -1,
+            groupId = -1,
+        )
+    ) {
+        composable<HomeScreenRoute> {
+            val args = it.toRoute<HomeScreenRoute>()
+            val timerId = args.timerId
+            val groupId = args.groupId
 
             val homeViewModel: HomeViewModel = koinViewModel()
 
             // Если переданы аргументы для рестарта, отправляем соответствующие события в ViewModel.
             LaunchedEffect(timerId) {
-                if (timerId != -1) {
+                if (timerId != null) {
                     homeViewModel.onEvent(HomeEvent.SetTimerRestart(timerId))
                 }
             }
             LaunchedEffect(groupId) {
-                if (groupId != -1) {
+                if (groupId != null) {
                     homeViewModel.onEvent(HomeEvent.SetTimerGroupRestart(groupId))
                 }
             }
@@ -46,24 +55,41 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
 
-        composable(Screen.CREATE.route) { CreateScreen(navController = navController) }
-        composable(Screen.HISTORY.route) {
+        composable<CreateScreenRoute> {
+            val viewModel: CreateTimerViewModel = koinViewModel()
+
+            viewModel.onEvent(
+                CreateTimerEvent.SetTimerId(
+                    id = it.toRoute<CreateScreenRoute>().id,
+                )
+            )
+
+            CreateScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
+
+        composable<HistoryScreenRoute> {
             HistoryScreen(
                 timerAgoManager = timeAgoManager,
                 navController = navController,
             )
         }
-        composable(Screen.CREATE_GROUP.route) {
+
+        composable<CreateGroupScreenRoute> {
             CreateTimerGroupScreen(
                 navController = navController
             )
         }
-        composable(Screen.ADD_TO_GROUP.route) {
+
+        composable<AddToGroupScreenRoute> {
             AddTimersToGroupScreen(
                 navController = navController
             )
         }
-        composable(Screen.SETTINGS.route) {
+
+        composable<SettingsScreenRoute> {
             SettingsScreen(
                 navController = navController,
             )

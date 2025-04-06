@@ -4,21 +4,61 @@ import androidx.navigation.NavController
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object HomeScreenRoute
+data class HomeScreenRoute(
+    val timerId: Int?,
+    val groupId: Int?,
+)
 
 @Serializable
-data object CreateScreenRoute
+data class CreateScreenRoute(
+    val id: Int?,
+)
+
+@Serializable
+data class CreateGroupScreenRoute(
+    val id: Int?,
+)
+
+@Serializable
+data object AddToGroupScreenRoute
 
 @Serializable
 data object HistoryScreenRoute
 
+@Serializable
+data object SettingsScreenRoute
 
-fun NavController.navigateToHome() {
-    navigate(HomeScreenRoute)
+
+fun NavController.navigateToHome(
+    timerId: Int? = null,
+    groupId: Int? = null,
+) {
+    navigate(
+        HomeScreenRoute(
+            timerId = timerId,
+            groupId = groupId,
+        )
+    )
 }
 
-fun NavController.navigateToCreate() {
-    navigate(CreateScreenRoute)
+fun NavController.navigateToCreate(
+    id: Int? = null,
+) {
+    navigate(CreateScreenRoute(id))
+}
+
+fun NavController.navigateToCreateGroup(
+    id: Int? = null,
+) {
+    navigate(CreateGroupScreenRoute(id))
+}
+
+fun NavController.navigateToAddToGroup() {
+    navigate(AddToGroupScreenRoute)
+}
+
+fun NavController.navigateToSettings() {
+    navigate(SettingsScreenRoute)
 }
 
 fun NavController.navigateToHistory() {

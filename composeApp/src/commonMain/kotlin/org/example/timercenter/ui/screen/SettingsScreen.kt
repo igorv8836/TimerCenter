@@ -1,23 +1,14 @@
 package org.example.timercenter.ui.screen
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.orbit_mvi.compose.collectAsState
-import org.example.timercenter.navigation.Screen
+import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.model.NotificationType
 import org.example.timercenter.ui.viewmodels.SettingsViewModel
 import org.example.timercenter.ui.viewmodels.states.SettingsEvent
@@ -37,7 +28,7 @@ fun SettingsScreen(
                 state = state as SettingsState.Success,
                 onEvent = viewModel::onEvent,
                 navigateToHome = {
-                    navController.navigate(Screen.HOME.route)
+                    navController.navigateToHome()
                 }
             )
         }

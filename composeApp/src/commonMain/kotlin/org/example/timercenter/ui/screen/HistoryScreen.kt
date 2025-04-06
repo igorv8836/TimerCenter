@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import org.example.timercenter.TimeAgoManager
+import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.item.TimerHistory
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerUiModel
@@ -32,8 +33,13 @@ fun HistoryScreen(
     LaunchedEffect(historyViewModel) {
         historyViewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
-                is TimerHistorySideEffect.NavigateToHomeRestartTimer -> navController.navigate("home/${effect.timerId}/-1")
-                is TimerHistorySideEffect.NavigateToHomeRestartTimerGroup -> navController.navigate("home/-1/${effect.timerGroupId}")
+                is TimerHistorySideEffect.NavigateToHomeRestartTimer -> {
+                    navController.navigateToHome(timerId = effect.timerId)
+                }
+
+                is TimerHistorySideEffect.NavigateToHomeRestartTimerGroup -> {
+                    navController.navigateToHome(groupId = effect.timerGroupId)
+                }
             }
         }
     }

@@ -12,56 +12,60 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
-import org.example.timercenter.navigation.Screen
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
+import org.example.timercenter.navigation.CreateScreenRoute
+import org.example.timercenter.navigation.HistoryScreenRoute
+import org.example.timercenter.navigation.HomeScreenRoute
 
-data class BottomNavigationItem(
-    val route: String,
+data class BottomNavItem<T : Any>(
     val title: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
+    val route: T
 )
 
 val bottomNavigationItems = listOf(
-    BottomNavigationItem(
-        route = Screen.HOME.route,
-        title = Screen.HOME.title,
+    BottomNavItem(
+        title = "Главная",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Outlined.Home,
+        route = HomeScreenRoute(-1, -1),
     ),
-    BottomNavigationItem(
-        route = Screen.CREATE.route,
-        title = Screen.CREATE.title,
+    BottomNavItem(
+        title = "Создать",
         selectedIcon = Icons.Filled.Add,
         unselectedIcon = Icons.Outlined.Add,
+        route = CreateScreenRoute(-1),
     ),
-    BottomNavigationItem(
-        route = Screen.HISTORY.route,
-        title = Screen.HISTORY.title,
+    BottomNavItem(
+        title = "История",
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Outlined.History,
+        route = HistoryScreenRoute,
     ),
 )
 
 @Composable
 fun BottomNavigationBar(
-    items: List<BottomNavigationItem>,
     navController: NavController,
 ) {
-    var selectedItemIndex by rememberSaveable {
-        mutableStateOf(0)
+    val navBackStackEntry = navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry.value?.destination
+
+    val selectedItemIndex = bottomNavigationItems.indexOfFirst { item ->
+        currentDestination?.hierarchy?.any { it.hasRoute(item.route::class) } == true
     }
+
     NavigationBar {
-        items.forEachIndexed { index, item ->
+        bottomNavigationItems.forEachIndexed { index, item ->
             NavigationBarItem(
-                selected = selectedItemIndex == index,
+                selected = index == selectedItemIndex,
                 onClick = {
-                    selectedItemIndex = index
+                    if (currentDestination?.hasRoute(item.route::class) == true) return@NavigationBarItem
                     navController.navigate(item.route)
                 },
                 label = {
@@ -72,10 +76,12 @@ fun BottomNavigationBar(
                     Icon(
                         imageVector = if (index == selectedItemIndex) {
                             item.selectedIcon
-                        } else item.unselectedIcon,
+                        } else {
+                            item.unselectedIcon
+                        },
                         contentDescription = item.title
                     )
-                }
+                },
             )
         }
     }

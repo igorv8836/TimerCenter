@@ -36,6 +36,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.example.timercenter.TimeAgoManager
+import org.example.timercenter.navigation.navigateToCreate
+import org.example.timercenter.navigation.navigateToCreateGroup
+import org.example.timercenter.navigation.navigateToSettings
 import org.example.timercenter.ui.HomeTopBar
 import org.example.timercenter.ui.PopupMessage
 import org.example.timercenter.ui.item.Timer
@@ -52,9 +55,9 @@ fun HomeScreen(
     LaunchedEffect(homeViewModel) {
         homeViewModel.container.sideEffectFlow.collect { effect ->
             when (effect) {
-                is HomeEffect.NavigateToSettings -> navController.navigate("settings")
-                is HomeEffect.NavigateToEditTimer -> navController.navigate("create/${effect.timerId}")
-                is HomeEffect.NavigateToEditTimerGroup -> navController.navigate("create_group/${effect.timerGroupId}")
+                is HomeEffect.NavigateToSettings -> navController.navigateToSettings()
+                is HomeEffect.NavigateToEditTimer -> navController.navigateToCreate(effect.timerId)
+                is HomeEffect.NavigateToEditTimerGroup -> navController.navigateToCreateGroup(effect.timerGroupId)
             }
         }
     }

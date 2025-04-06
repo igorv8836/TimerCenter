@@ -3,23 +3,30 @@ package org.example.timercenter.ui
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
-import org.example.timercenter.navigation.Screen
+import org.example.timercenter.navigation.*
 
-private const val TAG = "AppTopBar"
+@Composable
+fun NavController.getRouteName(): String {
+    val destination = currentBackStackEntryAsState().value?.destination ?: return "Таймеры"
+    return when {
+        destination.hasRoute<HomeScreenRoute>() -> "Главная"
+        destination.hasRoute<CreateScreenRoute>() -> "Создать"
+        destination.hasRoute<CreateGroupScreenRoute>() -> "Создать группу"
+        destination.hasRoute<AddToGroupScreenRoute>() -> "Добавить в группу"
+        destination.hasRoute<HistoryScreenRoute>() -> "История"
+        destination.hasRoute<SettingsScreenRoute>() -> "Настройки"
+        else -> "Таймеры"
+    }
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -27,31 +34,19 @@ private const val TAG = "AppTopBar"
 fun AppTopBar(
     navController: NavController, onSettingsClick: () -> Unit
 ) {
-
-    // Отслеживаем текущий маршрут, чтобы перерисовывать TopAppBar при изменении маршрута
-    val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
-
     TopAppBar(
         title = {
             Text(
-                text = when (currentRoute) {
-                    Screen.HOME.route -> Screen.HOME.title
-                    Screen.CREATE.route -> Screen.CREATE.title
-                    Screen.HISTORY.route -> Screen.HISTORY.title
-                    Screen.CREATE_GROUP.route -> Screen.CREATE_GROUP.title
-                    Screen.ADD_TO_GROUP.route -> Screen.ADD_TO_GROUP.title
-                    Screen.SETTINGS.route -> Screen.SETTINGS.title
-                    else -> "Таймеры"
-                },
+                text = navController.getRouteName(),
                 fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground, // Цвет текста
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
         },
         actions = {
-            IconButton(onClick = onSettingsClick) { // Кнопка для настроек
+            IconButton(onClick = onSettingsClick) {
                 Icon(imageVector = Icons.Filled.Settings, contentDescription = null)
             }
         },
