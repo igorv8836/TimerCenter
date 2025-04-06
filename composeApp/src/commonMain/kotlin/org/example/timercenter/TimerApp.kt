@@ -35,7 +35,7 @@ fun TimerApp(timeAgoManager: TimeAgoManager) {
                 )
             }
         ) { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding).padding(WindowInsets.systemBars.asPaddingValues())) {
+            Box(modifier = Modifier.padding(innerPadding)) {
                 AppNavigation(timeAgoManager = timeAgoManager, navController = navController)
             }
         }
