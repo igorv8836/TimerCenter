@@ -13,6 +13,12 @@ import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.example.timercenter.ui.viewmodels.states.HomeState
 import org.orbitmvi.orbit.ContainerHost
 
+/**
+ * ViewModel для главного экрана
+ * Реализует логику управления таймерами и группами таймеров на главном экране
+ * @property timerRepository Репозиторий для работы с таймерами
+ * @property timerGroupRepository Репозиторий для работы с группами таймеров
+ */
 class HomeViewModel(
     private val timerRepository: TimerRepository,
     private val timerGroupRepository: TimerGroupRepository

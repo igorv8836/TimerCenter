@@ -8,12 +8,21 @@ import org.example.timercenter.ui.viewmodels.states.TimerGroupSideEffect
 import org.example.timercenter.ui.viewmodels.states.TimerGroupState
 import org.orbitmvi.orbit.ContainerHost
 
+/**
+ * ViewModel для экрана групп таймеров
+ * Реализует логику управления группами таймеров
+ * @property timerGroupRepository Репозиторий для работы с группами таймеров
+ */
 class TimerGroupViewModel(
     private val timerGroupRepository: TimerGroupRepository
 ) : ViewModel(), ContainerHost<TimerGroupState, TimerGroupSideEffect> {
 
     override val container = container<TimerGroupState, TimerGroupSideEffect>(TimerGroupState())
 
+    /**
+     * Обработка событий
+     * @param event Событие для обработки
+     */
     fun onEvent(event: TimerGroupEvent) = intent {
         when (event) {
             is TimerGroupEvent.LoadGroups -> {

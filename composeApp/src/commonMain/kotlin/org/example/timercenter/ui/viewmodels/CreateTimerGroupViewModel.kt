@@ -14,6 +14,12 @@ import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.annotation.OrbitExperimental
 
+/**
+ * ViewModel для создания и редактирования группы таймеров
+ * Класс отвечает за управление состоянием и логикой экрана создания и редактирования группы таймеров
+ * @property timerGroupRepository Репозиторий для работы с группами таймеров
+ * @property timerRepository Репозиторий для работы с таймерами
+ */
 @OptIn(OrbitExperimental::class)
 class CreateTimerGroupViewModel(
     private val timerGroupRepository: TimerGroupRepository,
@@ -33,6 +39,11 @@ class CreateTimerGroupViewModel(
         }
     }
 
+    /**
+     * Обработчик событий для создания/редактирования группы таймеров
+     * Обрабатывает события, связанные с созданием и редактированием группы таймеров
+     * @param event Событие для обработки
+     */
     fun onEvent(event: CreateTimerGroupEvent) {
         when (event) {
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {

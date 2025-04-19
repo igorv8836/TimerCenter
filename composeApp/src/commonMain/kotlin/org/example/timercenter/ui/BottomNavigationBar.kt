@@ -21,6 +21,13 @@ import org.example.timercenter.navigation.CreateScreenRoute
 import org.example.timercenter.navigation.HistoryScreenRoute
 import org.example.timercenter.navigation.HomeScreenRoute
 
+/**
+ * Элемент нижней навигационной панели
+ * @param title Название элемента
+ * @param selectedIcon Иконка для выбранного состояния
+ * @param unselectedIcon Иконка для невыбранного состояния
+ * @param route Маршрут навигации
+ */
 data class BottomNavItem<T : Any>(
     val title: String,
     val selectedIcon: ImageVector,
@@ -28,6 +35,9 @@ data class BottomNavItem<T : Any>(
     val route: T
 )
 
+/**
+ * Список элементов нижней навигационной панели
+ */
 val bottomNavigationItems = listOf(
     BottomNavItem(
         title = "Главная",
@@ -49,6 +59,10 @@ val bottomNavigationItems = listOf(
     ),
 )
 
+/**
+ * Нижняя навигационная панель приложения
+ * @param navController Контроллер навигации
+ */
 @Composable
 fun BottomNavigationBar(
     navController: NavController,

@@ -1,7 +1,13 @@
 package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavController
 import org.example.timercenter.navigation.navigateToCreateGroup
 import org.example.timercenter.ui.item.TimerGroupWithoutRun
@@ -10,7 +16,11 @@ import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEffect
 import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEvent
 import org.koin.compose.viewmodel.koinViewModel
 
-
+/**
+ * Экран добавления таймеров в группу
+ * @param navController Контроллер навигации
+ * @param viewModel Модель представления экрана
+ */
 @Composable
 fun AddTimersToGroupScreen(
     navController: NavController,

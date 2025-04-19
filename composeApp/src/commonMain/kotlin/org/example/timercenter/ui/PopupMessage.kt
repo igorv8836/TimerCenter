@@ -9,6 +9,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
+/**
+ * Всплывающее диалоговое окно с подтверждением действия
+ * Реализует диалоговое окно с возможностью подтверждения или отмены действия
+ * @param message Текст сообщения
+ * @param buttonText Текст на кнопке подтверждения
+ * @param onCancel Обработчик отмены действия
+ * @param onConfirm Обработчик подтверждения действия
+ */
 @Composable
 fun PopupMessage(
     message: String,

@@ -19,6 +19,12 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * Основной компонент навигации приложения
+ * определяет маршруты и экраны приложения
+ * @param timeAgoManager Менеджер для форматирования времени
+ * @param navController Контроллер навигации
+ */
 @Composable
 fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostController) {
 
@@ -29,6 +35,10 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             groupId = -1,
         )
     ) {
+        /**
+         * Маршрут главного экрана
+         * обрабатывает создание таймеров и групп из истории
+         */
         composable<HomeScreenRoute> {
             val args = it.toRoute<HomeScreenRoute>()
             val timerId = args.timerId
@@ -55,6 +65,9 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
 
+        /**
+         * Маршрут экрана создания/редактирования таймера
+         */
         composable<CreateScreenRoute> {
             val viewModel: CreateTimerViewModel = koinViewModel()
 
@@ -70,6 +83,9 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
 
+        /**
+         * Маршрут экрана истории таймеров
+         */
         composable<HistoryScreenRoute> {
             HistoryScreen(
                 timerAgoManager = timeAgoManager,
@@ -77,18 +93,27 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             )
         }
 
+        /**
+         * Маршрут экрана создания/редактирования группы
+         */
         composable<CreateGroupScreenRoute> {
             CreateTimerGroupScreen(
                 navController = navController
             )
         }
 
+        /**
+         * Маршрут экрана добавления таймеров в группу
+         */
         composable<AddToGroupScreenRoute> {
             AddTimersToGroupScreen(
                 navController = navController
             )
         }
 
+        /**
+         * Маршрут экрана настроек
+         */
         composable<SettingsScreenRoute> {
             SettingsScreen(
                 navController = navController,

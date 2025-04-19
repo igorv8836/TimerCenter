@@ -9,6 +9,14 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.conventional.commits) apply true
     alias(libs.plugins.jetbrains.kotlin.jvm) apply false
+    alias(libs.plugins.dokka) apply true
+}
+
+subprojects {
+    apply(plugin = "org.jetbrains.dokka")
+    tasks.withType<org.jetbrains.dokka.gradle.DokkaMultiModuleTask>().configureEach {
+        enabled = false
+    }
 }
 
 conventionalCommits {
@@ -19,4 +27,8 @@ conventionalCommits {
         "datastore",
         "ui_theme",
     )
+}
+
+tasks.dokkaHtmlMultiModule.configure {
+    outputDirectory.set(file("docs"))
 }

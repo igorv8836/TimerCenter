@@ -13,6 +13,11 @@ import androidx.compose.ui.unit.sp
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.model.formatTime
 
+/**
+ * Компонент таймера без кнопок управления
+ * @param timer Модель таймера
+ * @param remainingTime Оставшееся время в миллисекундах
+ */
 @Composable
 fun TimerWithoutButtons(timer: TimerUiModel, remainingTime: Long) {
     Column(

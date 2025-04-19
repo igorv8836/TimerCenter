@@ -25,6 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.example.timercenter.ui.common.TextResource
 
+/**
+ * Экран отображения ошибки
+ * @param errorMessage Сообщение об ошибке
+ * @param onRetry Обработчик повторной попытки
+ */
 @Composable
 fun ErrorScreen(
     errorMessage: String = TextResource.BasicError.text,

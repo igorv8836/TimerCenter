@@ -1,6 +1,18 @@
 package com.example.timercenter.ui_common
 import androidx.compose.ui.graphics.Color
 
+/**
+ * Цветовая палитра приложения
+ * 
+ * Содержит все цвета, используемые в приложении, включая:
+ * - Основные цвета (primary)
+ * - Вторичные цвета (secondary)
+ * - Третичные цвета (tertiary)
+ * - Цвета ошибок (error)
+ * - Цвета фона и поверхностей
+ * - Цвета для различных уровней контрастности
+ */
+
 val primaryLight = Color(0xFF005EA4)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFF0377CD)

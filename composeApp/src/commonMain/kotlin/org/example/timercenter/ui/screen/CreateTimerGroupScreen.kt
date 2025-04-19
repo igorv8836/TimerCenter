@@ -1,8 +1,22 @@
 package org.example.timercenter.ui.screen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,9 +37,11 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEffect
 import org.example.timercenter.ui.viewmodels.states.CreateTimerGroupEvent
 import org.koin.compose.viewmodel.koinViewModel
 
-
-private const val TAG = "CreateTimerGroupScreen"
-
+/**
+ * Экран создания группы таймеров
+ * @param navController Контроллер навигации
+ * @param viewModel Модель представления экрана
+ */
 @Composable
 fun CreateTimerGroupScreen(
     navController: NavController,
@@ -158,7 +174,11 @@ fun CreateTimerGroupScreen(
     }
 }
 
-
+/**
+ * Компонент выбора типа группы
+ * @param selectedOption Выбранный тип группы
+ * @param onOptionChange Обработчик изменения типа группы
+ */
 @Composable
 fun SingleChoiceSegmentedButton(selectedOption: GroupType, onOptionChange: (GroupType) -> Unit) {
     val options =

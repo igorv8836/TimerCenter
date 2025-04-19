@@ -1,7 +1,16 @@
 package org.example.timercenter.ui.screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -15,6 +24,11 @@ import org.example.timercenter.ui.viewmodels.states.SettingsEvent
 import org.example.timercenter.ui.viewmodels.states.SettingsState
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * Экран настроек приложения
+ * @param navController Контроллер навигации
+ * @param viewModel Модель представления экрана
+ */
 @Composable
 fun SettingsScreen(
     navController: NavController,
@@ -43,6 +57,12 @@ fun SettingsScreen(
     }
 }
 
+/**
+ * Контент экрана настроек
+ * @param state Состояние экрана
+ * @param onEvent Обработчик событий
+ * @param navigateToHome Обработчик перехода на главный экран
+ */
 @Composable
 fun SettingsScreenContent(
     state: SettingsState.Success,
@@ -77,6 +97,11 @@ fun SettingsScreenContent(
     }
 }
 
+/**
+ * Компонент выбора типа уведомлений
+ * @param onOptionChange Обработчик изменения типа уведомлений
+ * @param selectedOption Выбранный тип уведомлений
+ */
 @Composable
 fun SingleChoiceSegmentedButton(
     onOptionChange: (NotificationType) -> Unit,

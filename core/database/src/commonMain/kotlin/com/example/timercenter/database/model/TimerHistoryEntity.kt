@@ -4,6 +4,13 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
+/**
+ * Представляет запись истории использования таймера
+ * @property id Уникальный идентификатор записи истории
+ * @property timerId ID связанного таймера
+ * @property name Имя таймера на момент записи
+ * @property lastStartedTime Временная метка последнего запуска таймера
+ */
 @Entity(
     tableName = "timer_history",
     foreignKeys = [

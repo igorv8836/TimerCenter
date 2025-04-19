@@ -3,6 +3,16 @@ package com.example.timercenter.ui_common
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
+/**
+ * Цветовые схемы для различных тем приложения
+ * 
+ * Содержит определения цветовых схем для:
+ * - Светлой темы
+ * - Темной темы
+ * - Средней контрастности (светлая и темная)
+ * - Высокой контрастности (светлая и темная)
+ */
+
 internal val lightScheme = lightColorScheme(
     primary = primaryLight,
     onPrimary = onPrimaryLight,

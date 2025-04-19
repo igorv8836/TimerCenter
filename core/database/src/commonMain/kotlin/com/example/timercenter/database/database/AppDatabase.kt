@@ -15,6 +15,9 @@ import com.example.timercenter.database.model.TimerGroupCrossRef
 import com.example.timercenter.database.model.TimerGroupEntity
 import com.example.timercenter.database.model.TimerHistoryEntity
 
+/**
+ * База данных приложения
+ */
 @Database(
     entities = [
         TimerEntity::class,
@@ -26,11 +29,33 @@ import com.example.timercenter.database.model.TimerHistoryEntity
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class AppDatabase: RoomDatabase() {
+    /**
+     * Получает DAO для работы с таймерами
+     * @return DAO для работы с таймерами
+     */
     abstract fun getTimerDao(): TimerDao
+
+    /**
+     * Получает DAO для работы с группами таймеров
+     * @return DAO для работы с группами таймеров
+     */
     abstract fun getTimerGroupDao(): TimerGroupDao
+
+    /**
+     * Получает DAO для работы с историей таймеров
+     * @return DAO для работы с историей таймеров
+     */
     abstract fun getTimerHistoryDao(): TimerHistoryDao
+
+    /**
+     * Получает DAO для работы со связями между таймерами и группами
+     * @return DAO для работы со связями
+     */
     abstract fun getTimerGroupCrossRefDao(): TimerGroupCrossRefDao
 }
 
+/**
+ * Конструктор базы данных
+ */
 @Suppress("NO_ACTUAL_FOR_EXPECT")
 expect object AppDatabaseConstructor: RoomDatabaseConstructor<AppDatabase>

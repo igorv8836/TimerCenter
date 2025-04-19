@@ -8,12 +8,21 @@ import org.example.timercenter.ui.viewmodels.states.TimerListSideEffect
 import org.example.timercenter.ui.viewmodels.states.TimerListState
 import org.orbitmvi.orbit.ContainerHost
 
+/**
+ * ViewModel для экрана списка таймеров
+ * Реализует логику управления списком таймеров
+ * @property timerRepository Репозиторий для работы с таймерами
+ */
 class TimerListViewModel(
     private val timerRepository: TimerRepository
 ) : ViewModel(), ContainerHost<TimerListState, TimerListSideEffect> {
 
     override val container = container<TimerListState, TimerListSideEffect>(TimerListState())
 
+    /**
+     * Обработка событий
+     * @param event Событие для обработки
+     */
     fun onEvent(event: TimerListEvent) = intent {
         when (event) {
             is TimerListEvent.LoadTimers -> {

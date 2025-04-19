@@ -16,9 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.timercenter.ui.model.formatTime
 import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.model.formatTime
 
+/**
+ * Компонент для отображения таймера без кнопок управления
+ * @param timer Модель таймера
+ */
 @Composable
 fun TimerWithoutAll(timer: TimerUiModel) {
     Row(
@@ -37,6 +41,12 @@ fun TimerWithoutAll(timer: TimerUiModel) {
     }
 }
 
+/**
+ * Компонент для добавления таймера в группу
+ * @param timer Модель таймера
+ * @param isSelected Флаг выбранного состояния
+ * @param onToggle Обработчик переключения состояния выбора
+ */
 @Composable
 fun TimerAddToGroup(timer: TimerUiModel, isSelected: Boolean, onToggle: () -> Unit) {
     Row(

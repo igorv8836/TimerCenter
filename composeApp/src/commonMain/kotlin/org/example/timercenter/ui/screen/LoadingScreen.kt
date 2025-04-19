@@ -19,6 +19,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.example.timercenter.ui.common.TextResource
 
+/**
+ * Экран загрузки
+ * @param modifier Модификатор для настройки отображения
+ */
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(

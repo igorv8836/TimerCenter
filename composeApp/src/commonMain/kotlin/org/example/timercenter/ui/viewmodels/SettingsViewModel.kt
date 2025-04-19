@@ -12,6 +12,11 @@ import org.example.timercenter.ui.viewmodels.states.SettingsEvent
 import org.example.timercenter.ui.viewmodels.states.SettingsState
 import org.orbitmvi.orbit.ContainerHost
 
+/**
+ * ViewModel для экрана настроек
+ * Реализует логику управления настройками приложения
+ * @property dataStore Хранилище настроек
+ */
 class SettingsViewModel(
     private val dataStore: SettingsDataStore
 ) : ViewModel(), ContainerHost<SettingsState, SettingsEffect> {
@@ -30,6 +35,10 @@ class SettingsViewModel(
         }
     }
 
+    /**
+     * Обработка событий
+     * @param event Событие для обработки
+     */
     fun onEvent(event: SettingsEvent) = intent {
         when (event) {
             is SettingsEvent.ChangeNotification -> {

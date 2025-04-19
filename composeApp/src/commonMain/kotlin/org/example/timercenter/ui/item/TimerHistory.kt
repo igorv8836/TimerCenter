@@ -14,8 +14,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.example.timercenter.TimeAgoManager
 
+/**
+ * Компонент для отображения истории таймера
+ * @param name Название таймера
+ * @param lastStartedTimeText Текст времени последнего запуска
+ * @param onRestart Обработчик перезапуска таймера
+ */
 @Composable
 fun TimerHistory(
     name: String,

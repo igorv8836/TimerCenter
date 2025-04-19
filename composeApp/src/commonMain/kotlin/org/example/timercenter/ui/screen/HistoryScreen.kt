@@ -4,25 +4,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.orbit_mvi.compose.collectSideEffect
 import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.navigation.navigateToHome
 import org.example.timercenter.ui.item.TimerHistory
 import org.example.timercenter.ui.model.TimerGroupUiModel
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.viewmodels.TimerHistoryViewModel
-import org.example.timercenter.ui.viewmodels.states.TimerHistoryEvent
-import org.example.timercenter.ui.viewmodels.states.TimerHistorySideEffect
 import org.koin.compose.viewmodel.koinViewModel
 
-private const val TAG = "HistoryScreen"
-
+/**
+ * Экран истории таймеров
+ * @param timerAgoManager Менеджер для получения текста, описывающего время
+ * @param navController Навигатор для перехода на другие экраны
+ * @param historyViewModel ViewModel для управления историей таймеров
+ */
 @Composable
 fun HistoryScreen(
     timerAgoManager: TimeAgoManager,

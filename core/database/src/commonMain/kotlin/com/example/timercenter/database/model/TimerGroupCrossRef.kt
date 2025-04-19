@@ -3,6 +3,11 @@ package com.example.timercenter.database.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 
+/**
+ * Представляет связь многие-ко-многим между таймерами и группами таймеров
+ * @property timerId ID таймера в связи
+ * @property groupId ID группы таймеров в связи
+ */
 @Entity(
     tableName = "timer_group_cross_ref",
     primaryKeys = ["timerId", "groupId"],

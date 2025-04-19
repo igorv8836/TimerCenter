@@ -27,6 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.example.timercenter.ui.model.TimerGroupUiModel
 
+/**
+ * Компонент группы таймеров без возможности запуска
+ * @param timerGroup Модель группы таймеров
+ * @param id Идентификатор группы
+ * @param selectGroup Обработчик выбора группы
+ */
 @Composable
 fun TimerGroupWithoutRun(timerGroup: TimerGroupUiModel, id: Int, selectGroup: (Int) -> Unit) {
     var isExpanded by remember { mutableStateOf(false) }

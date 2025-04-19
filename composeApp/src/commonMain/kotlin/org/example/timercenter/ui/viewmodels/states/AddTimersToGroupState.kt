@@ -1,27 +1,44 @@
 package org.example.timercenter.ui.viewmodels.states
 
 import androidx.compose.runtime.Stable
-import com.example.timercenter.database.model.TimerGroupEntity
-import org.example.timercenter.ui.model.GroupType
 import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerUiModel
-import org.example.timercenter.ui.model.toGroupType
-import org.example.timercenter.ui.model.toInt
 
+/**
+ * Состояние экрана добавления таймеров в группу
+ * @property timerGroups список групп таймеров
+ * @property timerChooseId идентификатор выбранного таймера
+ */
 @Stable
 data class AddTimersToGroupState(
     val timerGroups: List<TimerGroupUiModel> = emptyList(),
     val timerChooseId: Int? = null,
 )
 
+/**
+ * Эффекты экрана добавления таймеров в группу
+ */
 sealed interface AddTimersToGroupEffect {
+    /**
+     * Навигация к экрану редактирования группы таймеров
+     * @property timerGroupId идентификатор группы таймеров
+     */
     data class NavigateToEditTimerGroup(val timerGroupId: Int) : AddTimersToGroupEffect
 }
 
-
-
+/**
+ * События экрана добавления таймеров в группу
+ */
 sealed interface AddTimersToGroupEvent {
+    /**
+     * Выбор группы для редактирования
+     * @property groupId идентификатор группы
+     */
     data class ChooseGroupToEdit(val groupId: Int) : AddTimersToGroupEvent
+
+    /**
+     * Установка идентификатора выбранного таймера
+     * @property groupId идентификатор группы
+     */
     data class SetTimerChooseId(val groupId: Int) : AddTimersToGroupEvent
 
 //    data class SetTimerGroupId(val id: Int?) : CreateTimerGroupEvent

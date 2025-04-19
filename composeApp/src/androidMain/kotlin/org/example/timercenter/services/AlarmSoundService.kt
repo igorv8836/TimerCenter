@@ -8,9 +8,21 @@ import android.media.MediaPlayer
 import android.media.RingtoneManager
 import android.os.IBinder
 
+/**
+ * Сервис для воспроизведения звукового оповещения таймера
+ * Воспроизводит стандартный звук будильника в цикле
+ * Поддерживает остановку воспроизведения через специальное действие
+ */
 class AlarmSoundService : Service() {
     private var mediaPlayer: MediaPlayer? = null
 
+    /**
+     * Обрабатывает команды сервиса
+     * @param intent Интент с командой
+     * @param flags Флаги запуска
+     * @param startId ID запуска
+     * @return Режим работы сервиса
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val timerId = intent?.getIntExtra("TIMER_ID", -1) ?: -1
 
@@ -33,5 +45,8 @@ class AlarmSoundService : Service() {
         return START_STICKY
     }
 
+    /**
+     * Не используется, так как сервис не поддерживает привязку
+     */
     override fun onBind(intent: Intent?): IBinder? = null
 }

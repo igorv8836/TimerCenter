@@ -13,8 +13,20 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import org.example.timercenter.services.AlarmSoundService
 
+/**
+ * Worker для обработки завершения таймера
+ * Выполняет следующие действия при завершении таймера:
+ * - Включает вибрацию
+ * - Запускает звуковое оповещение
+ * - Показывает уведомление с возможностью отключения звука
+ */
 class TimerExpiredWorker(context: Context, params: WorkerParameters) : CoroutineWorker(context, params) {
     private val notificationChannelId = "timer"
+    
+    /**
+     * Основной метод выполнения работы
+     * @return Результат выполнения работы
+     */
     override suspend fun doWork(): Result {
         val timerId = inputData.getInt("TIMER_ID", -1)
         val vibrator = applicationContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

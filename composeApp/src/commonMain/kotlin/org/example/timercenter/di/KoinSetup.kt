@@ -14,6 +14,12 @@ import org.koin.core.Koin
 import org.koin.core.context.startKoin
 import org.koin.dsl.KoinAppDeclaration
 
+/**
+ * Основной класс для управления Koin-ом
+ * Инициализирует Koin с необходимыми модулями
+ * @param appDeclaration Дополнительные настройки Koin
+ * @return Экземпляр Koin
+ */
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
     startKoin {
         Napier.base(DebugAntilog())
@@ -28,18 +34,30 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
             uiModule(),
             timeManagerModule(),
         )
-
     }
 
+/**
+ * Фабрика для работы с Koin
+ * Обеспечивает единую точку доступа к зависимостям
+ */
 object KoinFactory {
     private var di: Koin? = null
 
+    /**
+     * Настраивает Koin с дополнительными параметрами
+     * @param appDeclaration Дополнительные настройки Koin
+     */
     fun setupKoin(appDeclaration: KoinAppDeclaration = {}) {
         if (di == null) {
             di = initKoin(appDeclaration).koin
         }
     }
 
+    /**
+     * Получает экземпляр Koin
+     * @return Экземпляр Koin
+     * @throws IllegalStateException если Koin не инициализирован
+     */
     fun getDI(): Koin {
         return di ?: run {
             setupKoin()

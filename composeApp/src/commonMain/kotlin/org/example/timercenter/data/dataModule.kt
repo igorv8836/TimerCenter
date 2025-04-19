@@ -11,6 +11,11 @@ import org.example.timercenter.domain.repositories.TimerRepository
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+/**
+ * Модуль зависимостей для слоя данных.
+ * Предоставляет реализации репозиториев и необходимые зависимости.
+ * @return Модуль Koin с настройками зависимостей
+ */
 fun dataModule() = module {
     includes(timerSchedulerModule())
     single<TimerRepository> { TimerRepositoryImpl(get(), get(), get(), get(named(MyDispatchers.IO))) }

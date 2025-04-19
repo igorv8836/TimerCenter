@@ -11,8 +11,13 @@ import org.example.timercenter.ui.viewmodels.states.TimerHistoryEvent
 import org.example.timercenter.ui.viewmodels.states.TimerHistorySideEffect
 import org.example.timercenter.ui.viewmodels.states.TimerHistoryState
 import org.orbitmvi.orbit.ContainerHost
-import org.orbitmvi.orbit.annotation.OrbitExperimental
 
+/**
+ * ViewModel для экрана истории таймеров
+ * Реализует логику отображения истории таймеров и групп таймеров
+ * @property timerRepository Репозиторий для работы с таймерами
+ * @property timerGroupRepository Репозиторий для работы с группами таймеров
+ */
 class TimerHistoryViewModel(
     private val timerRepository: TimerRepository,
     private val timerGroupRepository: TimerGroupRepository
@@ -20,7 +25,6 @@ class TimerHistoryViewModel(
 
     override val container =
         container<TimerHistoryState, TimerHistorySideEffect>(TimerHistoryState())
-
 
     init {
         intent {
@@ -39,6 +43,10 @@ class TimerHistoryViewModel(
         }
     }
 
+    /**
+     * Обработка событий
+     * @param event Событие для обработки
+     */
     fun onEvent(event: TimerHistoryEvent) = intent {
         when (event) {
             else -> {

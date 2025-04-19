@@ -4,15 +4,29 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +40,15 @@ import kotlinx.datetime.Clock
 import org.example.timercenter.ui.model.TimerUiModel
 import org.example.timercenter.ui.model.formatTime
 
-
+/**
+ * Компонент таймера с кнопками управления
+ * @param timer Модель таймера
+ * @param isSelected Флаг выбранного состояния
+ * @param onSelect Обработчик выбора таймера
+ * @param onStart Обработчик запуска таймера
+ * @param onPause Обработчик паузы таймера
+ * @param onStop Обработчик остановки таймера
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Timer(
@@ -107,6 +129,11 @@ fun Timer(
     }
 }
 
+/**
+ * Вычисляет оставшееся время таймера
+ * @param timer Модель таймера
+ * @return Оставшееся время в миллисекундах
+ */
 private fun calculateRemainingTime(timer: TimerUiModel): Long {
     return if (timer.isRunning) {
         val elapsed = Clock.System.now().toEpochMilliseconds() - timer.lastStartedTime
@@ -116,6 +143,12 @@ private fun calculateRemainingTime(timer: TimerUiModel): Long {
     }
 }
 
+/**
+ * Круглая кнопка с иконкой и индикатором прогресса
+ * @param icon Иконка кнопки
+ * @param onClick Обработчик нажатия
+ * @param progress Прогресс выполнения (от 0 до 1)
+ */
 @Composable
 fun CircularButton(icon: ImageVector, onClick: () -> Unit, progress: Float = 1f) {
     Box(

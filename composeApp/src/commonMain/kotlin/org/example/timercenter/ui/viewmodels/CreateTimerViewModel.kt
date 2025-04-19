@@ -9,11 +9,20 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerState
 import org.example.timercenter.ui.viewmodels.states.toEntity
 import org.orbitmvi.orbit.ContainerHost
 
+/**
+ * ViewModel для экрана создания таймера
+ * Реализует логику создания и редактирования таймеров
+ * @property timerRepository Репозиторий для работы с таймерами
+ */
 class CreateTimerViewModel(
     private val timerRepository: TimerRepository
 ) : ViewModel(), ContainerHost<CreateTimerState, CreateTimerEffect> {
     override val container = container<CreateTimerState, CreateTimerEffect>(CreateTimerState())
 
+    /**
+     * Обработка событий
+     * @param event Событие для обработки
+     */
     fun onEvent(event: CreateTimerEvent) {
         when (event) {
             is CreateTimerEvent.SaveTimer -> blockingIntent {

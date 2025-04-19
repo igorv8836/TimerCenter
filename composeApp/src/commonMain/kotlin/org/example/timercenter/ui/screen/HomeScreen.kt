@@ -47,6 +47,12 @@ import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * Главный экран приложения
+ * @param timerAgoManager Менеджер для получения текста, описывающего время
+ * @param navController Контроллер навигации
+ * @param homeViewModel Модель представления экрана
+ */
 @Composable
 fun HomeScreen(
     timerAgoManager: TimeAgoManager,

@@ -2,13 +2,28 @@ package org.example.timercenter.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,6 +45,11 @@ import org.example.timercenter.ui.viewmodels.states.CreateTimerEffect
 import org.example.timercenter.ui.viewmodels.states.CreateTimerEvent
 import org.koin.compose.viewmodel.koinViewModel
 
+/**
+ * Экран создания таймера
+ * @param navController Контроллер навигации
+ * @param viewModel Модель представления экрана
+ */
 @Composable
 fun CreateScreen(
     navController: NavController,
@@ -116,6 +136,10 @@ fun CreateScreen(
     }
 }
 
+/**
+ * Раздел групп таймеров
+ * @param navController Контроллер навигации
+ */
 @Composable
 fun PartTimerGroups(navController: NavController) {
     // Раздел групп
@@ -131,7 +155,17 @@ fun PartTimerGroups(navController: NavController) {
     }
 }
 
-// Composable-функция для выбора времени
+/**
+ * Composable-функция для выбора времени
+ * @param selectedHours Выбранные часы
+ * @param selectedMinutes Выбранные минуты
+ * @param selectedSeconds Выбранные секунды
+ * @param onHoursChange Обработчик изменения часов
+ * @param onMinutesChange Обработчик изменения минут
+ * @param onSecondsChange Обработчик изменения секунд
+ * @param fontSize Размер шрифта
+ * @param showLabel Показывать ли метки
+ */
 @Composable
 fun TimePicker(
     selectedHours: Int,
@@ -184,6 +218,13 @@ fun TimePicker(
     }
 }
 
+/**
+ * Колесо выбора времени
+ * @param selectedValue Выбранное значение
+ * @param range Диапазон значений
+ * @param onValueChange Обработчик изменения значения
+ * @param fontSize Размер шрифта
+ */
 @Composable
 fun TimePickerWheel(
     selectedValue: Int,
@@ -236,13 +277,20 @@ fun TimePickerWheel(
 }
 
 
-// Разделитель между колесами времени
+/**
+ * Разделитель между колесами времени
+ * @param fontSize Размер шрифта
+ */
 @Composable
 fun TimePickerDivider(fontSize: Int = 48) {
     Text(":", fontSize = fontSize.sp)
 }
 
-// Компонент группы
+/**
+ * Компонент группы
+ * @param text Текст кнопки
+ * @param onClick Обработчик нажатия
+ */
 @Composable
 fun GroupOption(text: String, onClick: () -> Unit) {
     Row(

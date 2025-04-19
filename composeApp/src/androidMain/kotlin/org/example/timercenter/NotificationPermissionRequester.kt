@@ -9,6 +9,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 
+/**
+ * Компонент для запроса разрешения на отправку уведомлений
+ * Автоматически запрашивает разрешение при первом запуске на Android 13 и выше
+ */
 @Composable
 fun NotificationPermissionRequester() {
     val context = LocalContext.current

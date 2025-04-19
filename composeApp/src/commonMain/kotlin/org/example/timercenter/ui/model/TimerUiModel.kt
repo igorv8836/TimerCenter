@@ -2,9 +2,18 @@ package org.example.timercenter.ui.model
 
 import androidx.compose.runtime.Stable
 import com.example.timercenter.database.model.TimerEntity
-import com.example.timercenter.database.model.TimerStatus
 import kotlinx.datetime.Clock
 
+/**
+ * Модель таймера
+ * @property id Идентификатор таймера
+ * @property timerName Название таймера
+ * @property totalTime Общее время в миллисекундах
+ * @property groupId Идентификатор группы (если таймер входит в группу)
+ * @property isRunning Флаг запущенного состояния
+ * @property lastStartedTime Время последнего запуска в миллисекундах
+ * @property remainingMillis Оставшееся время в миллисекундах
+ */
 @Stable
 data class TimerUiModel(
     val id: Int = -1,
@@ -16,6 +25,10 @@ data class TimerUiModel(
     val remainingMillis: Long = totalTime,
 )
 
+/**
+ * Преобразует сущность таймера в модель
+ * @return Модель таймера
+ */
 fun TimerEntity.toUiModel(): TimerUiModel {
     val currentTime = Clock.System.now().toEpochMilliseconds()
 

@@ -18,9 +18,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 
-
+/**
+ * Верхняя панель навигации для главного экрана приложения
+ * Реализует функционал управления таймерами с возможностью выбора, редактирования и удаления
+ * @param onSettingsClick Обработчик нажатия на кнопку настроек
+ * @param isSelectionMode Флаг режима выбора элементов
+ * @param selectCount Количество выбранных элементов
+ * @param isEditEnabled Флаг доступности кнопки редактирования
+ * @param onDeleteClick Обработчик нажатия на кнопку удаления
+ * @param onEditClick Обработчик нажатия на кнопку редактирования
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(
@@ -30,8 +38,7 @@ fun HomeTopBar(
     isEditEnabled: Boolean,
     onDeleteClick: () -> Unit,
     onEditClick: () -> Unit,
-
-    ) {
+) {
     TopAppBar(
         title = {
             Text(
@@ -63,7 +70,7 @@ fun HomeTopBar(
                     )
                 }
             }
-            IconButton(onClick = onSettingsClick) { // Кнопка для настроек
+            IconButton(onClick = onSettingsClick) {
                 Icon(imageVector = Icons.Filled.Settings, contentDescription = null)
             }
         },

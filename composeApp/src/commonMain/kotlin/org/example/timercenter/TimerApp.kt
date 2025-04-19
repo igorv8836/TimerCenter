@@ -1,6 +1,7 @@
 package org.example.timercenter
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,10 @@ import org.example.timercenter.navigation.navigateToSettings
 import org.example.timercenter.ui.AppTopBar
 import org.example.timercenter.ui.BottomNavigationBar
 
+/**
+ * Главный компонент приложения TimerCenter
+ * @param timeAgoManager Менеджер для форматирования времени
+ */
 @Composable
 fun TimerApp(timeAgoManager: TimeAgoManager) {
     AppTheme {
@@ -39,6 +44,5 @@ fun TimerApp(timeAgoManager: TimeAgoManager) {
                 AppNavigation(timeAgoManager = timeAgoManager, navController = navController)
             }
         }
-
     }
 }

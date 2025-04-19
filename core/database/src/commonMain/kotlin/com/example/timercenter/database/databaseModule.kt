@@ -13,9 +13,16 @@ import org.koin.core.module.Module
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+/**
+ * Модуль для создания базы данных на конкретной платформе
+ * @return Модуль с билдером базы данных
+ */
 expect fun platformDatabaseBuilderModule(): Module
 
-
+/**
+ * Модуль для работы с базой данных
+ * @return Модуль с зависимостями базы данных
+ */
 fun databaseModule(): Module {
     return module {
         includes(platformDatabaseBuilderModule())
@@ -28,6 +35,12 @@ fun databaseModule(): Module {
     }
 }
 
+/**
+ * Создает экземпляр базы данных
+ * @param builder Билдер базы данных
+ * @param coroutineContext Контекст корутин
+ * @return Экземпляр базы данных
+ */
 private fun provideDatabase(
     builder: RoomDatabase.Builder<AppDatabase>,
     coroutineContext: CoroutineDispatcher
