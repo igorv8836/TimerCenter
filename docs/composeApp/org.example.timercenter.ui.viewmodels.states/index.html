@@ -1,0 +1,576 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>org.example.timercenter.ui.viewmodels.states</title>
+<link href="../../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../../scripts/sourceset_dependencies.js" async></script>
+<link href="../../styles/style.css" rel="Stylesheet">
+<link href="../../styles/main.css" rel="Stylesheet">
+<link href="../../styles/prism.css" rel="Stylesheet">
+<link href="../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../../scripts/main.js" defer></script>
+<script type="text/javascript" src="../../scripts/prism.js" async></script>
+<script type="text/javascript" src="../../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../../index.html">
+                    TimerCenter
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":composeApp:dokkaHtmlPartial/commonMain">common</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":composeApp:dokkaHtmlPartial/commonMain" data-filter=":composeApp:dokkaHtmlPartial/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    TimerCenter
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" data-page-type="package" id="content" pageids="composeApp::org.example.timercenter.ui.viewmodels.states////PointingToDeclaration//-1375928380">
+  <div class="breadcrumbs"><a href="../index.html">composeApp</a><span class="delimiter">/</span><span class="current">org.example.timercenter.ui.viewmodels.states</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span><span>Package-level</span></span> <span><span>declarations</span></span></h1>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="TYPE">Types</button><button class="section-tab" data-togglable="FUNCTION,EXTENSION_FUNCTION">Functions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="TYPE">
+        <h2 class="">Types</h2>
+        <div class="table"><a data-name="-2080608027%2FClasslikes%2F-1375928380" anchor-label="AddTimersToGroupEffect" id="-2080608027%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-add-timers-to-group-effect/index.html"><span>Add</span><wbr><span>Timers</span><wbr><span>To</span><wbr><span>Group</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2080608027%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-add-timers-to-group-effect/index.html">AddTimersToGroupEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана добавления таймеров в группу</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="371363090%2FClasslikes%2F-1375928380" anchor-label="AddTimersToGroupEvent" id="371363090%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-add-timers-to-group-event/index.html"><span>Add</span><wbr><span>Timers</span><wbr><span>To</span><wbr><span>Group</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="371363090%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-add-timers-to-group-event/index.html">AddTimersToGroupEvent</a></div><div class="brief "><p class="paragraph">События экрана добавления таймеров в группу</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1171951355%2FClasslikes%2F-1375928380" anchor-label="AddTimersToGroupState" id="1171951355%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-add-timers-to-group-state/index.html"><span>Add</span><wbr><span>Timers</span><wbr><span>To</span><wbr><span>Group</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1171951355%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="-add-timers-to-group-state/index.html">AddTimersToGroupState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timerGroups<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-group-ui-model/index.html">TimerGroupUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerChooseId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние экрана добавления таймеров в группу</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="844805821%2FClasslikes%2F-1375928380" anchor-label="CreateTimerEffect" id="844805821%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-effect/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="844805821%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-create-timer-effect/index.html">CreateTimerEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана создания таймера Интерфейс определяет возможные эффекты, которые могут быть вызваны на экране создания таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-227005382%2FClasslikes%2F-1375928380" anchor-label="CreateTimerEvent" id="-227005382%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-event/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-227005382%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-create-timer-event/index.html">CreateTimerEvent</a></div><div class="brief "><p class="paragraph">События экрана создания таймера Интерфейс определяет возможные события, которые могут быть вызваны на экране создания таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1199600740%2FClasslikes%2F-1375928380" anchor-label="CreateTimerGroupEffect" id="1199600740%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-group-effect/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span>Group</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1199600740%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-create-timer-group-effect/index.html">CreateTimerGroupEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана создания группы таймеров Интерфейс определяет возможные эффекты, которые могут быть вызваны на экране создания группы таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-631202381%2FClasslikes%2F-1375928380" anchor-label="CreateTimerGroupEvent" id="-631202381%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-group-event/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span>Group</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-631202381%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-create-timer-group-event/index.html">CreateTimerGroupEvent</a></div><div class="brief "><p class="paragraph">События экрана создания группы таймеров Интерфейс определяет возможные события, которые могут быть вызваны на экране создания группы таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="169385884%2FClasslikes%2F-1375928380" anchor-label="CreateTimerGroupState" id="169385884%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-group-state/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span>Group</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="169385884%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="-create-timer-group-state/index.html">CreateTimerGroupState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerGroupInfo<span class="token operator">: </span><a href="../org.example.timercenter.ui.model/-timer-group-ui-model/index.html">TimerGroupUiModel</a><span class="token operator"> = </span>TimerGroupUiModel()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>allTimers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>delaySelectedHours<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>delaySelectedMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>delaySelectedSeconds<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>showPopup<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние экрана создания группы таймеров Класс содержит информацию о текущем состоянии экрана создания группы таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="573582883%2FClasslikes%2F-1375928380" anchor-label="CreateTimerState" id="573582883%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-create-timer-state/index.html"><span>Create</span><wbr><span>Timer</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="573582883%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">data </span><span class="token keyword">class </span><a href="-create-timer-state/index.html">CreateTimerState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>id<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerInfo<span class="token operator">: </span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a><span class="token operator"> = </span>TimerUiModel()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedHours<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedMinutes<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedSeconds<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator"> = </span><span class="token constant">0</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>startImmediately<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>showPopup<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние экрана создания таймера Класс содержит информацию о текущем состоянии экрана создания таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="663378363%2FClasslikes%2F-1375928380" anchor-label="HomeEffect" id="663378363%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-home-effect/index.html"><span>Home</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="663378363%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-home-effect/index.html">HomeEffect</a></div><div class="brief "><p class="paragraph">Эффекты главного экрана Интерфейс определяет возможные эффекты, которые могут быть вызваны на главном экране</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="459878780%2FClasslikes%2F-1375928380" anchor-label="HomeEvent" id="459878780%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-home-event/index.html"><span>Home</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="459878780%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-home-event/index.html">HomeEvent</a></div><div class="brief "><p class="paragraph">События главного экрана Интерфейс определяет возможные события, которые могут быть вызваны на главном экране</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1260467045%2FClasslikes%2F-1375928380" anchor-label="HomeState" id="1260467045%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-home-state/index.html"><span>Home</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1260467045%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-home-state/index.html">HomeState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerGroups<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-group-ui-model/index.html">TimerGroupUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedTimers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptySet()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selectedTimerGroups<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-group-ui-model/index.html">TimerGroupUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptySet()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerRestartId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerGroupRestartId<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>showDeleteConfirmation<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние главного экрана Класс содержит информацию о текущем состоянии главного экрана приложения</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="81833207%2FClasslikes%2F-1375928380" anchor-label="SettingsEffect" id="81833207%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-settings-effect/index.html"><span>Settings</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="81833207%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-settings-effect/index.html">SettingsEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана настроек Класс определяет возможные эффекты, которые могут быть вызваны на экране настроек</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1688045248%2FClasslikes%2F-1375928380" anchor-label="SettingsEvent" id="1688045248%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-settings-event/index.html"><span>Settings</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1688045248%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-settings-event/index.html">SettingsEvent</a></div><div class="brief "><p class="paragraph">События экрана настроек Класс определяет возможные события, которые могут быть вызваны на экране настроек</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1806333783%2FClasslikes%2F-1375928380" anchor-label="SettingsState" id="-1806333783%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-settings-state/index.html"><span>Settings</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1806333783%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><div class="block"><div class="block"><span class="token annotation builtin">@</span><a href="https://developer.android.com/reference/kotlin/androidx/compose/runtime/Stable.html"><span class="token annotation builtin">Stable</span></a></div></div><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-settings-state/index.html">SettingsState</a></div><div class="brief "><p class="paragraph">Состояние экрана настроек Класс представляет различные состояния экрана настроек приложения</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="349927367%2FClasslikes%2F-1375928380" anchor-label="TimerDetailEvent" id="349927367%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-detail-event/index.html"><span>Timer</span><wbr><span>Detail</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="349927367%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-detail-event/index.html">TimerDetailEvent</a></div><div class="brief "><p class="paragraph">Представляет действия пользователя на экране деталей таймера Класс определяет возможные действия пользователя, которые могут быть выполнены на экране деталей таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-228588423%2FClasslikes%2F-1375928380" anchor-label="TimerDetailSideEffect" id="-228588423%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-detail-side-effect/index.html"><span>Timer</span><wbr><span>Detail</span><wbr><span>Side</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-228588423%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-detail-side-effect/index.html">TimerDetailSideEffect</a></div><div class="brief "><p class="paragraph">Представляет побочные эффекты экрана деталей таймера Класс определяет возможные побочные эффекты, которые могут быть вызваны на экране деталей таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1150515632%2FClasslikes%2F-1375928380" anchor-label="TimerDetailState" id="1150515632%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-detail-state/index.html"><span>Timer</span><wbr><span>Detail</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1150515632%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-timer-detail-state/index.html">TimerDetailState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timer<span class="token operator">: </span><a href="../../core/database/com.example.timercenter.database.model/-timer-entity/index.html">TimerEntity</a><span class="token operator">?</span><span class="token operator"> = </span>null<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>isSaving<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Представляет состояние экрана деталей таймера Класс содержит информацию о текущем состоянии экрана деталей таймера</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-547329769%2FClasslikes%2F-1375928380" anchor-label="TimerGroupEvent" id="-547329769%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-group-event/index.html"><span>Timer</span><wbr><span>Group</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-547329769%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-group-event/index.html">TimerGroupEvent</a></div><div class="brief "><p class="paragraph">События экрана групп таймеров Класс определяет возможные события, которые могут быть вызваны на экране групп таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-489855703%2FClasslikes%2F-1375928380" anchor-label="TimerGroupSideEffect" id="-489855703%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-group-side-effect/index.html"><span>Timer</span><wbr><span>Group</span><wbr><span>Side</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-489855703%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-group-side-effect/index.html">TimerGroupSideEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана групп таймеров Класс определяет возможные эффекты, которые могут быть вызваны на экране групп таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="253258496%2FClasslikes%2F-1375928380" anchor-label="TimerGroupState" id="253258496%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-group-state/index.html"><span>Timer</span><wbr><span>Group</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="253258496%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-timer-group-state/index.html">TimerGroupState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>groups<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/database/com.example.timercenter.database.model/-timer-group-entity/index.html">TimerGroupEntity</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>isLoading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние экрана групп таймеров Класс содержит информацию о текущем состоянии экрана групп таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-147828692%2FClasslikes%2F-1375928380" anchor-label="TimerHistoryEvent" id="-147828692%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-history-event/index.html"><span>Timer</span><wbr><span>History</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-147828692%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-timer-history-event/index.html">TimerHistoryEvent</a></div><div class="brief "><p class="paragraph">События экрана истории таймеров Интерфейс определяет возможные события, которые могут быть вызваны на экране истории таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1481923788%2FClasslikes%2F-1375928380" anchor-label="TimerHistorySideEffect" id="-1481923788%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-history-side-effect/index.html"><span>Timer</span><wbr><span>History</span><wbr><span>Side</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1481923788%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-timer-history-side-effect/index.html">TimerHistorySideEffect</a></div><div class="brief "><p class="paragraph">Эффекты экрана истории таймеров Интерфейс определяет возможные эффекты, которые могут быть вызваны на экране истории таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="652759573%2FClasslikes%2F-1375928380" anchor-label="TimerHistoryState" id="652759573%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-history-state/index.html"><span>Timer</span><wbr><span>History</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="652759573%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-timer-history-state/index.html">TimerHistoryState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>timerGroups<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../org.example.timercenter.ui.model/-timer-group-ui-model/index.html">TimerGroupUiModel</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>isLoading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Состояние экрана истории таймеров Класс содержит информацию о текущем состоянии экрана истории таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1089195796%2FClasslikes%2F-1375928380" anchor-label="TimerListEvent" id="1089195796%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-list-event/index.html"><span>Timer</span><wbr><span>List</span><wbr><span><span>Event</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1089195796%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-list-event/index.html">TimerListEvent</a></div><div class="brief "><p class="paragraph">Представляет действия пользователя на экране списка таймеров Класс определяет возможные действия пользователя, которые могут быть выполнены на экране списка таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-917293748%2FClasslikes%2F-1375928380" anchor-label="TimerListSideEffect" id="-917293748%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-list-side-effect/index.html"><span>Timer</span><wbr><span>List</span><wbr><span>Side</span><wbr><span><span>Effect</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-917293748%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-timer-list-side-effect/index.html">TimerListSideEffect</a></div><div class="brief "><p class="paragraph">Представляет побочные эффекты экрана списка таймеров Класс определяет возможные побочные эффекты, которые могут быть вызваны на экране списка таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1889784061%2FClasslikes%2F-1375928380" anchor-label="TimerListState" id="1889784061%2FClasslikes%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-timer-list-state/index.html"><span>Timer</span><wbr><span>List</span><wbr><span><span>State</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1889784061%2FClasslikes%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-timer-list-state/index.html">TimerListState</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>timers<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../core/database/com.example.timercenter.database.model/-timer-entity/index.html">TimerEntity</a><span class="token operator">&gt;</span><span class="token operator"> = </span>emptyList()<span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>isLoading<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>error<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Представляет состояние экрана списка таймеров Класс содержит информацию о текущем состоянии экрана списка таймеров</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="EXTENSION_FUNCTION">
+        <h2 class="">Functions</h2>
+        <div class="table"><a data-name="-1238730973%2FFunctions%2F-1375928380" anchor-label="getMilliseconds" id="-1238730973%2FFunctions%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="get-milliseconds.html"><span>get</span><wbr><span><span>Milliseconds</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1238730973%2FFunctions%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-create-timer-group-state/index.html">CreateTimerGroupState</a><span class="token punctuation">.</span><a href="get-milliseconds.html"><span class="token function">getMilliseconds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Получение времени задержки в миллисекундах Преобразует выбранное время задержки в миллисекунды</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="-create-timer-state/index.html">CreateTimerState</a><span class="token punctuation">.</span><a href="get-milliseconds.html"><span class="token function">getMilliseconds</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-long/index.html">Long</a></div><div class="brief "><p class="paragraph">Получение времени в миллисекундах Преобразует выбранное время в миллисекунды</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1060482829%2FFunctions%2F-1375928380" anchor-label="toEntity" id="-1060482829%2FFunctions%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-entity.html"><span>to</span><wbr><span><span>Entity</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1060482829%2FFunctions%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="-create-timer-group-state/index.html">CreateTimerGroupState</a><span class="token punctuation">.</span><a href="to-entity.html"><span class="token function">toEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/database/com.example.timercenter.database.model/-timer-group-entity/index.html">TimerGroupEntity</a></div><div class="brief "><p class="paragraph">Преобразование состояния в сущность группы таймеров Создает сущность группы таймеров на основе текущего состояния</p></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="-create-timer-state/index.html">CreateTimerState</a><span class="token punctuation">.</span><a href="to-entity.html"><span class="token function">toEntity</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../core/database/com.example.timercenter.database.model/-timer-entity/index.html">TimerEntity</a></div><div class="brief "><p class="paragraph">Преобразование состояния в сущность таймера Создает сущность таймера на основе текущего состояния</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="943722497%2FFunctions%2F-1375928380" anchor-label="toUiModel" id="943722497%2FFunctions%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+          <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="to-ui-model.html"><span>to</span><wbr><span>Ui</span><wbr><span><span>Model</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="943722497%2FFunctions%2F-1375928380"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":composeApp:dokkaHtmlPartial/commonMain"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../core/database/com.example.timercenter.database.model/-timer-entity/index.html">TimerEntity</a><span class="token punctuation">.</span><a href="to-ui-model.html"><span class="token function">toUiModel</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../org.example.timercenter.ui.model/-timer-ui-model/index.html">TimerUiModel</a></div><div class="brief "><p class="paragraph">Преобразование сущности таймера в UI модель Создает UI модель таймера на основе сущности</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>composeApp</title>
+<link href="../images/logo-icon.svg" rel="icon" type="image/svg">    <script>var pathToRoot = "../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+<script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+<script type="text/javascript" src="../scripts/sourceset_dependencies.js" async></script>
+<link href="../styles/style.css" rel="Stylesheet">
+<link href="../styles/main.css" rel="Stylesheet">
+<link href="../styles/prism.css" rel="Stylesheet">
+<link href="../styles/logo-styles.css" rel="Stylesheet">
+<link href="../styles/font-jb-sans-auto.css" rel="Stylesheet">
+<link href="../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../scripts/clipboard.js" async></script>
+<script type="text/javascript" src="../scripts/navigation-loader.js" async></script>
+<script type="text/javascript" src="../scripts/platform-content-handler.js" async></script>
+<script type="text/javascript" src="../scripts/main.js" defer></script>
+<script type="text/javascript" src="../scripts/prism.js" async></script>
+<script type="text/javascript" src="../ui-kit/ui-kit.min.js" defer></script>
+<script type="text/javascript" src="../scripts/symbol-parameters-wrapper_deferred.js" defer></script></head>
+<body>
+    <div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+<a class="library-name--link" href="../index.html">
+                    TimerCenter
+            </a>        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle" type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+        <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":composeApp:dokkaHtmlPartial/androidMain">android</button>
+                <button class="platform-tag platform-selector common-like" data-active="" data-filter=":composeApp:dokkaHtmlPartial/commonMain">common</button>
+                <button class="platform-tag platform-selector jvm-like" data-active="" data-filter=":composeApp:dokkaHtmlPartial/desktopMain">desktop</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox" data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox" aria-expanded="false" aria-label="Toggle source sets"></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                    <div class="dropdown--header"><span>Platform filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":composeApp:dokkaHtmlPartial/androidMain" data-filter=":composeApp:dokkaHtmlPartial/androidMain">
+                                <span class="checkbox--icon"></span>
+                                android
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option common-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":composeApp:dokkaHtmlPartial/commonMain" data-filter=":composeApp:dokkaHtmlPartial/commonMain">
+                                <span class="checkbox--icon"></span>
+                                common
+                            </label>
+                        </li>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":composeApp:dokkaHtmlPartial/desktopMain" data-filter=":composeApp:dokkaHtmlPartial/desktopMain">
+                                <span class="checkbox--icon"></span>
+                                desktop
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button" type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+        <div id="container">
+            <div class="sidebar" id="leftColumn">
+                <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                    <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list" data-role="dropdown-listbox">
+                        <div class="dropdown--header">
+                            <span>
+                                    TimerCenter
+                            </span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <div class="sidebar--inner" id="sideMenu"></div>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <div id="main">
+<div class="main-content" id="content" pageids="composeApp::////PointingToDeclaration//1903242218">
+  <div class="breadcrumbs"></div>
+  <div class="cover ">
+    <h1 class="cover"><span>compose</span><wbr><span><span>App</span></span></h1>
+  </div>
+  <h2 class="">Packages</h2>
+  <div class="table"><a data-name="465187118%2FPackages%2F1903242218" anchor-label="org.example.timercenter" id="465187118%2FPackages%2F1903242218" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter/index.html">org.example.timercenter</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="465187118%2FPackages%2F1903242218"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">android</div>
+              <div class="platform-tag common-like">common</div>
+              <div class="platform-tag jvm-like">desktop</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-992896274%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.data" id="-992896274%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.data/index.html">org.example.timercenter.data</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-992896274%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1817266028%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.data.repositories" id="1817266028%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.data.repositories/index.html">org.example.timercenter.data.repositories</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1817266028%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1082038779%2FPackages%2F1903242218" anchor-label="org.example.timercenter.data.scheduler" id="1082038779%2FPackages%2F1903242218" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain,:composeApp:dokkaHtmlPartial/commonMain,:composeApp:dokkaHtmlPartial/desktopMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.data.scheduler/index.html">org.example.timercenter.data.scheduler</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1082038779%2FPackages%2F1903242218"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">android</div>
+              <div class="platform-tag common-like">common</div>
+              <div class="platform-tag jvm-like">desktop</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-423338871%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.di" id="-423338871%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.di/index.html">org.example.timercenter.di</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-423338871%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1709021586%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.domain.repositories" id="1709021586%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.domain.repositories/index.html">org.example.timercenter.domain.repositories</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1709021586%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1038087000%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.navigation" id="1038087000%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.navigation/index.html">org.example.timercenter.navigation</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1038087000%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="783761826%2FPackages%2F-1418831466" anchor-label="org.example.timercenter.services" id="783761826%2FPackages%2F-1418831466" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/androidMain" data-filterable-set=":composeApp:dokkaHtmlPartial/androidMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.services/index.html">org.example.timercenter.services</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="783761826%2FPackages%2F-1418831466"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag jvm-like">android</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-458892840%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui" id="-458892840%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui/index.html">org.example.timercenter.ui</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-458892840%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-2058319483%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.common" id="-2058319483%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.common/index.html">org.example.timercenter.ui.common</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2058319483%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1323398829%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.item" id="1323398829%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.item/index.html">org.example.timercenter.ui.item</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1323398829%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1400515923%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.model" id="1400515923%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.model/index.html">org.example.timercenter.ui.model</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1400515923%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="1579225286%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.screen" id="1579225286%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.screen/index.html">org.example.timercenter.ui.screen</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1579225286%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1846049815%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.viewmodels" id="-1846049815%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.viewmodels/index.html">org.example.timercenter.ui.viewmodels</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1846049815%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+<a data-name="-1817067605%2FPackages%2F-1375928380" anchor-label="org.example.timercenter.ui.viewmodels.states" id="-1817067605%2FPackages%2F-1375928380" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain"></a>
+    <div class="table-row" data-filterable-current=":composeApp:dokkaHtmlPartial/commonMain" data-filterable-set=":composeApp:dokkaHtmlPartial/commonMain">
+      <div>
+        <div class="main-subrow ">
+          <div class=""><span class="inline-flex">
+              <div><a href="org.example.timercenter.ui.viewmodels.states/index.html">org.example.timercenter.ui.viewmodels.states</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1817067605%2FPackages%2F-1375928380"></span>
+                <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+          <div class="pull-right">
+            <div class="platform-tags no-gutters">
+              <div class="platform-tag common-like">common</div>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+        <span>© 2025 Copyright</span>
+        <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+    </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
