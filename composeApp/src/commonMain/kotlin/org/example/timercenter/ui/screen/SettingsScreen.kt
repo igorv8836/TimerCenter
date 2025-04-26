@@ -17,8 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.orbit_mvi.compose.collectAsState
+import com.example.timercenter.datastore.models.NotificationType
 import org.example.timercenter.navigation.navigateToHome
-import org.example.timercenter.ui.model.NotificationType
 import org.example.timercenter.ui.viewmodels.SettingsViewModel
 import org.example.timercenter.ui.viewmodels.states.SettingsEvent
 import org.example.timercenter.ui.viewmodels.states.SettingsState

@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
+import kotlinx.datetime.Clock
 import org.example.timercenter.ui.model.GroupType
 import org.example.timercenter.ui.model.TimerGroupUiModel
 
@@ -60,23 +61,41 @@ fun TimerGroup(
     onStartGroup: () -> Unit,
     onPauseGroup: () -> Unit,
     onResetGroup: () -> Unit,
-    toRun: Boolean = false
 ) {
-    var isRunning by remember { mutableStateOf(toRun) }
-    var isStarted by remember { mutableStateOf(toRun) }
+    var isRunning by remember { mutableStateOf(timerGroup.isRunning) }
     var isExpanded by remember { mutableStateOf(true) }
 
     val remainingTimes = remember {
-        mutableStateListOf<Long>().apply { addAll(timerGroup.timers.map { it.totalTime }) }
+        mutableStateListOf<Long>().apply {
+            when (timerGroup.groupType) {
+                GroupType.CONSISTENT -> {
+                    if (!timerGroup.isStarted || !timerGroup.isRunning) {
+                        addAll(timerGroup.timers.map { it.remainingMillis })
+                    } else {
+                        val elapsed = Clock.System.now().toEpochMilliseconds() - timerGroup.timers.first().lastStartedTime
+                        addAll(timerGroup.timers.mapIndexed { index, timer ->
+                            if (index == 0) maxOf(0, timer.remainingMillis - elapsed) else timer.remainingMillis
+                        })
+                    }
+                }
+                else -> {
+                    addAll(timerGroup.timers.map {
+                        if (!timerGroup.isStarted || !timerGroup.isRunning) {
+                            it.remainingMillis
+                        } else {
+                            maxOf(0, it.remainingMillis - (Clock.System.now().toEpochMilliseconds() - it.lastStartedTime))
+                        }
+                    })
+                }
+            }
+        }
     }
 
-    // Логика для задержки между таймерами
-    val delayTime = timerGroup.delayTime // Время задержки для DELAY
+    val delayTime = timerGroup.delayTime
 
     LaunchedEffect(isRunning) {
         when (timerGroup.groupType) {
             GroupType.PARALLEL -> {
-                // Параллельный запуск таймеров
                 while (isRunning && remainingTimes.any { it > 0 }) {
                     delay(1000L)
                     remainingTimes.forEachIndexed { index, time ->
@@ -88,20 +107,16 @@ fun TimerGroup(
             }
 
             GroupType.CONSISTENT -> {
-                // Последовательный запуск таймеров
                 while (isRunning && remainingTimes.any { it > 0 }) {
                     val activeTimerIndex = remainingTimes.indexOfFirst { it > 0 }
                     if (activeTimerIndex != -1) {
-                        // Запуск следующего таймера только после окончания предыдущего
                         delay(1000L)
                         remainingTimes[activeTimerIndex] = remainingTimes[activeTimerIndex] - 1000
-
                     }
                 }
             }
 
             GroupType.DELAY -> {
-                // Таймеры с задержкой между запуском
                 while (isRunning && remainingTimes.any { it > 0 }) {
                     remainingTimes.forEachIndexed { index, time ->
                         if (time > 0) {
@@ -118,7 +133,6 @@ fun TimerGroup(
         // Завершаем все таймеры, когда они все закончены
         if (remainingTimes.all { it == 0L }) {
             isRunning = false
-            isStarted = false
         }
     }
 
@@ -157,10 +171,9 @@ fun TimerGroup(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if (!isStarted) {
+            if (!timerGroup.isStarted) {
                 CircularButton(icon = Icons.Default.PlayArrow, onClick = {
                     isRunning = true
-                    isStarted = true
                     onStartGroup()
                 })
             } else {
@@ -173,7 +186,6 @@ fun TimerGroup(
                 )
                 CircularButton(icon = Icons.Default.Stop, onClick = {
                     isRunning = false
-                    isStarted = false
                     remainingTimes.forEachIndexed { index, _ ->
                         remainingTimes[index] = timerGroup.timers[index].totalTime
                     }

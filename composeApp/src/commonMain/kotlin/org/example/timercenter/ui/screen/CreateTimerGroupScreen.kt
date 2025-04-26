@@ -45,6 +45,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun CreateTimerGroupScreen(
     navController: NavController,
+    groupId: Int?,
     viewModel: CreateTimerGroupViewModel = koinViewModel()
 ) {
 
@@ -56,12 +57,8 @@ fun CreateTimerGroupScreen(
         }
     }
 
-    LaunchedEffect(viewModel) {
-        viewModel.onEvent(
-            CreateTimerGroupEvent.SetTimerGroupId(
-                navController.currentBackStackEntry?.arguments?.getString("id")?.toIntOrNull()
-            )
-        )
+    LaunchedEffect(groupId) {
+        viewModel.onEvent(CreateTimerGroupEvent.SetTimerGroupId(groupId))
     }
 
     Column(
@@ -74,6 +71,15 @@ fun CreateTimerGroupScreen(
             label = { Text("Назовите вашу группу") },
             modifier = Modifier.fillMaxWidth()
         )
+
+        // Ошибка валидации
+        state.errorMessage?.let { error ->
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
 
         Text(text = "Тип группы", modifier = Modifier.padding(vertical = 16.dp))
 
@@ -106,7 +112,6 @@ fun CreateTimerGroupScreen(
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
-            // Сначала добавленные таймеры (с крестиком)
             items(state.timerGroupInfo.timers.size) { index ->
                 TimerAddToGroup(
                     timer = state.timerGroupInfo.timers[index],
@@ -116,10 +121,9 @@ fun CreateTimerGroupScreen(
                     }
                 )
             }
-//             Затем остальные таймеры (с плюсиком)
-            items(state.allTimers.filter { timer -> !state.timerGroupInfo.timers.contains(timer) }.size) { index ->
+            items(state.unSelectedTimers.size) { index ->
                 TimerAddToGroup(
-                    timer = state.allTimers.filter { timer -> !state.timerGroupInfo.timers.contains(timer) }[index],
+                    timer = state.unSelectedTimers[index],
                     isSelected = false,  // Они еще не выбраны
                     onToggle = {
                         viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
@@ -150,10 +154,7 @@ fun CreateTimerGroupScreen(
             Spacer(Modifier.width(12.dp))
             Button(
                 onClick = {
-                    if (state.id != null) viewModel.onEvent(CreateTimerGroupEvent.SetShowPopup(true))
-                    else {
-                        viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
-                    }
+                    viewModel.onEvent(CreateTimerGroupEvent.SaveTimerGroup)
                 },
                 modifier = Modifier.height(48.dp),
             ) {

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
  * Управляет настройками приложения с использованием DataStore
  * @property dataStore Экземпляр DataStore для хранения настроек
  */
-class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
+internal class SettingsDataStore(private val dataStore: DataStore<Preferences>) {
     /**
      * Поток настроек типа уведомлений
      */

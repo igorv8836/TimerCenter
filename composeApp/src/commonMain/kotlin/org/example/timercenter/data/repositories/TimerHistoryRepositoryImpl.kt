@@ -4,8 +4,11 @@ import com.example.timercenter.database.dao.TimerHistoryDao
 import com.example.timercenter.database.model.TimerHistoryEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.example.timercenter.domain.repositories.TimerHistoryRepository
+import org.example.timercenter.domain.repositories.TimerRepository
+import org.example.timercenter.ui.model.TimerHistoryModel
 
 /**
  * Реализация репозитория для работы с историей таймеров
@@ -15,6 +18,7 @@ import org.example.timercenter.domain.repositories.TimerHistoryRepository
  */
 class TimerHistoryRepositoryImpl(
     private val timerHistoryDao: TimerHistoryDao,
+    private val timerRepository: TimerRepository,
     private val ioDispatcher: CoroutineDispatcher
 ) : TimerHistoryRepository {
 
@@ -30,17 +34,29 @@ class TimerHistoryRepositoryImpl(
      * Получает всю историю таймеров
      * @return Flow со списком всех записей истории
      */
-    override fun getAllHistory(): Flow<List<TimerHistoryEntity>> = timerHistoryDao.getAllHistoryFlow()
+    override fun getAllHistory(): Flow<List<TimerHistoryModel>> = timerHistoryDao
+        .getAllHistoryFlow().map { timers ->
+            timers.mapNotNull { timerHistory ->
+                timerRepository.getTimer(timerHistory.timerId)?.let { timer ->
+                    TimerHistoryModel(
+                        id = timer.id,
+                        name = "Таймер: " + timer.name,
+                        lastStartedTime = timerHistory.lastStartedTime,
+                        isTimer = true,
+                    )
+                }
+            }
+        }
 
-//    override suspend fun addRecord(name: String, lastStartedTime: Long) =
-//        withContext(ioDispatcher) {
-//            timerHistoryDao.insertRecord(
-//                TimerHistoryEntity(
-//                    name = name,
-//                    lastStartedTime = lastStartedTime
-//                )
-//            )
-//        }
+    override suspend fun addRecord(timerId: Int, lastStartedTime: Long) =
+        withContext(ioDispatcher) {
+            timerHistoryDao.insertRecord(
+                TimerHistoryEntity(
+                    timerId = timerId,
+                    lastStartedTime = lastStartedTime
+                )
+            )
+        }
 
     /**
      * Очищает всю историю таймеров

@@ -1,8 +1,8 @@
 package org.example.timercenter.domain.repositories
 
-import com.example.timercenter.database.model.TimerEntity
 import com.example.timercenter.database.model.TimerGroupEntity
 import kotlinx.coroutines.flow.Flow
+import org.example.timercenter.ui.model.TimerUiModel
 
 /**
  * Интерфейс репозитория для работы с группами таймеров
@@ -44,7 +44,7 @@ interface TimerGroupRepository {
      * @param id Идентификатор группы
      * @return Flow со списком таймеров в группе
      */
-    fun getTimersInGroup(id: Int): Flow<List<TimerEntity>>
+    fun getTimersInGroup(id: Int): Flow<List<TimerUiModel>>
 
     /**
      * Обновляет существующую группу таймеров
@@ -60,11 +60,23 @@ interface TimerGroupRepository {
      * Запускает все таймеры в группе
      * @param group Группа таймеров для запуска
      */
-    suspend fun startGroup(group: TimerGroupEntity)
+    suspend fun startGroup(groupId: Int)
 
     /**
      * Останавливает все таймеры в группе
-     * @param group Группа таймеров для остановки
+     * @param groupId Идентификатор группы таймеров для остановки
      */
-    suspend fun stopGroup(group: TimerGroupEntity)
+    suspend fun stopGroup(groupId: Int)
+
+    /**
+     * Приостанавливает все таймеры в группе
+     * @param groupId Идентификатор группы таймеров для паузы
+     */
+    suspend fun pauseGroup(groupId: Int)
+
+    /**
+     * Создает копию существующуй группы
+     * @param id Идентификатор группы для копирования
+     */
+    suspend fun copyGroup(id: Int)
 }

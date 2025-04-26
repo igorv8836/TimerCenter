@@ -6,11 +6,12 @@ import androidx.compose.runtime.Stable
  * Модель истории таймера
  * @property id Идентификатор таймера
  * @property name Название таймера
- * @property lastStartedTimeText Текст времени последнего запуска
+ * @property lastStartedTime Время последнего запуска
  */
 @Stable
-data class TimerHistoryUiModel(
+data class TimerHistoryModel(
     val id: Int,
     val name: String,
-    val lastStartedTimeText: String
+    val lastStartedTime: Long,
+    val isTimer: Boolean,
 )

@@ -21,12 +21,18 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,6 +62,9 @@ fun CreateScreen(
     viewModel: CreateTimerViewModel = koinViewModel(),
 ) {
     val state by viewModel.collectAsState()
+    var snackbarHostState by remember { mutableStateOf(SnackbarHostState()) }
+    var showNameError by remember { mutableStateOf(false) }
+    var showTimeError by remember { mutableStateOf(false) }
 
     viewModel.collectSideEffect {
         when (it) {
@@ -63,75 +72,103 @@ fun CreateScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+    LaunchedEffect(showNameError) {
+        if (showNameError) {
+            snackbarHostState.showSnackbar("Введите название таймера")
+            showNameError = false
+        }
+    }
+
+    LaunchedEffect(showTimeError) {
+        if (showTimeError) {
+            snackbarHostState.showSnackbar("Установите время таймера")
+            showTimeError = false
+        }
+    }
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        }
     ) {
-        // Поле ввода имени таймера
-        OutlinedTextField(
-            value = state.timerInfo.timerName,
-            onValueChange = { viewModel.onEvent(CreateTimerEvent.SetName(it)) },
-            label = { Text("Название таймера", color = Color.Gray) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(16.dp))
-
-        // Выбор времени
-        TimePicker(
-            selectedHours = state.selectedHours,
-            selectedMinutes = state.selectedMinutes,
-            selectedSeconds = state.selectedSeconds,
-            onHoursChange = { viewModel.onEvent(CreateTimerEvent.SetHours(it)) },
-            onMinutesChange = { viewModel.onEvent(CreateTimerEvent.SetMinutes(it)) },
-            onSecondsChange = { viewModel.onEvent(CreateTimerEvent.SetSeconds(it)) }
-        )
-        Spacer(Modifier.height(16.dp))
-
-        // Тумблер мгновенного старта
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
         ) {
-            Text("Начать таймер немедленно")
-            Spacer(Modifier.weight(1f))
-            Switch(
-                checked = state.startImmediately,
-                onCheckedChange = {
-                    viewModel.onEvent(CreateTimerEvent.SetStartImmediately(it))
-                },
-                colors = SwitchDefaults.colors(checkedThumbColor = Color.Blue)
+            // Поле ввода имени таймера
+            OutlinedTextField(
+                value = state.timerInfo.timerName,
+                onValueChange = { viewModel.onEvent(CreateTimerEvent.SetName(it)) },
+                label = { Text("Название таймера", color = Color.Gray) },
+                modifier = Modifier.fillMaxWidth()
             )
-        }
 
-        Spacer(Modifier.height(16.dp))
+            Spacer(Modifier.height(16.dp))
 
-        if (state.id == null) {
-            PartTimerGroups(navController = navController)
-        }
-        Spacer(modifier = Modifier.weight(1f))
+            // Выбор времени
+            TimePicker(
+                selectedHours = state.selectedHours,
+                selectedMinutes = state.selectedMinutes,
+                selectedSeconds = state.selectedSeconds,
+                onHoursChange = { viewModel.onEvent(CreateTimerEvent.SetHours(it)) },
+                onMinutesChange = { viewModel.onEvent(CreateTimerEvent.SetMinutes(it)) },
+                onSecondsChange = { viewModel.onEvent(CreateTimerEvent.SetSeconds(it)) }
+            )
+            Spacer(Modifier.height(16.dp))
 
-        // Кнопка сохранения
-        Button(
-            onClick = {
-                viewModel.onEvent(CreateTimerEvent.SetShowPopup(value = true))
-            },
-            modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
-        ) {
-            Text("Сохранить таймер", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        }
+            // Тумблер мгновенного старта
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text("Начать таймер немедленно")
+                Spacer(Modifier.weight(1f))
+                Switch(
+                    checked = state.startImmediately,
+                    onCheckedChange = {
+                        viewModel.onEvent(CreateTimerEvent.SetStartImmediately(it))
+                    },
+                    colors = SwitchDefaults.colors(checkedThumbColor = Color.Blue)
+                )
+            }
 
-        // Popup при редактировании таймера
-        if (state.showPopup) {
-            PopupMessage(
-                message = "Вы уверены, что хотите изменить этот таймер?",
-                buttonText = "Изменить",
-                onCancel = { viewModel.onEvent(CreateTimerEvent.SetShowPopup(false)) },
-                onConfirm = {
+            Spacer(Modifier.height(16.dp))
+
+            if (state.id == null) {
+                PartTimerGroups(navController = navController)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Кнопка сохранения
+            Button(
+                onClick = {
+                    if (state.timerInfo.timerName.isBlank()) {
+                        showNameError = true
+                        return@Button
+                    }
+                    if (state.selectedHours == 0 && state.selectedMinutes == 0 && state.selectedSeconds == 0) {
+                        showTimeError = true
+                        return@Button
+                    }
                     viewModel.onEvent(CreateTimerEvent.SaveTimer)
-                }
-            )
+                },
+                modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp).height(48.dp),
+            ) {
+                Text("Сохранить таймер", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            }
+
+            // Popup при редактировании таймера
+            if (state.showPopup) {
+                PopupMessage(
+                    message = "Вы уверены, что хотите изменить этот таймер?",
+                    buttonText = "Изменить",
+                    onCancel = { viewModel.onEvent(CreateTimerEvent.SetShowPopup(false)) },
+                    onConfirm = {
+                        viewModel.onEvent(CreateTimerEvent.SaveTimer)
+                    }
+                )
+            }
         }
     }
 }

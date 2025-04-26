@@ -9,11 +9,15 @@ import androidx.room.RoomDatabaseConstructor
 import com.example.timercenter.database.dao.TimerDao
 import com.example.timercenter.database.dao.TimerGroupCrossRefDao
 import com.example.timercenter.database.dao.TimerGroupDao
+import com.example.timercenter.database.dao.TimerGroupHistoryDao
 import com.example.timercenter.database.dao.TimerHistoryDao
+import com.example.timercenter.database.dao.TimerRunDao
 import com.example.timercenter.database.model.TimerEntity
 import com.example.timercenter.database.model.TimerGroupCrossRef
 import com.example.timercenter.database.model.TimerGroupEntity
+import com.example.timercenter.database.model.TimerGroupHistoryEntity
 import com.example.timercenter.database.model.TimerHistoryEntity
+import com.example.timercenter.database.model.TimerRunEntity
 
 /**
  * База данных приложения
@@ -24,6 +28,8 @@ import com.example.timercenter.database.model.TimerHistoryEntity
         TimerGroupEntity::class,
         TimerHistoryEntity::class,
         TimerGroupCrossRef::class,
+        TimerRunEntity::class,
+        TimerGroupHistoryEntity::class
     ],
     version = 1
 )
@@ -34,6 +40,12 @@ abstract class AppDatabase: RoomDatabase() {
      * @return DAO для работы с таймерами
      */
     abstract fun getTimerDao(): TimerDao
+
+    /**
+     * Получает DAO для работы с запусками таймера
+     * @return DAO для работы с запусками таймера
+     */
+    abstract fun getTimerRunDao(): TimerRunDao
 
     /**
      * Получает DAO для работы с группами таймеров
@@ -52,6 +64,8 @@ abstract class AppDatabase: RoomDatabase() {
      * @return DAO для работы со связями
      */
     abstract fun getTimerGroupCrossRefDao(): TimerGroupCrossRefDao
+
+    abstract fun getTimerGroupHistoryDao(): TimerGroupHistoryDao
 }
 
 /**

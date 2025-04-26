@@ -6,7 +6,9 @@ import com.example.timercenter.common.MyDispatchers
 import com.example.timercenter.database.dao.TimerDao
 import com.example.timercenter.database.dao.TimerGroupCrossRefDao
 import com.example.timercenter.database.dao.TimerGroupDao
+import com.example.timercenter.database.dao.TimerGroupHistoryDao
 import com.example.timercenter.database.dao.TimerHistoryDao
+import com.example.timercenter.database.dao.TimerRunDao
 import com.example.timercenter.database.database.AppDatabase
 import kotlinx.coroutines.CoroutineDispatcher
 import org.koin.core.module.Module
@@ -32,6 +34,8 @@ fun databaseModule(): Module {
         single<TimerGroupDao> { get<AppDatabase>().getTimerGroupDao() }
         single<TimerHistoryDao> { get<AppDatabase>().getTimerHistoryDao() }
         single<TimerGroupCrossRefDao> { get<AppDatabase>().getTimerGroupCrossRefDao() }
+        single<TimerRunDao> { get<AppDatabase>().getTimerRunDao() }
+        single<TimerGroupHistoryDao> { get<AppDatabase>().getTimerGroupHistoryDao() }
     }
 }
 

@@ -10,7 +10,11 @@ expect class TimerScheduler {
      * @param timerId Идентификатор таймера
      * @param delayMillis Задержка в миллисекундах
      */
-    suspend fun scheduleTimer(timerId: Int, delayMillis: Long)
+    suspend fun scheduleTimer(
+        timerId: Int,
+        timerName: String,
+        delayMillis: Long,
+    )
 
     /**
      * Отменяет выполнение таймера

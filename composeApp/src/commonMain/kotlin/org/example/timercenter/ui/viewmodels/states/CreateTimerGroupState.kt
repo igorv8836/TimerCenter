@@ -17,16 +17,19 @@ import org.example.timercenter.ui.model.toInt
  * @property delaySelectedMinutes выбранное количество минут задержки
  * @property delaySelectedSeconds выбранное количество секунд задержки
  * @property showPopup флаг отображения всплывающего окна
+ * @property errorMessage сообщение об ошибке
  */
 @Stable
 data class CreateTimerGroupState(
     val id: Int? = null,
     val timerGroupInfo: TimerGroupUiModel = TimerGroupUiModel(),
+    val unSelectedTimers: List<TimerUiModel> = emptyList(),
     val allTimers: List<TimerUiModel> = emptyList(),
     val delaySelectedHours: Int = 0,
     val delaySelectedMinutes: Int = 0,
     val delaySelectedSeconds: Int = 0,
-    val showPopup: Boolean = false
+    val showPopup: Boolean = false,
+    val errorMessage: String? = null
 )
 
 /**

@@ -8,10 +8,11 @@ import androidx.room.PrimaryKey
  * @property id Уникальный идентификатор таймера
  * @property name Отображаемое имя таймера
  * @property durationMillis Общая длительность таймера в миллисекундах
- * @property remainingMillis Оставшееся время в миллисекундах
- * @property isRunning Флаг, указывающий, запущен ли таймер в данный момент
- * @property startTime Временная метка начала таймера, null если не запущен
- * @property status Текущий статус таймера
+ * @property remainingMillis Остаток времени таймера в миллисекундах
+ * @property isRunning Состояние таймера (выполняется или нет)
+ * @property startTime Время начала таймера в миллисекундах
+ * @property status Состояние таймера
+ * @property currentRunId Идентификатор текущего запуска таймера
  */
 @Entity(tableName = "timers")
 data class TimerEntity(
@@ -21,7 +22,8 @@ data class TimerEntity(
     val remainingMillis: Long = durationMillis,
     val isRunning: Boolean = false,
     val startTime: Long? = null,
-    val status: TimerStatus = TimerStatus.NOT_STARTED
+    val status: TimerStatus = TimerStatus.NOT_STARTED,
+    val currentRunId: Int? = null // для группы
 )
 
 /**

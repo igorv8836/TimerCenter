@@ -46,7 +46,6 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
 
             val homeViewModel: HomeViewModel = koinViewModel()
 
-            // Если переданы аргументы для рестарта, отправляем соответствующие события в ViewModel.
             LaunchedEffect(timerId) {
                 if (timerId != null) {
                     homeViewModel.onEvent(HomeEvent.CreateTimerFromHistory(timerId))
@@ -59,7 +58,6 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
             }
 
             HomeScreen(
-                timerAgoManager = timeAgoManager,
                 navController = navController,
                 homeViewModel = homeViewModel
             )
@@ -97,8 +95,10 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
          * Маршрут экрана создания/редактирования группы
          */
         composable<CreateGroupScreenRoute> {
+            val args = it.toRoute<CreateGroupScreenRoute>()
             CreateTimerGroupScreen(
-                navController = navController
+                navController = navController,
+                groupId = args.id
             )
         }
 

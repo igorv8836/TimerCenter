@@ -6,7 +6,8 @@ package org.example.timercenter.ui.model
  * @return Отформатированная строка времени
  */
 fun formatTime(timeMillis: Long): String {
-    val seconds = (timeMillis / 1000) % 60
-    val minutes = (timeMillis / 1000) / 60
+    val allSeconds = timeMillis / 1000 + if (timeMillis % 1000 > 0) 1 else 0
+    val seconds = (allSeconds) % 60
+    val minutes = (allSeconds) / 60
     return "${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}"
 }

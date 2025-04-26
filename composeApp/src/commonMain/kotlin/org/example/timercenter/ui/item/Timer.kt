@@ -67,6 +67,11 @@ fun Timer(
         while (timer.isRunning) {
             delay(1000L)
             remainingTime.value = calculateRemainingTime(timer)
+
+            if (remainingTime.value <= 0) {
+                // Остановка таймера при окончании времени
+                onStop(timer.id)
+            }
         }
     }
 

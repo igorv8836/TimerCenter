@@ -33,7 +33,10 @@ class CreateTimerGroupViewModel(
             subIntent {
                 timerRepository.getAllTimers().collect { timerEntities ->
                     val timers = timerEntities.map { it.toUiModel() }
-                    reduce { state.copy(allTimers = timers) }
+                    reduce { state.copy(
+                        allTimers = timers,
+                        unSelectedTimers = timers,
+                    ) }
                 }
             }
         }
@@ -47,18 +50,40 @@ class CreateTimerGroupViewModel(
     fun onEvent(event: CreateTimerGroupEvent) {
         when (event) {
             is CreateTimerGroupEvent.SaveTimerGroup -> blockingIntent {
+                if (state.timerGroupInfo.groupName.isBlank()) {
+                    reduce { state.copy(errorMessage = "Имя группы не может быть пустым") }
+                    return@blockingIntent
+                }
+                if (state.timerGroupInfo.timers.isEmpty()) {
+                    reduce { state.copy(errorMessage = "В группе должен быть хотя бы один таймер") }
+                    return@blockingIntent
+                }
+                if (state.id != null) {
+                    if (!state.showPopup) {
+                        reduce { state.copy(showPopup = true) }
+                        return@blockingIntent
+                    }
+                    val entity = state.toEntity()
+                    timerGroupRepository.updateGroup(
+                        entity,
+                        timerIds = state.timerGroupInfo.timers.map { it.id }
+                    )
+                    reduce {
+                        state.copy(
+                            showPopup = false
+                        )
+                    }
+                    postSideEffect(CreateTimerGroupEffect.NavigateToHome)
+                    return@blockingIntent
+                }
+                // Create new group
+                // Clear any previous error
+                reduce { state.copy(errorMessage = null) }
                 val timerGroupEntity = state.toEntity()
                 val newId = timerGroupRepository.createGroup(
                     timerGroupEntity,
-                    timerIds = state.allTimers.mapNotNull { it.id },
+                    timerIds = state.allTimers.map { it.id },
                 )
-                state.timerGroupInfo.timers.forEach { timerUiModel ->
-                    timerRepository.updateTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
-                }
-                val notAddedTimers = state.allTimers - state.timerGroupInfo.timers.toSet()
-                notAddedTimers.forEach { timerUiModel ->
-                    timerRepository.resetTimerInGroupId(timerId = timerUiModel.id, groupId = newId)
-                }
 
                 reduce {
                     state.copy(
@@ -76,8 +101,6 @@ class CreateTimerGroupViewModel(
                     val timerGroup = timerGroupRepository.getGroup(event.id)
                     timerGroup?.let {
                         val timersInGroup = timerGroupRepository.getTimersInGroup(it.id).first()
-                        // Преобразуем в UI-модель
-                        val timersUi = timersInGroup.map { entity -> entity.toUiModel() }
 
                         reduce {
                             state.copy(
@@ -87,9 +110,12 @@ class CreateTimerGroupViewModel(
                                     groupName = it.name,
                                     groupType = it.groupType.toGroupType(),
                                     delayTime = it.delayTime,
-                                    timers = timersUi,
+                                    timers = timersInGroup,
                                     lastStartedTime = it.lastStartedTime ?: 0L
                                 ),
+                                unSelectedTimers = state.allTimers.filter { timer ->
+                                    !timersInGroup.map { timerInGroup -> timerInGroup.id }.contains(timer.id)
+                                },
                                 delaySelectedHours = (it.delayTime / 3_600_000L).toInt(),
                                 delaySelectedMinutes = ((it.delayTime % 3_600_000L) / 60_000L).toInt(),
                                 delaySelectedSeconds = ((it.delayTime % 60_000L) / 1_000L).toInt()
@@ -101,13 +127,28 @@ class CreateTimerGroupViewModel(
 
             is CreateTimerGroupEvent.AddTimerToGroup -> blockingIntent {
                 reduce {
-                    state.copy(timerGroupInfo = state.timerGroupInfo.copy(timers = state.timerGroupInfo.timers + event.timer))
+                    val selectedTimers = state.timerGroupInfo.timers + event.timer
+                    state.copy(
+                        timerGroupInfo = state.timerGroupInfo.copy(timers = selectedTimers),
+                        unSelectedTimers = state.allTimers.filter { timer ->
+                            !selectedTimers.map { timerInGroup -> timerInGroup.id }.contains(timer.id)
+                        },
+                        errorMessage = null
+                    )
                 }
             }
 
             is CreateTimerGroupEvent.DeleteTimerFromGroup -> blockingIntent {
                 reduce {
-                    state.copy(timerGroupInfo = state.timerGroupInfo.copy(timers = state.timerGroupInfo.timers - event.timer))
+                    val selectedTimers = state.timerGroupInfo.timers - event.timer
+
+                    state.copy(
+                        timerGroupInfo = state.timerGroupInfo.copy(timers = selectedTimers),
+                        unSelectedTimers = state.allTimers.filter { timer ->
+                            !selectedTimers.map { timerInGroup -> timerInGroup.id }.contains(timer.id)
+                        },
+                        errorMessage = null
+                    )
                 }
             }
 
@@ -130,7 +171,8 @@ class CreateTimerGroupViewModel(
             is CreateTimerGroupEvent.SetName -> blockingIntent {
                 reduce {
                     state.copy(
-                        timerGroupInfo = state.timerGroupInfo.copy(groupName = event.text)
+                        timerGroupInfo = state.timerGroupInfo.copy(groupName = event.text),
+                        errorMessage = null
                     )
                 }
             }

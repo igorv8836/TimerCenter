@@ -12,6 +12,7 @@ import org.example.timercenter.ui.viewmodels.states.HomeEffect
 import org.example.timercenter.ui.viewmodels.states.HomeEvent
 import org.example.timercenter.ui.viewmodels.states.HomeState
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 
 /**
  * ViewModel для главного экрана
@@ -19,6 +20,7 @@ import org.orbitmvi.orbit.ContainerHost
  * @property timerRepository Репозиторий для работы с таймерами
  * @property timerGroupRepository Репозиторий для работы с группами таймеров
  */
+@OptIn(OrbitExperimental::class)
 class HomeViewModel(
     private val timerRepository: TimerRepository,
     private val timerGroupRepository: TimerGroupRepository
@@ -35,16 +37,12 @@ class HomeViewModel(
         viewModelScope.launch {
             timerGroupRepository.getAllGroups().collect { groups ->
                 val newGroups = groups.map { group ->
-                    val timers = timerGroupRepository.getTimersInGroup(group.id).first().map {
-                        it.toUiModel()
-                    }
+                    val timers = timerGroupRepository.getTimersInGroup(group.id).first()
 
-                    group.toUiModel().copy(
-                        timers = timers,
-                    )
+                    group.toUiModel(timers)
                 }
 
-                intent { reduce { state.copy(timerGroups = newGroups) } }
+                subIntent { reduce { state.copy(timerGroups = newGroups) } }
             }
         }
     }
@@ -122,7 +120,7 @@ class HomeViewModel(
             }
 
             is HomeEvent.CreateTimerGroupFromHistory -> {
-                reduce { state.copy(timerGroupRestartId = event.timerGroupId) }
+                timerGroupRepository.copyGroup(event.timerGroupId)
             }
 
             is HomeEvent.UpdateTimerLastStartedTime -> {
@@ -138,19 +136,6 @@ class HomeViewModel(
                 reduce { state.copy(timers = timers) }
             }
 
-            is HomeEvent.UpdateTimerGroupLastStartedTime -> {
-                val timerGroups =
-                    state.timerGroups.map { if (it.id == event.timerGroupId) it.copy(lastStartedTime = event.lastStartedTime) else it }
-                if (timerGroupRepository.getGroup(event.timerGroupId) != null) {
-                    timerGroupRepository.updateGroup(
-                        timerGroupRepository.getGroup(event.timerGroupId)!!
-                            .copy(lastStartedTime = event.lastStartedTime),
-                        timerIds = timerGroups.map { it.id }
-                    )
-                }
-                reduce { state.copy(timerGroups = timerGroups) }
-            }
-
             is HomeEvent.RunTimer -> {
                 timerRepository.startTimer(event.timerId)
             }
@@ -161,6 +146,18 @@ class HomeViewModel(
 
             is HomeEvent.PauseTimer -> {
                 timerRepository.pauseTimer(event.timerId)
+            }
+
+            is HomeEvent.PauseTimerGroup -> {
+                timerGroupRepository.pauseGroup(event.timerGroupId)
+            }
+
+            is HomeEvent.RunTimerGroup -> {
+                timerGroupRepository.startGroup(event.timerGroupId)
+            }
+
+            is HomeEvent.StopTimerGroup -> {
+                timerGroupRepository.stopGroup(event.timerGroupId)
             }
         }
     }

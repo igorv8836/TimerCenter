@@ -26,6 +26,11 @@ class CreateTimerViewModel(
     fun onEvent(event: CreateTimerEvent) {
         when (event) {
             is CreateTimerEvent.SaveTimer -> blockingIntent {
+                if (state.id != null && !state.showPopup) {
+                    reduce { state.copy(showPopup = true) }
+                    return@blockingIntent
+                }
+
                 val timerEntity = state.toEntity()
                 val newId = timerRepository.createTimer(timerEntity)
                 reduce {

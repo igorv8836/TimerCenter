@@ -7,9 +7,9 @@ import com.example.timercenter.database.model.TimerGroupEntity
  * Перечисление типов групп таймеров
  */
 enum class GroupType {
-    CONSISTENT,  // Последовательный запуск таймеров
-    PARALLEL,    // Параллельный запуск таймеров
-    DELAY        // Запуск с задержкой между таймерами
+    CONSISTENT,
+    PARALLEL,
+    DELAY
 }
 
 /**
@@ -52,6 +52,8 @@ data class TimerGroupUiModel(
     val groupName: String = "",
     val groupType: GroupType = GroupType.CONSISTENT,
     val timers: List<TimerUiModel> = emptyList(),
+    val isRunning: Boolean = false,
+    val isStarted: Boolean = false,
     val lastStartedTime: Long = 0L,
     val delayTime: Long = 0L
 )
@@ -65,7 +67,9 @@ fun TimerGroupEntity.toUiModel(timers: List<TimerUiModel>): TimerGroupUiModel {
     return TimerGroupUiModel(
         id = id,
         groupName = name,
-        groupType = GroupType.CONSISTENT,
+        groupType = groupType.toGroupType(),
+        isRunning = isRunning,
+        isStarted = timers.any { it.remainingMillis != it.totalTime || it.isRunning } || isRunning,
         timers = timers,
         lastStartedTime = 0L,
         delayTime = 0L
@@ -82,6 +86,8 @@ fun TimerGroupEntity.toUiModel(): TimerGroupUiModel {
         groupName = name,
         groupType = groupType.toGroupType(),
         timers = emptyList(),
+        isStarted = isRunning,
+        isRunning = isRunning,
         lastStartedTime = lastStartedTime,
         delayTime = delayTime
     )

@@ -1,19 +1,16 @@
 package org.example.timercenter.ui.viewmodels.states
 
-import org.example.timercenter.ui.model.TimerGroupUiModel
-import org.example.timercenter.ui.model.TimerUiModel
+import org.example.timercenter.ui.model.TimerHistoryModel
 
 /**
  * Состояние экрана истории таймеров
  * Класс содержит информацию о текущем состоянии экрана истории таймеров
- * @property timers список таймеров
- * @property timerGroups список групп таймеров
+ * @property historyItems список истории
  * @property isLoading флаг загрузки
  * @property error текст ошибки
  */
 data class TimerHistoryState(
-    val timers: List<TimerUiModel> = emptyList(),
-    val timerGroups: List<TimerGroupUiModel> = emptyList(),
+    val historyItems: List<TimerHistoryModel> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null
 )

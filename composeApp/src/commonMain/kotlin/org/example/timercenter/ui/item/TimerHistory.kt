@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -34,53 +36,25 @@ fun TimerHistory(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column {
+        Column(
+            modifier = Modifier.weight(1f)
+        ) {
             Text(
                 text = name,
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(end = 16.dp)
             )
             Text(
                 text = lastStartedTimeText,
                 color = Color.Gray,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
-        Button(onClick = onRestart) {
-            Text("Запустить")
-        }
+        CircularButton(icon = Icons.Default.PlayArrow, onClick = onRestart)
     }
 }
-
-
-//@Composable
-//fun TimerHistory(
-//    timeAgoManager: TimeAgoManager,
-//    name: String,
-//    lastStartedTime: Long,
-//    onRestart: () -> Unit
-//) {
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(vertical = 8.dp),
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween
-//    ) {
-//        Column {
-//            Text(
-//                text = name,
-//                fontWeight = FontWeight.Bold,
-//                fontSize = 18.sp
-//            )
-//            Text(
-//                text = timeAgoManager.timeAgo(lastStartedTime),
-//                color = Color.Gray,
-//                fontSize = 14.sp
-//            )
-//        }
-//        Button(onClick = onRestart) {
-//            Text("Запустить")
-//        }
-//    }
-//}

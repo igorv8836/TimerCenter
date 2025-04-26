@@ -35,20 +35,6 @@ interface TimerRepository {
     suspend fun updateTimer(timer: TimerEntity)
 
     /**
-     * Обновляет идентификатор группы для таймера
-     * @param timerId Идентификатор таймера
-     * @param groupId Идентификатор группы
-     */
-    suspend fun updateTimerInGroupId(timerId: Int, groupId: Int)
-
-    /**
-     * Сбрасывает идентификатор группы для таймера
-     * @param timerId Идентификатор таймера
-     * @param groupId Идентификатор группы
-     */
-    suspend fun resetTimerInGroupId(timerId: Int, groupId: Int)
-
-    /**
      * Удаляет таймер по идентификатору
      * @param id Идентификатор таймера для удаления
      */

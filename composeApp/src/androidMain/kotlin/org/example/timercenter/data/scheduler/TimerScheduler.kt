@@ -5,6 +5,7 @@ import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import org.example.timercenter.data.models.WorkManagerConstants
 import java.util.concurrent.TimeUnit
 
 /**
@@ -18,11 +19,20 @@ actual class TimerScheduler(private val context: Context) {
      * @param timerId ID таймера
      * @param delayMillis Время задержки в миллисекундах
      */
-    actual suspend fun scheduleTimer(timerId: Int, delayMillis: Long) {
+    actual suspend fun scheduleTimer(
+        timerId: Int,
+        timerName: String,
+        delayMillis: Long,
+    ) {
         val workManager = WorkManager.getInstance(context)
         val workRequest = OneTimeWorkRequestBuilder<TimerExpiredWorker>()
             .setInitialDelay(delayMillis, TimeUnit.MILLISECONDS)
-            .setInputData(workDataOf("TIMER_ID" to timerId))
+            .setInputData(
+                workDataOf(
+                    WorkManagerConstants.TIMER_ID to timerId,
+                    WorkManagerConstants.TIMER_NAME to timerName,
+                )
+            )
             .build()
         workManager.enqueueUniqueWork("timer_finished_$timerId", ExistingWorkPolicy.REPLACE, workRequest)
     }

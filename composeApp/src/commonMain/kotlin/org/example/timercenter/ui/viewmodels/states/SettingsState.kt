@@ -1,7 +1,7 @@
 package org.example.timercenter.ui.viewmodels.states
 
 import androidx.compose.runtime.Stable
-import org.example.timercenter.ui.model.NotificationType
+import com.example.timercenter.datastore.models.NotificationType
 import org.example.timercenter.ui.model.SettingsModel
 
 /**

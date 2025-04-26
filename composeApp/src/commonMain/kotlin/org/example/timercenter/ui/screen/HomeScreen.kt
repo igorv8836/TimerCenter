@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.orbit_mvi.compose.collectSideEffect
-import org.example.timercenter.TimeAgoManager
 import org.example.timercenter.navigation.navigateToCreate
 import org.example.timercenter.navigation.navigateToCreateGroup
 import org.example.timercenter.navigation.navigateToSettings
@@ -49,13 +48,11 @@ import org.koin.compose.viewmodel.koinViewModel
 
 /**
  * Главный экран приложения
- * @param timerAgoManager Менеджер для получения текста, описывающего время
  * @param navController Контроллер навигации
  * @param homeViewModel Модель представления экрана
  */
 @Composable
 fun HomeScreen(
-    timerAgoManager: TimeAgoManager,
     navController: NavController,
     homeViewModel: HomeViewModel = koinViewModel(),
 ) {
@@ -124,7 +121,7 @@ fun HomeScreen(
                             },
                             onStop = {
                                 homeViewModel.onEvent(HomeEvent.StopTimer(timerId = timer.id))
-                            }
+                            },
                         )
                     }
                 }
@@ -159,11 +156,14 @@ fun HomeScreen(
                                 homeViewModel.onEvent(HomeEvent.ToggleTimerGroupSelection(group, isLongPress))
                             },
                             onStartGroup = {
-                                homeViewModel.onEvent(HomeEvent.UpdateTimerGroupLastStartedTime(timerGroupId = group.id, lastStartedTime = timerAgoManager.currentTimeMillis()))
+                                homeViewModel.onEvent(HomeEvent.RunTimerGroup(timerGroupId = group.id))
                             },
-                            onPauseGroup = {},
-                            onResetGroup = {},
-                            toRun = group.id == state.timerGroupRestartId
+                            onPauseGroup = {
+                                homeViewModel.onEvent(HomeEvent.PauseTimerGroup(timerGroupId = group.id))
+                            },
+                            onResetGroup = {
+                                homeViewModel.onEvent(HomeEvent.StopTimerGroup(timerGroupId = group.id))
+                            },
                         )
                     }
                 }

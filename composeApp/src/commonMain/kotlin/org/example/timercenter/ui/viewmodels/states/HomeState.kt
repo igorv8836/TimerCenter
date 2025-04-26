@@ -104,12 +104,12 @@ sealed interface HomeEvent {
      */
     data class UpdateTimerLastStartedTime(val timerId: Int, val lastStartedTime: Long) : HomeEvent
 
-    /**
-     * Обновление времени последнего запуска группы таймеров
-     * @property timerGroupId идентификатор группы таймеров
-     * @property lastStartedTime время последнего запуска
-     */
-    data class UpdateTimerGroupLastStartedTime(val timerGroupId: Int, val lastStartedTime: Long) : HomeEvent
+//    /**
+//     * Обновление времени последнего запуска группы таймеров
+//     * @property timerGroupId идентификатор группы таймеров
+//     * @property lastStartedTime время последнего запуска
+//     */
+//    data class UpdateTimerGroupLastStartedTime(val timerGroupId: Int, val lastStartedTime: Long) : HomeEvent
 
     /**
      * Создание таймера из истории
@@ -140,4 +140,22 @@ sealed interface HomeEvent {
      * @property timerId идентификатор таймера
      */
     data class RunTimer(val timerId: Int) : HomeEvent
+
+    /**
+     * Запуск группы таймеров
+     * @property timerId идентификатор группы
+     */
+    data class RunTimerGroup(val timerGroupId: Int) : HomeEvent
+
+    /**
+     * Остановка группы таймеров
+     * @property timerId идентификатор группы
+     */
+    data class StopTimerGroup(val timerGroupId: Int) : HomeEvent
+
+    /**
+     * Пауза группы таймеров
+     * @property timerId идентификатор группы
+     */
+    data class PauseTimerGroup(val timerGroupId: Int) : HomeEvent
 }

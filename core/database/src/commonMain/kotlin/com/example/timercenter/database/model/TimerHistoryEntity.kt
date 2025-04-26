@@ -20,6 +20,17 @@ import androidx.room.PrimaryKey
 data class TimerHistoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val timerId: Int,
-    val name: String,
+    val lastStartedTime: Long,
+)
+
+@Entity(
+    tableName = "timer_group_history",
+    foreignKeys = [
+        ForeignKey(entity = TimerGroupEntity::class, parentColumns = ["id"], childColumns = ["timerGroupId"], onDelete = ForeignKey.CASCADE),
+    ]
+)
+data class TimerGroupHistoryEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val timerGroupId: Int,
     val lastStartedTime: Long,
 )

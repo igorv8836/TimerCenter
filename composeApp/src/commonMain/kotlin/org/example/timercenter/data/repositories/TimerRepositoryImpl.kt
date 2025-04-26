@@ -1,7 +1,6 @@
 package org.example.timercenter.data.repositories
 
 import com.example.timercenter.database.dao.TimerDao
-import com.example.timercenter.database.dao.TimerHistoryDao
 import com.example.timercenter.database.model.TimerEntity
 import com.example.timercenter.database.model.TimerStatus
 import kotlinx.coroutines.CoroutineDispatcher
@@ -9,19 +8,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.example.timercenter.data.scheduler.TimerScheduler
+import org.example.timercenter.domain.repositories.TimerHistoryRepository
 import org.example.timercenter.domain.repositories.TimerRepository
 
 /**
  * Реализация репозитория для работы с таймерами
  * Обеспечивает доступ к данным таймеров и управление их состоянием
  * @property timerDao DAO для работы с таймерами в базе данных
- * @property timerHistoryDao DAO для работы с историей таймеров
  * @property timerScheduler Планировщик для управления таймерами
  * @property ioDispatcher Диспетчер для выполнения операций ввода-вывода
  */
 class TimerRepositoryImpl(
     private val timerDao: TimerDao,
-    private val timerHistoryDao: TimerHistoryDao,
+    private val timerHistoryRepository: Lazy<TimerHistoryRepository>,
     private val timerScheduler: TimerScheduler,
     private val ioDispatcher: CoroutineDispatcher
 ) : TimerRepository {
@@ -59,24 +58,6 @@ class TimerRepositoryImpl(
     }
 
     /**
-     * Обновляет идентификатор группы для таймера
-     * @param timerId Идентификатор таймера
-     * @param groupId Идентификатор группы
-     */
-    override suspend fun updateTimerInGroupId(timerId: Int, groupId: Int) {
-//        timerDao.updateTimerInGroupId(timerId = timerId, groupId = groupId)
-    }
-
-    /**
-     * Сбрасывает идентификатор группы для таймера
-     * @param timerId Идентификатор таймера
-     * @param groupId Идентификатор группы
-     */
-    override suspend fun resetTimerInGroupId(timerId: Int, groupId: Int) {
-//        timerDao.resetTimerInGroupId(timerId = timerId, groupId = groupId)
-    }
-
-    /**
      * Удаляет таймер по идентификатору
      * @param id Идентификатор таймера для удаления
      */
@@ -94,6 +75,10 @@ class TimerRepositoryImpl(
 
         val updatedTimer = when (timer.status) {
             TimerStatus.NOT_STARTED -> {
+                timerHistoryRepository.value.addRecord(
+                    timerId = timer.id,
+                    lastStartedTime = currentTime,
+                )
                 timer.copy(
                     isRunning = true,
                     startTime = currentTime,
@@ -115,7 +100,11 @@ class TimerRepositoryImpl(
         } ?: timer
 
         timerDao.updateTimer(updatedTimer)
-        timerScheduler.scheduleTimer(updatedTimer.id, updatedTimer.durationMillis)
+        timerScheduler.scheduleTimer(
+            timerId = updatedTimer.id,
+            timerName = updatedTimer.name,
+            delayMillis = updatedTimer.durationMillis,
+        )
     }
 
     /**
@@ -170,17 +159,17 @@ class TimerRepositoryImpl(
      * @param id Идентификатор таймера для копирования
      */
     override suspend fun copyTimer(id: Int) {
-        val currentTime = Clock.System.now().toEpochMilliseconds()
         timerDao.getTimerById(id)?.let {
-            timerDao.insertTimer(
+            val newId = timerDao.insertTimer(
                 it.copy(
                     id = 0,
                     remainingMillis = it.durationMillis,
-                    isRunning = true,
-                    startTime = currentTime,
-                    status = TimerStatus.RUNNING,
+                    isRunning = false,
+                    startTime = 0L,
+                    status = TimerStatus.NOT_STARTED,
                 )
-            )
+            ).toInt()
+            startTimer(newId)
         }
     }
 }

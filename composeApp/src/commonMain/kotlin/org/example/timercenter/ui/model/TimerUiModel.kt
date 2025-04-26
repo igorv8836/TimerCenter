@@ -29,11 +29,12 @@ data class TimerUiModel(
  * Преобразует сущность таймера в модель
  * @return Модель таймера
  */
-fun TimerEntity.toUiModel(): TimerUiModel {
+fun TimerEntity.toUiModel(groupId: Int? = null): TimerUiModel {
     val currentTime = Clock.System.now().toEpochMilliseconds()
 
     return TimerUiModel(
         id = id,
+        groupId = groupId,
         timerName = name,
         totalTime = durationMillis,
         isRunning = isRunning,

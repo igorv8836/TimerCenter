@@ -66,8 +66,10 @@ fun AppTopBar(
             )
         },
         actions = {
-            IconButton(onClick = onSettingsClick) {
-                Icon(imageVector = Icons.Filled.Settings, contentDescription = null)
+            if (navController.currentDestination?.hasRoute<HomeScreenRoute>() == true) {
+                IconButton(onClick = onSettingsClick) {
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription = null)
+                }
             }
         },
 
