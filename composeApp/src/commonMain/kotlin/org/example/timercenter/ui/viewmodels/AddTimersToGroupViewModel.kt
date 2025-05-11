@@ -1,7 +1,10 @@
 package org.example.timercenter.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.orbit_mvi.viewmodel.container
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.example.timercenter.domain.repositories.TimerGroupRepository
 import org.example.timercenter.ui.model.toUiModel
 import org.example.timercenter.ui.viewmodels.states.AddTimersToGroupEffect
@@ -23,13 +26,27 @@ class AddTimersToGroupViewModel(
     )
 
     init {
-        intent {
-            subIntent {
-                timerGroupRepository.getAllGroups().collect { timerGroupEntities ->
-                    val groups = timerGroupEntities.map { it.toUiModel() }
-                    reduce { state.copy(timerGroups = groups) }
+//        intent {
+//            subIntent {
+//                timerGroupRepository.getAllGroups().collect { timerGroupEntities ->
+//                    val groups = timerGroupEntities.map { it.toUiModel() }
+//                    reduce { state.copy(timerGroups = groups) }
+//                }
+//            }
+//        }
+        viewModelScope.launch {
+            timerGroupRepository.getAllGroups().collect { groups ->
+                val newGroups = groups.map { group ->
+                    val timers = timerGroupRepository.getTimersInGroup(group.id).first()
 
+                    group.toUiModel(timers)
                 }
+//                subIntent {
+//                    if (state.timerGroups != newGroups) {
+//                        reduce { state.copy(timerGroups = newGroups) }
+//                    }
+//                }
+                subIntent { reduce { state.copy(timerGroups = newGroups) } }
             }
         }
     }

@@ -36,7 +36,7 @@ fun NavController.getRouteName(): String {
         destination.hasRoute<HomeScreenRoute>() -> "Главная"
         destination.hasRoute<CreateScreenRoute>() -> "Создать"
         destination.hasRoute<CreateGroupScreenRoute>() -> "Создать группу"
-        destination.hasRoute<AddToGroupScreenRoute>() -> "Добавить в группу"
+        destination.hasRoute<AddToGroupScreenRoute>() -> "Выберите группу"
         destination.hasRoute<HistoryScreenRoute>() -> "История"
         destination.hasRoute<SettingsScreenRoute>() -> "Настройки"
         else -> "Таймеры"
