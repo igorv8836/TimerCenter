@@ -130,9 +130,18 @@ fun TimerGroup(
             }
         }
 
-        // Завершаем все таймеры, когда они все закончены
+//        // Завершаем все таймеры, когда они все закончены
+//        if (remainingTimes.all { it == 0L }) {
+//            isRunning = false
+//        }
+
+        // Этот блок выполнится один раз после окончания таймеров
         if (remainingTimes.all { it == 0L }) {
             isRunning = false
+            remainingTimes.forEachIndexed { index, _ ->
+                remainingTimes[index] = timerGroup.timers[index].totalTime
+            }
+            onResetGroup()
         }
     }
 
