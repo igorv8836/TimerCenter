@@ -121,19 +121,30 @@ fun CreateTimerGroupScreen(
                     }
                 )
             }
+//            items(state.unSelectedTimers.size) { index ->
+//                TimerAddToGroup(
+//                    timer = state.unSelectedTimers[index],
+//                    isSelected = false,  // Они еще не выбраны
+//                    onToggle = {
+//                        viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
+//                            !state.timerGroupInfo.timers.contains(
+//                                timer
+//                            )
+//                        }[index]))
+//                    }
+//                )
+//            }
             items(state.unSelectedTimers.size) { index ->
+                val timerToAdd = state.unSelectedTimers[index]
                 TimerAddToGroup(
-                    timer = state.unSelectedTimers[index],
-                    isSelected = false,  // Они еще не выбраны
+                    timer = timerToAdd,
+                    isSelected = false,
                     onToggle = {
-                        viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(state.allTimers.filter { timer ->
-                            !state.timerGroupInfo.timers.contains(
-                                timer
-                            )
-                        }[index]))
+                        viewModel.onEvent(CreateTimerGroupEvent.AddTimerToGroup(timerToAdd))
                     }
                 )
             }
+
         }
 
         Row(
