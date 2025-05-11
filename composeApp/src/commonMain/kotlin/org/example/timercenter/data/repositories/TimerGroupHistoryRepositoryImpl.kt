@@ -21,8 +21,9 @@ class TimerGroupHistoryRepositoryImpl(
 
     override fun getAllHistory(): Flow<List<TimerHistoryModel>> =
         timerGroupHistoryDao.getAllHistoryFlow().map { groups ->
+            println("TimerGroupHistory $groups")
             groups.mapNotNull { groupHistory ->
-                timerGroupRepository.getGroup(groupHistory.id)?.let { group ->
+                timerGroupRepository.getGroup(groupHistory.timerGroupId)?.let { group ->
                     TimerHistoryModel(
                         id = groupHistory.timerGroupId,
                         name = "Группа: " + group.name,
@@ -35,6 +36,7 @@ class TimerGroupHistoryRepositoryImpl(
 
     override suspend fun addRecord(groupTimerId: Int, lastStartedTime: Long): Long =
         withContext(ioDispatcher) {
+            println("Adding record, lastStartedTime $lastStartedTime, $groupTimerId")
             timerGroupHistoryDao.insertRecord(
                 TimerGroupHistoryEntity(
                     timerGroupId = groupTimerId,

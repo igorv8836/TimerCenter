@@ -33,6 +33,7 @@ fun HistoryScreen(
     val historyItems = state.historyItems
         .filter { it.lastStartedTime > 0L }
         .sortedByDescending { it.lastStartedTime }
+//    println("historyItems $historyItems")
 
     LazyColumn(
         modifier = Modifier

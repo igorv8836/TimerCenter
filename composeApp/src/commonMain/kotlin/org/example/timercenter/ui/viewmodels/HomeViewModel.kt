@@ -30,7 +30,13 @@ class HomeViewModel(
     init {
         viewModelScope.launch {
             timerRepository.getAllTimers().collect { timers ->
-                intent { reduce { state.copy(timers = timers.map { it.toUiModel() }) } }
+                val newTimers = timers.map { it.toUiModel() }
+                intent {
+                    if (state.timers != newTimers) {
+                        reduce { state.copy(timers = newTimers) }
+                    }
+                }
+//                intent { reduce { state.copy(timers = timers.map { it.toUiModel() }) } }
             }
         }
 
@@ -41,8 +47,12 @@ class HomeViewModel(
 
                     group.toUiModel(timers)
                 }
-
-                subIntent { reduce { state.copy(timerGroups = newGroups) } }
+                subIntent {
+                    if (state.timerGroups != newGroups) {
+                        reduce { state.copy(timerGroups = newGroups) }
+                    }
+                }
+//                subIntent { reduce { state.copy(timerGroups = newGroups) } }
             }
         }
     }

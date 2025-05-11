@@ -48,12 +48,14 @@ fun AppNavigation(timeAgoManager: TimeAgoManager, navController: NavHostControll
 
             LaunchedEffect(timerId) {
                 if (timerId != null) {
-                    homeViewModel.onEvent(HomeEvent.CreateTimerFromHistory(timerId))
+//                    homeViewModel.onEvent(HomeEvent.CreateTimerFromHistory(timerId))
+                    homeViewModel.onEvent(HomeEvent.RunTimer(timerId))
                 }
             }
             LaunchedEffect(groupId) {
                 if (groupId != null) {
-                    homeViewModel.onEvent(HomeEvent.CreateTimerGroupFromHistory(groupId))
+//                    homeViewModel.onEvent(HomeEvent.CreateTimerGroupFromHistory(groupId))
+                    homeViewModel.onEvent(HomeEvent.RunTimerGroup(groupId))
                 }
             }
 
