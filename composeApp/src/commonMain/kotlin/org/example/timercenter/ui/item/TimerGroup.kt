@@ -52,6 +52,193 @@ import org.example.timercenter.ui.model.TimerGroupUiModel
  * @param onResetGroup Обработчик сброса группы
  * @param toRun Флаг автоматического запуска при создании
  */
+//@OptIn(ExperimentalFoundationApi::class)
+//@Composable
+//fun TimerGroup(
+//    timerGroup: TimerGroupUiModel,
+//    isSelected: Boolean,
+//    onSelect: (isLongPress: Boolean) -> Unit,
+//    onStartGroup: () -> Unit,
+//    onPauseGroup: () -> Unit,
+//    onResetGroup: () -> Unit,
+//) {
+////    var isRunning by remember { mutableStateOf(timerGroup.isRunning) }
+//    val isRunning = timerGroup.isRunning
+////    println("timerGroup is running? $timerGroup")
+//    var isExpanded by remember { mutableStateOf(true) }
+//
+//    val remainingTimes = remember {
+//        mutableStateListOf<Long>().apply {
+//            when (timerGroup.groupType) {
+//                GroupType.CONSISTENT -> {
+//                    if (!timerGroup.isStarted || !timerGroup.isRunning) {
+//                        addAll(timerGroup.timers.map { it.remainingMillis })
+//                    } else {
+//                        val elapsed = Clock.System.now().toEpochMilliseconds() - timerGroup.timers.first().lastStartedTime
+//                        addAll(timerGroup.timers.mapIndexed { index, timer ->
+//                            if (index == 0) maxOf(0, timer.remainingMillis - elapsed) else timer.remainingMillis
+//                        })
+//                    }
+//                }
+//                else -> {
+//                    addAll(timerGroup.timers.map {
+//                        if (!timerGroup.isStarted || !timerGroup.isRunning) {
+//                            it.remainingMillis
+//                        } else {
+//                            maxOf(0, it.remainingMillis - (Clock.System.now().toEpochMilliseconds() - it.lastStartedTime))
+//                        }
+//                    })
+//                }
+//            }
+//        }
+//    }
+//
+//    val delayTime = timerGroup.delayTime
+//
+////    LaunchedEffect(isRunning) {
+//    LaunchedEffect(timerGroup.id, isRunning) {
+//
+//        when (timerGroup.groupType) {
+//            GroupType.PARALLEL -> {
+//                while (isRunning && remainingTimes.any { it > 0 }) {
+//                    delay(1000L)
+//                    remainingTimes.forEachIndexed { index, time ->
+//                        if (time > 0) {
+//                            remainingTimes[index] = time - 1000
+//                        }
+//                    }
+//                }
+//            }
+//
+//            GroupType.CONSISTENT -> {
+//                while (isRunning && remainingTimes.any { it > 0 }) {
+//                    val activeTimerIndex = remainingTimes.indexOfFirst { it > 0 }
+//                    if (activeTimerIndex != -1) {
+//                        delay(1000L)
+//                        remainingTimes[activeTimerIndex] = remainingTimes[activeTimerIndex] - 1000
+//                    }
+//                }
+//            }
+//
+////            GroupType.DELAY -> {
+////                while (isRunning && remainingTimes.any { it > 0 }) {
+////                    remainingTimes.forEachIndexed { index, time ->
+////                        if (time > 0) {
+////                            delay(1000L)
+////                            remainingTimes[index] = time - 1000
+////                        }
+////                    }
+////                    // После завершения всех таймеров мы вводим задержку между стартами
+////                    delay(delayTime)
+////                }
+////            }
+//            GroupType.DELAY -> {
+//                for (index in remainingTimes.indices) {
+//                    while (isRunning && remainingTimes[index] > 0) {
+//                        delay(1000L)
+//                        remainingTimes[index] = remainingTimes[index] - 1000
+//                    }
+//                    // После завершения текущего таймера – пауза перед следующим
+//                    if (isRunning && index != remainingTimes.lastIndex) {
+//                        delay(delayTime)
+//                    }
+//                }
+//            }
+//
+//        }
+//
+////        // Завершаем все таймеры, когда они все закончены
+////        if (remainingTimes.all { it == 0L }) {
+////            isRunning = false
+////        }
+//
+//        // Этот блок выполнится один раз после окончания таймеров
+//        if (remainingTimes.all { it == 0L }) {
+//            isRunning = false
+//            remainingTimes.forEachIndexed { index, _ ->
+//                remainingTimes[index] = timerGroup.timers[index].totalTime
+//            }
+//            onResetGroup()
+//        }
+//    }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(12.dp)
+//            .background(
+//                if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent,
+//                shape = RoundedCornerShape(8.dp)
+//            )
+//            .clip(RoundedCornerShape(8.dp))
+//            .combinedClickable(
+//                onClick = { onSelect(false) },
+//                onLongClick = { onSelect(true) }
+//            )
+//            .padding(top = 8.dp, bottom = 8.dp, end = 8.dp),
+//    ) {
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.spacedBy(8.dp)
+//        ) {
+//            Text(
+//                text = timerGroup.groupName,
+//                fontSize = 20.sp,
+//                fontWeight = FontWeight.Bold,
+//            )
+//
+//            IconButton(onClick = { isExpanded = !isExpanded }) {
+//                Icon(
+//                    imageVector = if (isExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+//                    contentDescription = if (isExpanded) "Collapse" else "Expand",
+//                )
+//            }
+//
+//            Spacer(modifier = Modifier.weight(1f))
+//
+//            if (!timerGroup.isStarted) {
+//                CircularButton(icon = Icons.Default.PlayArrow, onClick = {
+//                    isRunning = true
+//                    onStartGroup()
+//                })
+//            } else {
+//                CircularButton(
+//                    icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+//                    onClick = {
+//                        isRunning = !isRunning
+//                        if (isRunning) onStartGroup() else onPauseGroup()
+//                    }
+//                )
+//                CircularButton(icon = Icons.Default.Stop, onClick = {
+//                    isRunning = false
+//                    remainingTimes.forEachIndexed { index, _ ->
+//                        remainingTimes[index] = timerGroup.timers[index].totalTime
+//                    }
+//                    onResetGroup()
+//                })
+//            }
+//        }
+//
+//        if (isExpanded) {
+//            LazyColumn(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .wrapContentHeight()
+//                    .padding(top = 8.dp)
+//                    .heightIn(min = 80.dp, max = 320.dp)
+//            ) {
+//                items(timerGroup.timers.size) { index ->
+//                    TimerWithoutButtons(
+//                        timer = timerGroup.timers[index],
+//                        remainingTime = remainingTimes[index]
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}
+//
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TimerGroup(
@@ -62,19 +249,20 @@ fun TimerGroup(
     onPauseGroup: () -> Unit,
     onResetGroup: () -> Unit,
 ) {
-    var isRunning by remember { mutableStateOf(timerGroup.isRunning) }
     var isExpanded by remember { mutableStateOf(true) }
 
-    val remainingTimes = remember {
+    val remainingTimes = remember(timerGroup.id) {
         mutableStateListOf<Long>().apply {
             when (timerGroup.groupType) {
                 GroupType.CONSISTENT -> {
                     if (!timerGroup.isStarted || !timerGroup.isRunning) {
                         addAll(timerGroup.timers.map { it.remainingMillis })
                     } else {
-                        val elapsed = Clock.System.now().toEpochMilliseconds() - timerGroup.timers.first().lastStartedTime
+                        val elapsed = Clock.System.now().toEpochMilliseconds() -
+                                timerGroup.timers.first().lastStartedTime
                         addAll(timerGroup.timers.mapIndexed { index, timer ->
-                            if (index == 0) maxOf(0, timer.remainingMillis - elapsed) else timer.remainingMillis
+                            if (index == 0) maxOf(0, timer.remainingMillis - elapsed)
+                            else timer.remainingMillis
                         })
                     }
                 }
@@ -91,13 +279,14 @@ fun TimerGroup(
         }
     }
 
-    println("timerGroup is $timerGroup")
     val delayTime = timerGroup.delayTime
 
-    LaunchedEffect(isRunning) {
+    LaunchedEffect(timerGroup.id, timerGroup.isRunning) {
+        if (!timerGroup.isRunning) return@LaunchedEffect
+
         when (timerGroup.groupType) {
             GroupType.PARALLEL -> {
-                while (isRunning && remainingTimes.any { it > 0 }) {
+                while (timerGroup.isRunning && remainingTimes.any { it > 0 }) {
                     delay(1000L)
                     remainingTimes.forEachIndexed { index, time ->
                         if (time > 0) {
@@ -108,51 +297,30 @@ fun TimerGroup(
             }
 
             GroupType.CONSISTENT -> {
-                while (isRunning && remainingTimes.any { it > 0 }) {
-                    val activeTimerIndex = remainingTimes.indexOfFirst { it > 0 }
-                    if (activeTimerIndex != -1) {
+                while (timerGroup.isRunning && remainingTimes.any { it > 0 }) {
+                    val activeIndex = remainingTimes.indexOfFirst { it > 0 }
+                    if (activeIndex != -1) {
                         delay(1000L)
-                        remainingTimes[activeTimerIndex] = remainingTimes[activeTimerIndex] - 1000
+                        remainingTimes[activeIndex] = remainingTimes[activeIndex] - 1000
                     }
                 }
             }
 
-//            GroupType.DELAY -> {
-//                while (isRunning && remainingTimes.any { it > 0 }) {
-//                    remainingTimes.forEachIndexed { index, time ->
-//                        if (time > 0) {
-//                            delay(1000L)
-//                            remainingTimes[index] = time - 1000
-//                        }
-//                    }
-//                    // После завершения всех таймеров мы вводим задержку между стартами
-//                    delay(delayTime)
-//                }
-//            }
             GroupType.DELAY -> {
                 for (index in remainingTimes.indices) {
-                    while (isRunning && remainingTimes[index] > 0) {
+                    while (timerGroup.isRunning && remainingTimes[index] > 0) {
                         delay(1000L)
                         remainingTimes[index] = remainingTimes[index] - 1000
                     }
-                    // После завершения текущего таймера – пауза перед следующим
-                    if (isRunning && index != remainingTimes.lastIndex) {
+                    if (timerGroup.isRunning && index != remainingTimes.lastIndex) {
                         println("DELAY TIME = $delayTime ms")
                         delay(delayTime)
                     }
                 }
             }
-
         }
 
-//        // Завершаем все таймеры, когда они все закончены
-//        if (remainingTimes.all { it == 0L }) {
-//            isRunning = false
-//        }
-
-        // Этот блок выполнится один раз после окончания таймеров
         if (remainingTimes.all { it == 0L }) {
-            isRunning = false
             remainingTimes.forEachIndexed { index, _ ->
                 remainingTimes[index] = timerGroup.timers[index].totalTime
             }
@@ -196,20 +364,15 @@ fun TimerGroup(
             Spacer(modifier = Modifier.weight(1f))
 
             if (!timerGroup.isStarted) {
-                CircularButton(icon = Icons.Default.PlayArrow, onClick = {
-                    isRunning = true
-                    onStartGroup()
-                })
+                CircularButton(icon = Icons.Default.PlayArrow, onClick = { onStartGroup() })
             } else {
                 CircularButton(
-                    icon = if (isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
+                    icon = if (timerGroup.isRunning) Icons.Default.Pause else Icons.Default.PlayArrow,
                     onClick = {
-                        isRunning = !isRunning
-                        if (isRunning) onStartGroup() else onPauseGroup()
+                        if (timerGroup.isRunning) onPauseGroup() else onStartGroup()
                     }
                 )
                 CircularButton(icon = Icons.Default.Stop, onClick = {
-                    isRunning = false
                     remainingTimes.forEachIndexed { index, _ ->
                         remainingTimes[index] = timerGroup.timers[index].totalTime
                     }
@@ -236,5 +399,4 @@ fun TimerGroup(
         }
     }
 }
-
 
