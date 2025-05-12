@@ -72,7 +72,7 @@ fun TimerGroupEntity.toUiModel(timers: List<TimerUiModel>): TimerGroupUiModel {
         isStarted = timers.any { it.remainingMillis != it.totalTime || it.isRunning } || isRunning,
         timers = timers,
         lastStartedTime = 0L,
-        delayTime = 0L
+        delayTime = delayTime
     )
 }
 

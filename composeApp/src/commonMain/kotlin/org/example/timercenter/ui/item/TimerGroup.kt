@@ -91,6 +91,7 @@ fun TimerGroup(
         }
     }
 
+    println("timerGroup is $timerGroup")
     val delayTime = timerGroup.delayTime
 
     LaunchedEffect(isRunning) {
@@ -116,18 +117,32 @@ fun TimerGroup(
                 }
             }
 
+//            GroupType.DELAY -> {
+//                while (isRunning && remainingTimes.any { it > 0 }) {
+//                    remainingTimes.forEachIndexed { index, time ->
+//                        if (time > 0) {
+//                            delay(1000L)
+//                            remainingTimes[index] = time - 1000
+//                        }
+//                    }
+//                    // После завершения всех таймеров мы вводим задержку между стартами
+//                    delay(delayTime)
+//                }
+//            }
             GroupType.DELAY -> {
-                while (isRunning && remainingTimes.any { it > 0 }) {
-                    remainingTimes.forEachIndexed { index, time ->
-                        if (time > 0) {
-                            delay(1000L)
-                            remainingTimes[index] = time - 1000
-                        }
+                for (index in remainingTimes.indices) {
+                    while (isRunning && remainingTimes[index] > 0) {
+                        delay(1000L)
+                        remainingTimes[index] = remainingTimes[index] - 1000
                     }
-                    // После завершения всех таймеров мы вводим задержку между стартами
-                    delay(delayTime)
+                    // После завершения текущего таймера – пауза перед следующим
+                    if (isRunning && index != remainingTimes.lastIndex) {
+                        println("DELAY TIME = $delayTime ms")
+                        delay(delayTime)
+                    }
                 }
             }
+
         }
 
 //        // Завершаем все таймеры, когда они все закончены
